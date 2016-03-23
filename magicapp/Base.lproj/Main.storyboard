@@ -25,7 +25,7 @@
         <!--View Controller-->
         <scene sceneID="ZbL-uQ-wgD">
             <objects>
-                <viewController id="eI9-wm-6KF" sceneMemberID="viewController">
+                <viewController id="eI9-wm-6KF" customClass="ViewController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="601-UY-CVZ"/>
                         <viewControllerLayoutGuide type="bottom" id="3eQ-kj-nlc"/>
@@ -33,6 +33,12 @@
                     <view key="view" contentMode="scaleToFill" id="xTl-fd-6W9">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tgc-Ve-EAa">
+                                <rect key="frame" x="158" y="202" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="TL7-Ik-QEJ"/>

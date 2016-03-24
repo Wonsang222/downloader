@@ -9,10 +9,15 @@
 import UIKit
 
 class WMainController: UIViewController {
+    
+    @IBOutlet weak var webView: UIWebView!
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let url = NSURL (string: "http://m.nain.co.kr");
+        let requestObj = NSURLRequest(URL: url!);
+        webView.loadRequest(requestObj);
     }
 
     override func didReceiveMemoryWarning() {

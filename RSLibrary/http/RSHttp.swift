@@ -8,7 +8,7 @@ enum RSHttpStatus{
 	case FAIL_RESEND
 }
 typealias RSHttpSuccessHandler = (resource:HttpBaseResource) -> (Void)
-typealias RSHttpErrorHandler = (errorCode:Int,resource:HttpBaseResource) -> (Void)
+typealias RSHttpErrorHandler = (errorCode:ResourceCode,resource:HttpBaseResource) -> (Void)
 
 
 class RSHttp{
@@ -38,14 +38,15 @@ class RSHttp{
 	}
 
 	func req(resources:HttpBaseResource...){
-		self.req(resources,successCb:nil,errorCb:nil)
+            print(resources)
+        self.req(resources,successCb:nil,errorCb:nil)
 	}
 
 	func req(resources:HttpBaseResource..., successCb:RSHttpSuccessHandler?){
-		self.req(resources,successCb:nil)
+        self.req(resources,successCb:successCb,errorCb:nil)
 	}
 
-	func req(resources:HttpBaseResource..., successCb:RSHttpSuccessHandler?, errorCb:RSHttpErrorHandler?){
+	func req(resources:[HttpBaseResource], successCb:RSHttpSuccessHandler?, errorCb:RSHttpErrorHandler?){
 		progressShow()
 		let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
 		dispatch_async(dispatch_get_global_queue(priority,0)) {
@@ -65,8 +66,8 @@ class RSHttp{
 				NSURLSession.sharedSession().dataTaskWithRequest(resource.makeRequest(), completionHandler : { data,response,error -> Void in
 					if error == nil {
 						do{
-							resource.parseHeader(response!)
-							resource.parse(data!)
+							try resource.parseHeader(response!)
+							try resource.parse(data!)
 						}catch {
 							resource.errorCode = ResourceCode.E9998
 						}
@@ -83,9 +84,9 @@ class RSHttp{
 						case .SUCCESS:
 							if successCb != nil { successCb!(resource:resource) }
 						case .SERVER_ERROR,.E9993:
-							self.popup(resource)
+                            self.popup(resource,errorCb:errorCb)
 						default:
-							self.popup(resource)
+                            self.popup(resource,errorCb:errorCb)
 					}	
 				}
 			}
@@ -96,20 +97,20 @@ class RSHttp{
 		}
 	}
 
-	private func popup(resource:HttpBaseResource){
+    private func popup(resource:HttpBaseResource,errorCb:RSHttpErrorHandler?){
 		if self.isShowingError && viewController != nil {
 			if viewController != nil {
 				let alert = UIAlertController(title: "알림", message: resource.errorMsg ,preferredStyle: UIAlertControllerStyle.Alert)
-				alert.addAction(UIAlertAction(title: "확인" , Style: UIAlertActionStyle.Default, handler:{ action in
-					if errorCb !=nil {
-						errorCb(errorCode:resource.errorCode,resource,resource)
+				alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.Default, handler:{ action in
+					if errorCb != nil {
+                        errorCb!(errorCode:resource.errorCode,resource:resource)
 					}
 				}))
 				viewController!.presentViewController(alert,animated:true, completion: nil)
-			}
+            }
 		}else{
-			if errorCb !=nil {
-				errorCb(errorCode:resource.errorCode,resource,resource)
+			if errorCb != nil {
+                errorCb!(errorCode:resource.errorCode,resource:resource)
 			}
 		}
 		

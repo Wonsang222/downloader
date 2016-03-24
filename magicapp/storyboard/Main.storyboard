@@ -8,7 +8,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Tg6-xL-gDb">
             <objects>
-                <navigationController id="57e-dI-w41" sceneMemberID="viewController">
+                <navigationController navigationBarHidden="YES" id="57e-dI-w41" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="me8-bP-pdg">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -22,10 +22,10 @@
             </objects>
             <point key="canvasLocation" x="-1095" y="-472"/>
         </scene>
-        <!--View Controller-->
+        <!--Main Controller-->
         <scene sceneID="ZbL-uQ-wgD">
             <objects>
-                <viewController id="eI9-wm-6KF" customClass="ViewController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="eI9-wm-6KF" customClass="MainController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="601-UY-CVZ"/>
                         <viewControllerLayoutGuide type="bottom" id="3eQ-kj-nlc"/>
@@ -34,15 +34,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tgc-Ve-EAa">
-                                <rect key="frame" x="158" y="202" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                            </button>
+                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="enI-cF-LBx">
+                                <rect key="frame" x="0.0" y="28" width="414" height="708"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="TL7-Ik-QEJ"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="webView" destination="enI-cF-LBx" id="aVa-oT-ECL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Tm-dJ-WtX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

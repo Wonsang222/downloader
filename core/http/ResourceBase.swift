@@ -10,14 +10,15 @@ class ApiFormApp : HttpBaseResource{
     }
 
 	
-	override func parse(_data: NSData){
+	override func parse(_data: NSData) throws{
         print(String(data: _data, encoding: NSUTF8StringEncoding) )
-        self.responseData = NSJSONSerialization.JSONObjectWithData(JSONData, options: NSJSONReadingOptions()) as? [String:AnyObject]
-        let isSuccess = self.body()["success"] == nil ? true : self.body()["success"]! as Bool
+        self.responseData = try NSJSONSerialization.JSONObjectWithData(_data, options: NSJSONReadingOptions()) as! [String:AnyObject]
+        let isSuccess = self.body()["success"] == nil ? true : self.body()["success"] as! Bool
         if !isSuccess{
             self.errorCode = ResourceCode.SERVER_ERROR
-            self.errorMsg = self.body()["msg"]! as String
+            self.errorMsg = self.body()["msg"] as! String
         }
+        print(self.body())
 	}
 }
 

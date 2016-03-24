@@ -12,7 +12,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        RSHttp(self).req(ApiFormApp().ap("mode","version_chk").ap("pack_name","kr.co.wisaweb.sw.m.wisa"))
+//        RSHttp(controller:self).req(
+//            ApiFormApp().ap("mode","version_chk").ap("pack_name","kr.co.wisaweb.sw.m.wisa"),
+//            successCb: { (resource) -> Void in
+//                print(resource.body()["version"] as! String)
+//            }
+//        )
         
     }
 

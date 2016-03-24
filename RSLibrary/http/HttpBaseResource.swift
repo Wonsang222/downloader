@@ -25,9 +25,11 @@ class HttpBaseResource{
 	func generateParamter() -> String{
 		var returnVal = "";
 		for (key,value) in self.params{
-            if returnVal == "" {
-                returnVal = "?"
-            }else{
+            #if DEBUG
+                print("\(key) , \(value)")
+            #endif
+
+            if returnVal != "" {
                 returnVal += "&"
             }
             returnVal += key + "=" + value.urlEncode()!
@@ -50,6 +52,9 @@ class HttpBaseResource{
 				return NSMutableURLRequest(URL: NSURL(string:pageUrl)!)
 			}
 		}()
+        #if DEBUG
+            print(pageUrl)
+        #endif
 		for(key,value) in self.reqHeader {
 			request.addValue(value, forHTTPHeaderField: key)
 		}
@@ -73,6 +78,9 @@ class HttpBaseResource{
 		let multipartData = NSMutableData()
 		let delimiter = "--\(boundary)\r\n"
 		for (key,value) in self.params{
+            #if DEBUG
+                print("\(key) , \(value)")
+            #endif
 			if key.hasPrefix("$") {
 				let fileUrl = NSURL(fileURLWithPath: value)
 				let mimetype = self.mimeTypeForPath(value)
@@ -109,8 +117,8 @@ class HttpBaseResource{
 	}
 
 
-	func ap(key:String,value:String) -> HttpBaseResource{
-        params[key] = value;
+    func ap(param:String...) -> HttpBaseResource{
+        params[param[0]] = param[1]
         return self;
 	}
     

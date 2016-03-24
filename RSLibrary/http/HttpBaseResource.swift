@@ -14,13 +14,14 @@ class HttpBaseResource{
 	var isMultiPart = false
 	var tag:AnyObject?
     var params = [String:String]()
-	var responseData:AnyObject?
+	var responseData = [String:AnyObject]() 
 	var reqHeader = [String:String]()
 
-	func body() -> AnyObject{
-		return self.responseData!
+	func body() -> [String:AnyObject]{
+		return self.responseData
 	}
 
+	
 	func generateParamter() -> String{
 		var returnVal = "";
 		for (key,value) in self.params{
@@ -108,13 +109,14 @@ class HttpBaseResource{
 	}
 
 
-	func addParam(key:String,value:String){
+	func ap(key:String,value:String) -> HttpBaseResource{
         params[key] = value;
+        return self;
 	}
     
-    func parse(_data: NSData) {
+    func parse(_data: NSData) throws{
     }
     
-    func parseHeader(_response: NSURLResponse) {
+    func parseHeader(_response: NSURLResponse) throws{
     }
 }

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  WIntroController.swift
 //  magicapp
 //
 //  Created by JooDaeho on 2016. 3. 18..
@@ -8,12 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class WIntroController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        RSHttp(self).req(ApiFormApp().ap("mode","version_chk").ap("pack_name","kr.co.wisaweb.sw.m.wisa"))
-        
     }
 
     override func didReceiveMemoryWarning() {

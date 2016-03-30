@@ -22,3 +22,29 @@ class ApiFormApp : HttpBaseResource{
 	}
 }
 
+class WingLogin : HttpBaseResource{
+
+    override var reqUrl:String{
+        get{
+            return WInfo.appUrl + "/main/exec.php"
+        }
+    }
+
+
+    override func parse(_data: NSData) throws{
+        print(String(data: _data, encoding: NSUTF8StringEncoding) )
+        let value = String(data: _data, encoding: NSUTF8StringEncoding)
+        self.responseData = [String:AnyObject]()
+        if value.rangOfString("login.php?err") == nil{
+            self.responseData["success"]  = NO  
+        }else{
+            self.responseData["success"]  = YES     
+            self.errorCode = ResourceCode.SERVER_ERROR
+            self.errorMsg = "로그인에 실패하였습니다."
+        }
+    }
+
+    override func parseHeader(_response: NSURLResponse) throws{
+        
+    }
+}

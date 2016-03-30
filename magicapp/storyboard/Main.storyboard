@@ -5,6 +5,33 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
+        <!--Intro Controller-->
+        <scene sceneID="hXE-xu-EBn">
+            <objects>
+                <viewController storyboardIdentifier="introController" id="oDu-yi-FcX" customClass="IntroController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6As-Sq-F5K"/>
+                        <viewControllerLayoutGuide type="bottom" id="IsA-Yf-9rj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ElE-XY-vf5">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VBv-Of-n34">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="introView" destination="VBv-Of-n34" id="YC4-dP-0px"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fda-72-BnL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1087" y="-1374"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Tg6-xL-gDb">
             <objects>

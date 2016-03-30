@@ -16,7 +16,7 @@ class IntroController:WIntroController{
 class MainController:WMainController{
     
 
-    func applyTheme() throws{
+    override func applyTheme() throws{
     	self.applyThemeFinish()	
     }
 

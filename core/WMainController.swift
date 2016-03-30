@@ -16,8 +16,8 @@ class WMainController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.WIntroController = UIStoryboard(name:"Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("introController") as WIntroController
-        self.presentViewController(self.WIntroController,animated:false,completion:nil)
+        self.introController = UIStoryboard(name:"Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("introController") as! WIntroController
+        self.presentViewController(self.introController,animated:false,completion:nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,7 +30,7 @@ class WMainController: UIViewController {
             try applyTheme()
         }catch{
             WInfo.themeInfo = [String:AnyObject]()
-            NSApplication.sharedApplication().terminate(self)
+            exit(0)
         }
 
 
@@ -39,9 +39,9 @@ class WMainController: UIViewController {
     func reqLogin(){
         let userInfo = WInfo.userInfo
         RSHttp(controller:self).req(
-           WingLogin().ap("member_id",userInfo["userId"])
-                        .ap("pwd",userInfo["password"]),
-                        .ap("exec_file","member/login.exe.php")
+           [WingLogin().ap("member_id",userInfo["userId"] as! String)
+                        .ap("pwd",userInfo["password"] as! String)
+                        .ap("exec_file","member/login.exe.php")],
            successCb: { (resource) -> Void in
                 self.reqMatching()
            },
@@ -52,13 +52,14 @@ class WMainController: UIViewController {
         )
     }
 
+
     func reqMatching(){
         // Todo : reqMatching
         RSHttp(controller:self).req(
-           ApiFormApp().ap("mode","matching")
-                        .ap("pack_name",AppProp.appId),
-                        .ap("token","GCM_KEY"),
-                        .ap("member_id",WInfo.userInfo["userId"])
+           [ApiFormApp().ap("mode","matching")
+                        .ap("pack_name",AppProp.appId)
+                        .ap("token","GCM_KEY")
+                        .ap("member_id",WInfo.userInfo["userId"] as! String)],
            successCb: { (resource) -> Void in
                 self.reqMatching()
            },

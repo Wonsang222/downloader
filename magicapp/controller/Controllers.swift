@@ -15,6 +15,11 @@ class IntroController:WIntroController{
 
 class MainController:WMainController{
     
+
+    func applyTheme() throws{
+    	self.applyThemeFinish()	
+    }
+
 }
 
 class NotiController:WNotiController{

@@ -11,6 +11,8 @@ import UIKit
 class WIntroController: UIViewController {
 
 	@IBOutlet weak var introView: UIImageView!
+    
+    weak var mainController:WMainController?
 
 	private var saveVersion:Int{
 		get{
@@ -134,18 +136,19 @@ class WIntroController: UIViewController {
                         exit(0)
 					}))
 					alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.Default, handler:{ action in
-						self.endIntro()
+						self.dismissProcess()
 					}))
 					self.presentViewController(alert,animated:true, completion: nil)
 	   			}else{
-	   				self.endIntro()
+	   				self.dismissProcess()
 	   			}
 		   }
 		)
     }
 
-    private func endIntro(){
-    	print("endIntro")
+    private func dismissProcess(){
+        mainController?.applyThemeFinish()
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

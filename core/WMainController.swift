@@ -17,6 +17,7 @@ class WMainController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.introController = UIStoryboard(name:"Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("introController") as! WIntroController
+        self.introController.mainController = self
         self.presentViewController(self.introController,animated:false,completion:nil)
     }
 
@@ -89,6 +90,8 @@ class WMainController: UIViewController {
         // Todo : GCM Connect
         let url = NSURL (string: WInfo.appUrl);
         let requestObj = NSURLRequest(URL: url!);
+        webView.scrollView.contentInset.top = 0
+        print(webView.scrollView.contentInset.top)
         webView.loadRequest(requestObj);
     }
 

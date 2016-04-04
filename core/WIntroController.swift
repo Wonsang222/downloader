@@ -147,7 +147,7 @@ class WIntroController: UIViewController {
     }
 
     private func dismissProcess(){
-        mainController?.applyThemeFinish()
+        mainController?.endIntro()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

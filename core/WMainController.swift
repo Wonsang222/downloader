@@ -28,7 +28,7 @@ class WMainController: UIViewController {
 
     func endIntro(){
         do{
-            try applyTheme()
+            try self.applyTheme()
         }catch{
             WInfo.themeInfo = [String:AnyObject]()
             exit(0)
@@ -101,20 +101,20 @@ class WMainController: UIViewController {
 
     func applyAction(button:UIButton,key:String){
         if key == "prev"{
-            button.addTarget(self , action: "onPrevClick:" , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self , action: #selector(WMainController.onPrevClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
         }else if key == "next"{
-            button.addTarget(self , action: "onNextClick:" , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self , action: #selector(WMainController.onNextClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
         }else if key == "reload"{
-            button.addTarget(self , action: "onReloadClick:" , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self , action: #selector(WMainController.onReloadClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
         }else if key == "home"{
-            button.addTarget(self , action: "onHomeClick:" , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self , action: #selector(WMainController.onHomeClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
         }else if key == "share"{
-            button.addTarget(self , action: "onShareClick:" , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self , action: #selector(WMainController.onShareClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
         }else if key == "push"{
-            button.addTarget(self , action: "onPushClick:" , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self , action: #selector(WMainController.onPushClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
         }else if key == "tab"{
         }else if key == "setting"{
-            button.addTarget(self , action: "onSettingClick:" , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self , action: #selector(WMainController.onSettingClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
             
         }
     }    

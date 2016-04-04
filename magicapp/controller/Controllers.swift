@@ -6,7 +6,7 @@
 //  Copyright © 2016년 JooDaeho. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 class IntroController:WIntroController{
@@ -16,33 +16,37 @@ class IntroController:WIntroController{
 class MainController:WMainController{
     
     let menuMap = [
-        "prev"      :"ic_a_prev",
-        "next"      :"ic_a_next",
-        "reload"    :"ic_a_refresh",
-        "home"      :"ic_a_home",
-        "share"     :"ic_a_share",
-        "push"      :"ic_a_menu",
-        "setting"   :"ic_a_tab"
+        "prev"      :"ic_a_prev.png",
+        "next"      :"ic_a_next.png",
+        "reload"    :"ic_a_refresh.png",
+        "home"      :"ic_a_home.png",
+        "share"     :"ic_a_share.png",
+        "push"      :"ic_a_menu.png",
+        "setting"   :"ic_a_tab.png"
     ]
 
-    func applyTheme() throws{
+    override func applyTheme() throws{
 
     	let uiData = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
     	let menus = uiData["menus"] as! [[String:AnyObject]]
-    	let wisaMenu:UIView = UIView(frame : CGRectMake(0,0,self.view.frame.width,uiData["menusSize"] as! Double))
-    	let menuWidth = self.view.frame.width / menus.count
-
-        wisaMenu.backgroundColor = (uiData["menusBg"] as! String).toColor()
+        let menuSize = CGFloat(uiData["menusSize"] as! Double * 1.5)
+    	let wisaMenu:UIView = UIView(frame : CGRectMake(0,self.view.frame.height - menuSize,self.view.frame.width, menuSize) )
+    	let menuWidth = self.view.frame.width / CGFloat(menus.count)
+        wisaMenu.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)
     	var position = 0
     	for menu in menus {
-    		let menuView = UIButton(frame : CGRectMake(position, 0 , menuWidth ,wisaMenu.frame.height))
-            position += 1
-            menuView.image = UIImage(named : menuMap[menu["click"] as! String] as! String)
-            self.applyAction(self,button: menuView,key: menuMap[menu["click"] as! String)
-            wisaMenu.addSubView(menuView)
+    		let menuView = UIButton(frame : CGRectMake(CGFloat(position), 0 , menuWidth ,wisaMenu.frame.height))
+            let key = menu["click"] as! String
+            position += Int(menuWidth)
+            print( menuView.imageView )
+            menuView.setImage(UIImage(named : menuMap[key]!), forState: .Normal)
+            self.applyAction(menuView, key: menuMap[key]!)
+            wisaMenu.addSubview(menuView)
     	}
-    	self.addSubView(wisaMenu)
-    	self.applyThemeFinish()	
+        
+    	self.view.addSubview(wisaMenu)
+        self.webView.scrollView.contentInset.bottom = menuSize
+        self.applyThemeFinish()
     }
 
 }

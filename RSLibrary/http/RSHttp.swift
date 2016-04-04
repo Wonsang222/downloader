@@ -58,7 +58,7 @@ class RSHttp{
 				let semaphore = dispatch_semaphore_create(0)
 				let urlConfig =	NSURLSessionConfiguration.defaultSessionConfiguration()
                 let appId = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as? String
-				let appVersion = NSBundle.mainBundle().infoDictionary?["CFBunldeShortVersionString"] as? String
+				let appVersion = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as! String
 				resource.reqHeader["User-Agent"] = "\(appId)/\(appVersion)"
                 
 				urlConfig.timeoutIntervalForRequest = Double(HttpInfo.TIMEOUT) / 1000

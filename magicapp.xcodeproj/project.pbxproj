@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D408A9C31CA2B4F100E0DCB5 /* ResourceBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C21CA2B4F100E0DCB5 /* ResourceBase.swift */; };
 		D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C61CA2B50400E0DCB5 /* ExtensionString.swift */; };
 		D408A9CE1CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C71CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift */; };
 		D408A9CF1CA2B50400E0DCB5 /* HttpBaseResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C91CA2B50400E0DCB5 /* HttpBaseResource.swift */; };
@@ -26,6 +25,9 @@
 		D4932E8C1CA433740014B769 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4932E8A1CA433740014B769 /* LaunchScreen.storyboard */; };
 		D4932E8D1CA433740014B769 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4932E8B1CA433740014B769 /* Main.storyboard */; };
 		D4932E931CA433E10014B769 /* Controllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4932E921CA433E10014B769 /* Controllers.swift */; };
+		D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EE91CAC06A200BF545E /* ResourceBase.swift */; };
+		D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEA1CAC06A200BF545E /* Tools.swift */; };
+		D4C64EEE1CAC06A200BF545E /* WInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEB1CAC06A200BF545E /* WInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,9 @@
 		D4932E8A1CA433740014B769 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D4932E8B1CA433740014B769 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		D4932E921CA433E10014B769 /* Controllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controllers.swift; sourceTree = "<group>"; };
+		D4C64EE91CAC06A200BF545E /* ResourceBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceBase.swift; sourceTree = "<group>"; };
+		D4C64EEA1CAC06A200BF545E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
+		D4C64EEB1CAC06A200BF545E /* WInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +140,9 @@
 		D416228B1C9EA6C000A818DA /* core */ = {
 			isa = PBXGroup;
 			children = (
+				D4C64EE81CAC06A200BF545E /* http */,
+				D4C64EEA1CAC06A200BF545E /* Tools.swift */,
+				D4C64EEB1CAC06A200BF545E /* WInfo.swift */,
 				D4932E7C1CA432710014B769 /* HttpMap.swift */,
 				D4932E7D1CA432710014B769 /* WIntroController.swift */,
 				D4932E7E1CA432710014B769 /* WMainController.swift */,
@@ -160,6 +168,14 @@
 				D4932E8B1CA433740014B769 /* Main.storyboard */,
 			);
 			path = storyboard;
+			sourceTree = "<group>";
+		};
+		D4C64EE81CAC06A200BF545E /* http */ = {
+			isa = PBXGroup;
+			children = (
+				D4C64EE91CAC06A200BF545E /* ResourceBase.swift */,
+			);
+			path = http;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -189,7 +205,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = JooDaeho;
 				TargetAttributes = {
 					D416226F1C9C44A300A818DA = {
@@ -233,13 +249,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */,
 				D4932E821CA432710014B769 /* WIntroController.swift in Sources */,
 				D4932E831CA432710014B769 /* WMainController.swift in Sources */,
 				D408A9CE1CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift in Sources */,
 				D4932E931CA433E10014B769 /* Controllers.swift in Sources */,
 				D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */,
 				D408A9D11CA2B50400E0DCB5 /* HttpInfo.swift in Sources */,
-				D408A9C31CA2B4F100E0DCB5 /* ResourceBase.swift in Sources */,
 				D408A9CF1CA2B50400E0DCB5 /* HttpBaseResource.swift in Sources */,
 				D4932E811CA432710014B769 /* HttpMap.swift in Sources */,
 				D408A9D01CA2B50400E0DCB5 /* RSHttp.swift in Sources */,
@@ -247,7 +263,9 @@
 				D41622761C9C44A300A818DA /* ViewController.swift in Sources */,
 				D41622741C9C44A300A818DA /* AppDelegate.swift in Sources */,
 				D408A9D21CA2B50400E0DCB5 /* ResourceCode.swift in Sources */,
+				D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */,
 				D416227C1C9C44A300A818DA /* magicapp.xcdatamodeld in Sources */,
+				D4C64EEE1CAC06A200BF545E /* WInfo.swift in Sources */,
 				D4932E841CA432710014B769 /* WNotiController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,10 +358,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = magicapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = kr.co.wisa.magicapp;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.co.wisaweb.sw.m.wisa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -352,9 +371,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = magicapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = kr.co.wisa.magicapp;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.co.wisaweb.sw.m.wisa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

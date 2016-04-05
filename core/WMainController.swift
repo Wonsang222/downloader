@@ -12,14 +12,15 @@ class WMainController: UIViewController {
     
     @IBOutlet weak var webView: UIWebView!
 
-    weak var introController:WIntroController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.introController = UIStoryboard(name:"Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("introController") as! WIntroController
-        self.introController.mainController = self
-        self.presentViewController(self.introController,animated:false,completion:nil)
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            self.performSegueWithIdentifier("intro", sender: self)
+        })
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -151,12 +152,15 @@ class WMainController: UIViewController {
         self.performSegueWithIdentifier("setting" ,  sender : self)
     }
 
-    override prepareForSegue(segue:UIStoryboardSegue, sender: AnyObject?){
-        if segue.identifier = "noti" {
+    override func prepareForSegue(segue:UIStoryboardSegue, sender: AnyObject?){
+        if segue.identifier == "noti" {
             let notiController = segue.destinationViewController as! WNotiController
             notiController.link = sender as? String
-        }    
-    }     
+        } else if segue.identifier == "intro"{
+            let introController = segue.destinationViewController as! WIntroController
+            introController.mainController = self
+        }
+    }
 
 }
 

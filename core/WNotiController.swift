@@ -8,20 +8,19 @@
 
 import UIKit
 
-class WNotiController: UIViewController {
+class WNotiController: UIViewController,UIWebViewDelegate{
 
-
-	@IBOutlet weak let webview: UIWebView!
-	var link?:String
+    @IBOutlet weak var webView: UIWebView!
+	var link:String?
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
     	var url = NSURL (string: HttpMap.PUSH_PAGE);
         if link != nil {
-        	url = link!
+        	url = NSURL (string: link!);
         }
-        let requestObj = NSURLRequest(URL: url);
+        let requestObj = NSURLRequest(URL: url!);
         webView.scrollView.contentInset.top = 0
         webView.loadRequest(requestObj);
         
@@ -31,6 +30,9 @@ class WNotiController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-
+    
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        return true
+    }
 }
 

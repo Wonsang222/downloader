@@ -49,8 +49,6 @@ class WIntroController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(WInfo.introInfo["file"])
-        print(self.saveIntro)
         if self.saveIntro != nil {
             self.introView.image = self.saveIntro
         }

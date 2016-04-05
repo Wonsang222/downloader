@@ -27,6 +27,7 @@
 		D45D648A1CB29B5D004976A2 /* ic_a_share.png in Resources */ = {isa = PBXBuildFile; fileRef = D45D64821CB29B5D004976A2 /* ic_a_share.png */; };
 		D45D648B1CB29B5D004976A2 /* ic_a_tab.png in Resources */ = {isa = PBXBuildFile; fileRef = D45D64831CB29B5D004976A2 /* ic_a_tab.png */; };
 		D45D648C1CB29B5D004976A2 /* ic_navi_back.png in Resources */ = {isa = PBXBuildFile; fileRef = D45D64841CB29B5D004976A2 /* ic_navi_back.png */; };
+		D45D648E1CB3FF8E004976A2 /* ExtenstionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D648D1CB3FF8E004976A2 /* ExtenstionUIImage.swift */; };
 		D4932E811CA432710014B769 /* HttpMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4932E7C1CA432710014B769 /* HttpMap.swift */; };
 		D4932E821CA432710014B769 /* WIntroController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4932E7D1CA432710014B769 /* WIntroController.swift */; };
 		D4932E831CA432710014B769 /* WMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4932E7E1CA432710014B769 /* WMainController.swift */; };
@@ -64,6 +65,7 @@
 		D45D64821CB29B5D004976A2 /* ic_a_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_share.png; sourceTree = "<group>"; };
 		D45D64831CB29B5D004976A2 /* ic_a_tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_tab.png; sourceTree = "<group>"; };
 		D45D64841CB29B5D004976A2 /* ic_navi_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_navi_back.png; sourceTree = "<group>"; };
+		D45D648D1CB3FF8E004976A2 /* ExtenstionUIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtenstionUIImage.swift; sourceTree = "<group>"; };
 		D4932E7C1CA432710014B769 /* HttpMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpMap.swift; sourceTree = "<group>"; };
 		D4932E7D1CA432710014B769 /* WIntroController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WIntroController.swift; sourceTree = "<group>"; };
 		D4932E7E1CA432710014B769 /* WMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMainController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		D408A9C51CA2B50400E0DCB5 /* extenstion */ = {
 			isa = PBXGroup;
 			children = (
+				D45D648D1CB3FF8E004976A2 /* ExtenstionUIImage.swift */,
 				D45D64761CB29370004976A2 /* ExtensionUIColor.swift */,
 				D408A9C61CA2B50400E0DCB5 /* ExtensionString.swift */,
 				D408A9C71CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift */,
@@ -295,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D45D648E1CB3FF8E004976A2 /* ExtenstionUIImage.swift in Sources */,
 				D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */,
 				D4932E821CA432710014B769 /* WIntroController.swift in Sources */,
 				D4932E831CA432710014B769 /* WMainController.swift in Sources */,

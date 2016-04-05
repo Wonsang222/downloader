@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="57e-dI-w41">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="eI9-wm-6KF">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Intro Controller-->
         <scene sceneID="hXE-xu-EBn">
             <objects>
-                <viewController storyboardIdentifier="introController" id="oDu-yi-FcX" customClass="IntroController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="oDu-yi-FcX" customClass="IntroController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6As-Sq-F5K"/>
                         <viewControllerLayoutGuide type="bottom" id="IsA-Yf-9rj"/>
@@ -30,24 +31,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fda-72-BnL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1087" y="-1374"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Tg6-xL-gDb">
-            <objects>
-                <navigationController navigationBarHidden="YES" id="57e-dI-w41" sceneMemberID="viewController">
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="me8-bP-pdg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="eI9-wm-6KF" kind="relationship" relationship="rootViewController" id="wy1-eI-IFs"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d00-A0-Wja" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1095" y="-472"/>
+            <point key="canvasLocation" x="-1133" y="-1344"/>
         </scene>
         <!--Main Controller-->
         <scene sceneID="ZbL-uQ-wgD">
@@ -73,11 +57,69 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="webView" destination="enI-cF-LBx" id="aVa-oT-ECL"/>
+                        <segue destination="oDu-yi-FcX" kind="presentation" identifier="intro" animates="NO" modalTransitionStyle="crossDissolve" id="BTf-1A-yrX"/>
+                        <segue destination="LHR-qA-ffe" kind="show" identifier="noti" id="1tW-X3-Thx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Tm-dJ-WtX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-543" y="-460"/>
+            <point key="canvasLocation" x="-1657" y="-528"/>
+        </scene>
+        <!--Noti Controller-->
+        <scene sceneID="YDQ-ao-d1h">
+            <objects>
+                <viewController id="LHR-qA-ffe" customClass="NotiController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="uUg-Ae-pyI"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ya0-id-Jwb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tq3-Hr-2ga">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" backIndicatorImage="ic_a_menu.png" translatesAutoresizingMaskIntoConstraints="NO" id="b5e-cr-79t">
+                                <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="b5e-cr-79t" secondAttribute="height" multiplier="207:22" id="DSW-SI-fna"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="알림함" id="Bmp-Ky-Z9X">
+                                        <barButtonItem key="backBarButtonItem" systemItem="cancel" id="7bC-0c-dvE"/>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2e3-7V-7B6">
+                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="2e3-7V-7B6" secondAttribute="height" multiplier="69:112" id="foc-fU-GgQ"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="LHR-qA-ffe" id="lQC-VH-xHB"/>
+                                </connections>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ya0-id-Jwb" firstAttribute="top" secondItem="2e3-7V-7B6" secondAttribute="bottom" id="ELG-o7-hiq"/>
+                            <constraint firstAttribute="trailing" secondItem="2e3-7V-7B6" secondAttribute="trailing" id="IIW-hU-e9a"/>
+                            <constraint firstItem="2e3-7V-7B6" firstAttribute="leading" secondItem="tq3-Hr-2ga" secondAttribute="leading" id="MSx-We-isu"/>
+                            <constraint firstItem="b5e-cr-79t" firstAttribute="leading" secondItem="tq3-Hr-2ga" secondAttribute="leading" id="Ojm-l0-H3K"/>
+                            <constraint firstAttribute="trailing" secondItem="b5e-cr-79t" secondAttribute="trailing" id="RSS-FX-ZUv"/>
+                            <constraint firstItem="b5e-cr-79t" firstAttribute="top" secondItem="uUg-Ae-pyI" secondAttribute="bottom" id="ggp-gW-IYE"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="webView" destination="2e3-7V-7B6" id="TXi-Mi-ie4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0ej-YU-rds" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1034" y="-528"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ic_a_menu.png" width="44" height="44"/>
+    </resources>
 </document>

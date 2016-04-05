@@ -33,13 +33,16 @@ class MainController:WMainController{
     	let wisaMenu:UIView = UIView(frame : CGRectMake(0,self.view.frame.height - menuSize,self.view.frame.width, menuSize) )
     	let menuWidth = self.view.frame.width / CGFloat(menus.count)
         wisaMenu.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)
+        wisaMenu.userInteractionEnabled = true
     	var position = 0
     	for menu in menus {
     		let menuView = UIButton(frame : CGRectMake(CGFloat(position), 0 , menuWidth ,wisaMenu.frame.height))
             let key = menu["click"] as! String
             position += Int(menuWidth)
-            print( menuView.imageView )
-            menuView.setImage(UIImage(named : menuMap[key]!), forState: .Normal)
+            let menuIcon = UIImage(named : menuMap[key]!)
+            menuView.setImage(menuIcon, forState: .Normal)
+            menuView.imageView.frame = CGRectMake(0,0,menuIcon.size.width/3.0,menuIcon.size.height/3.0)
+            menuView.imageView.center = menuView.center
             self.applyAction(menuView, key: menuMap[key]!)
             wisaMenu.addSubview(menuView)
     	}

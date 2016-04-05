@@ -150,7 +150,13 @@ class WMainController: UIViewController {
     func onSettingClick(sender:UIButton!){
         self.performSegueWithIdentifier("setting" ,  sender : self)
     }
-     
+
+    override prepareForSegue(segue:UIStoryboardSegue, sender: AnyObject?){
+        if segue.identifier = "noti" {
+            let notiController = segue.destinationViewController as! WNotiController
+            notiController.link = sender as? String
+        }    
+    }     
 
 }
 

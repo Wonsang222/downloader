@@ -17,6 +17,7 @@
 		D41622761C9C44A300A818DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41622751C9C44A300A818DA /* ViewController.swift */; };
 		D416227C1C9C44A300A818DA /* magicapp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D416227A1C9C44A300A818DA /* magicapp.xcdatamodeld */; };
 		D416227E1C9C44A300A818DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D416227D1C9C44A300A818DA /* Assets.xcassets */; };
+		D4326BD01CB561E8007A07C6 /* WAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */; };
 		D45D64751CB28B64004976A2 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D64731CB28B64004976A2 /* Toast.swift */; };
 		D45D64771CB29370004976A2 /* ExtensionUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D64761CB29370004976A2 /* ExtensionUIColor.swift */; };
 		D45D64851CB29B5D004976A2 /* ic_a_home.png in Resources */ = {isa = PBXBuildFile; fileRef = D45D647D1CB29B5D004976A2 /* ic_a_home.png */; };
@@ -42,7 +43,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D408A9C21CA2B4F100E0DCB5 /* ResourceBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceBase.swift; sourceTree = "<group>"; };
 		D408A9C61CA2B50400E0DCB5 /* ExtensionString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
 		D408A9C71CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtenstionNSMutableData.swift; sourceTree = "<group>"; };
 		D408A9C91CA2B50400E0DCB5 /* HttpBaseResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpBaseResource.swift; sourceTree = "<group>"; };
@@ -55,6 +55,7 @@
 		D416227B1C9C44A300A818DA /* magicapp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = magicapp.xcdatamodel; sourceTree = "<group>"; };
 		D416227D1C9C44A300A818DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D41622821C9C44A300A818DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WAppDelegate.swift; sourceTree = "<group>"; };
 		D45D64731CB28B64004976A2 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		D45D64761CB29370004976A2 /* ExtensionUIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUIColor.swift; sourceTree = "<group>"; };
 		D45D647D1CB29B5D004976A2 /* ic_a_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_home.png; sourceTree = "<group>"; };
@@ -90,14 +91,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D408A9C11CA2B4F100E0DCB5 /* http */ = {
-			isa = PBXGroup;
-			children = (
-				D408A9C21CA2B4F100E0DCB5 /* ResourceBase.swift */,
-			);
-			path = http;
-			sourceTree = "<group>";
-		};
 		D408A9C41CA2B50400E0DCB5 /* RSLibrary */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,8 +158,8 @@
 		D416228B1C9EA6C000A818DA /* core */ = {
 			isa = PBXGroup;
 			children = (
-				D45D64731CB28B64004976A2 /* Toast.swift */,
 				D4C64EE81CAC06A200BF545E /* http */,
+				D45D64731CB28B64004976A2 /* Toast.swift */,
 				D4C64EEA1CAC06A200BF545E /* Tools.swift */,
 				D4C64EEB1CAC06A200BF545E /* WInfo.swift */,
 				D4932E7C1CA432710014B769 /* HttpMap.swift */,
@@ -174,7 +167,7 @@
 				D4932E7E1CA432710014B769 /* WMainController.swift */,
 				D4932E7F1CA432710014B769 /* WNotiController.swift */,
 				D4932E801CA432710014B769 /* WSettingController.swift */,
-				D408A9C11CA2B4F100E0DCB5 /* http */,
+				D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -306,6 +299,7 @@
 				D4932E931CA433E10014B769 /* Controllers.swift in Sources */,
 				D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */,
 				D408A9D11CA2B50400E0DCB5 /* HttpInfo.swift in Sources */,
+				D4326BD01CB561E8007A07C6 /* WAppDelegate.swift in Sources */,
 				D408A9CF1CA2B50400E0DCB5 /* HttpBaseResource.swift in Sources */,
 				D4932E811CA432710014B769 /* HttpMap.swift in Sources */,
 				D408A9D01CA2B50400E0DCB5 /* RSHttp.swift in Sources */,

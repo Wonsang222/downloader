@@ -21,11 +21,13 @@ class WNotiController: UIViewController,UIWebViewDelegate{
         	url = NSURL (string: link!);
         }
         let requestObj = NSURLRequest(URL: url!);
-        webView.scrollView.contentInset.top = 0
+        dispatch_async(dispatch_get_main_queue()){
+            self.webView.scrollView.contentInset.top = 0
+        }
         webView.loadRequest(requestObj);
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -34,5 +36,13 @@ class WNotiController: UIViewController,UIWebViewDelegate{
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         return true
     }
+    
+    
+    @IBAction func doBack(sender: AnyObject) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+
+
 }
 

@@ -92,8 +92,8 @@ class WMainController: UIViewController {
         let url = NSURL (string: WInfo.appUrl);
         let requestObj = NSURLRequest(URL: url!);
         webView.scrollView.contentInset.top = 0
-        print(webView.scrollView.contentInset.top)
         webView.loadRequest(requestObj);
+        view.hidden = false
     }
 
 

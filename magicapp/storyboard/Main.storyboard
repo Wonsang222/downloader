@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="eI9-wm-6KF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="hkA-AM-4G7">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -31,7 +31,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fda-72-BnL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1133" y="-1344"/>
+            <point key="canvasLocation" x="-1702" y="-547"/>
         </scene>
         <!--Main Controller-->
         <scene sceneID="ZbL-uQ-wgD">
@@ -46,7 +46,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="enI-cF-LBx">
-                                <rect key="frame" x="0.0" y="20" width="414" height="716"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </webView>
@@ -57,13 +57,30 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="webView" destination="enI-cF-LBx" id="aVa-oT-ECL"/>
-                        <segue destination="oDu-yi-FcX" kind="presentation" identifier="intro" animates="NO" modalTransitionStyle="crossDissolve" id="BTf-1A-yrX"/>
-                        <segue destination="LHR-qA-ffe" kind="show" identifier="noti" id="1tW-X3-Thx"/>
+                        <segue destination="oDu-yi-FcX" kind="presentation" identifier="intro" id="145-3n-rqM"/>
+                        <segue destination="LHR-qA-ffe" kind="show" identifier="noti" id="dlN-YQ-d7z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Tm-dJ-WtX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1657" y="-528"/>
+            <point key="canvasLocation" x="-2227" y="299"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="9T3-AC-A15">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="hkA-AM-4G7" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BHM-On-EaW">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="eI9-wm-6KF" kind="relationship" relationship="rootViewController" id="Jut-4d-mUe"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lfr-eT-V8a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2778" y="305"/>
         </scene>
         <!--Noti Controller-->
         <scene sceneID="YDQ-ao-d1h">
@@ -77,19 +94,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" backIndicatorImage="ic_a_menu.png" translatesAutoresizingMaskIntoConstraints="NO" id="b5e-cr-79t">
-                                <rect key="frame" x="0.0" y="20" width="414" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="b5e-cr-79t" secondAttribute="height" multiplier="207:22" id="DSW-SI-fna"/>
-                                </constraints>
-                                <items>
-                                    <navigationItem title="알림함" id="Bmp-Ky-Z9X">
-                                        <barButtonItem key="backBarButtonItem" systemItem="cancel" id="7bC-0c-dvE"/>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2e3-7V-7B6">
-                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                            <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2e3-7V-7B6">
+                                <rect key="frame" x="0.0" y="20" width="414" height="716"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="2e3-7V-7B6" secondAttribute="height" multiplier="69:112" id="foc-fU-GgQ"/>
@@ -104,9 +110,6 @@
                             <constraint firstItem="Ya0-id-Jwb" firstAttribute="top" secondItem="2e3-7V-7B6" secondAttribute="bottom" id="ELG-o7-hiq"/>
                             <constraint firstAttribute="trailing" secondItem="2e3-7V-7B6" secondAttribute="trailing" id="IIW-hU-e9a"/>
                             <constraint firstItem="2e3-7V-7B6" firstAttribute="leading" secondItem="tq3-Hr-2ga" secondAttribute="leading" id="MSx-We-isu"/>
-                            <constraint firstItem="b5e-cr-79t" firstAttribute="leading" secondItem="tq3-Hr-2ga" secondAttribute="leading" id="Ojm-l0-H3K"/>
-                            <constraint firstAttribute="trailing" secondItem="b5e-cr-79t" secondAttribute="trailing" id="RSS-FX-ZUv"/>
-                            <constraint firstItem="b5e-cr-79t" firstAttribute="top" secondItem="uUg-Ae-pyI" secondAttribute="bottom" id="ggp-gW-IYE"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
@@ -116,10 +119,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0ej-YU-rds" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1034" y="-528"/>
+            <point key="canvasLocation" x="-1634" y="299"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="ic_a_menu.png" width="44" height="44"/>
-    </resources>
 </document>

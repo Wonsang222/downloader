@@ -16,7 +16,7 @@ class WNotiController: UIViewController,UIWebViewDelegate{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    	var url = NSURL (string: HttpMap.PUSH_PAGE + "?pack_name" + AppProp.appId);
+    	var url = NSURL (string: HttpMap.PUSH_PAGE + "?pack_name=" + AppProp.appId);
         if link != nil {
         	url = NSURL (string: link!);
         }

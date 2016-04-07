@@ -42,7 +42,7 @@ class WNotiController: UIViewController,UIWebViewDelegate{
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-
+    
 
 }
 

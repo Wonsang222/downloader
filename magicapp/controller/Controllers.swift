@@ -29,7 +29,7 @@ class MainController:WMainController{
 
     	let uiData = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
     	let menus = uiData["menus"] as! [[String:AnyObject]]
-        let menuSize = CGFloat(uiData["menusSize"] as! Double * 1.2)
+        let menuSize = CGFloat(uiData["menusSize"] as! Double)
     	let wisaMenu:UIView = UIView(frame : CGRectMake(0,self.view.frame.height - menuSize,self.view.frame.width, menuSize) )
     	let menuWidth = self.view.frame.width / CGFloat(menus.count)
         wisaMenu.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)
@@ -39,13 +39,10 @@ class MainController:WMainController{
     		let menuView = UIButton(frame : CGRectMake(CGFloat(position), 0 , menuWidth ,wisaMenu.frame.height))
             let key = menu["click"] as! String
             let menuIcon = UIImage(named : menuMap[key]!)!
-            let xPosition = menuView.frame.width/2.0 - (menuIcon.size.width/2.0/2.0) + CGFloat(position)
-            let yPosition = menuView.frame.height/2.0 - (menuIcon.size.width/2.0/2.0)
-            let imageRect = CGRectMake(xPosition,yPosition,menuIcon.size.width/2.0,menuIcon.size.height/2.0)
-            menuView.setImage(menuIcon, inFrame:imageRect, forState: .Normal)
+            let newMenuBg = menuIcon.makeFillImage(menuView)
+            
+            menuView.setBackgroundImage(newMenuBg, forState: .Normal)
             menuView.showsTouchWhenHighlighted = true
-            menuView.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-            menuView.imageView?.center = menuView.center
             self.applyAction(menuView, key: key)
             wisaMenu.addSubview(menuView)
             position += Int(menuWidth)

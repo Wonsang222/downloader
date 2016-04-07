@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CAAAC7CC1CB6245E00031667 /* ExtenstionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAAC7CB1CB6245E00031667 /* ExtenstionUIImage.swift */; };
 		D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C61CA2B50400E0DCB5 /* ExtensionString.swift */; };
 		D408A9CE1CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C71CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift */; };
 		D408A9CF1CA2B50400E0DCB5 /* HttpBaseResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C91CA2B50400E0DCB5 /* HttpBaseResource.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CAAAC7CB1CB6245E00031667 /* ExtenstionUIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtenstionUIImage.swift; sourceTree = "<group>"; };
 		D408A9C61CA2B50400E0DCB5 /* ExtensionString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
 		D408A9C71CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtenstionNSMutableData.swift; sourceTree = "<group>"; };
 		D408A9C91CA2B50400E0DCB5 /* HttpBaseResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpBaseResource.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				D408A9C61CA2B50400E0DCB5 /* ExtensionString.swift */,
 				D408A9C71CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift */,
 				D45D648F1CB5217D004976A2 /* ExtensionUIButton.swift */,
+				CAAAC7CB1CB6245E00031667 /* ExtenstionUIImage.swift */,
 			);
 			path = extenstion;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				D408A9D21CA2B50400E0DCB5 /* ResourceCode.swift in Sources */,
 				D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */,
 				D416227C1C9C44A300A818DA /* magicapp.xcdatamodeld in Sources */,
+				CAAAC7CC1CB6245E00031667 /* ExtenstionUIImage.swift in Sources */,
 				D45D64751CB28B64004976A2 /* Toast.swift in Sources */,
 				D4C64EEE1CAC06A200BF545E /* WInfo.swift in Sources */,
 				D4932E841CA432710014B769 /* WNotiController.swift in Sources */,

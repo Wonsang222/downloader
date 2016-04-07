@@ -79,6 +79,7 @@ class WMainController: UIViewController {
     }
 
     func applyThemeFinish(){
+        print(WInfo.userInfo)
         if (WInfo.solutionType == "W") && (WInfo.userInfo.count != 0) {
             self.reqLogin()
         }else{
@@ -144,6 +145,10 @@ class WMainController: UIViewController {
         webView.loadRequest(requestObj);
     }
     func onShareClick(sender:UIButton!){
+        let objectToShare = [webView.request!.URL!]
+        let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
+
+        presentViewController(activity, animated: true, completion: nil)
     }
     func onPushClick(sender:UIButton!){
         self.performSegueWithIdentifier("noti" ,  sender : self)

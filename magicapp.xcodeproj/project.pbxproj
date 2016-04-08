@@ -41,6 +41,7 @@
 		D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EE91CAC06A200BF545E /* ResourceBase.swift */; };
 		D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEA1CAC06A200BF545E /* Tools.swift */; };
 		D4C64EEE1CAC06A200BF545E /* WInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEB1CAC06A200BF545E /* WInfo.swift */; };
+		D4FD0F101CB7A3DE00018CDF /* TopNavigation.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4FD0F0F1CB7A3DE00018CDF /* TopNavigation.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,7 @@
 		D4C64EE91CAC06A200BF545E /* ResourceBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceBase.swift; sourceTree = "<group>"; };
 		D4C64EEA1CAC06A200BF545E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		D4C64EEB1CAC06A200BF545E /* WInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WInfo.swift; sourceTree = "<group>"; };
+		D4FD0F0F1CB7A3DE00018CDF /* TopNavigation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopNavigation.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +203,7 @@
 		D4932E891CA433740014B769 /* storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				D4FD0F0F1CB7A3DE00018CDF /* TopNavigation.xib */,
 				D4932E8A1CA433740014B769 /* LaunchScreen.storyboard */,
 				D4932E8B1CA433740014B769 /* Main.storyboard */,
 			);
@@ -279,6 +282,7 @@
 				D4932E8D1CA433740014B769 /* Main.storyboard in Resources */,
 				D45D648C1CB29B5D004976A2 /* ic_navi_back.png in Resources */,
 				D45D64881CB29B5D004976A2 /* ic_a_prev.png in Resources */,
+				D4FD0F101CB7A3DE00018CDF /* TopNavigation.xib in Resources */,
 				D416227E1C9C44A300A818DA /* Assets.xcassets in Resources */,
 				D4932E8C1CA433740014B769 /* LaunchScreen.storyboard in Resources */,
 				D45D64891CB29B5D004976A2 /* ic_a_refresh.png in Resources */,

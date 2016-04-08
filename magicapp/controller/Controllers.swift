@@ -47,7 +47,10 @@ class MainController:WMainController{
             wisaMenu.addSubview(menuView)
             position += Int(menuWidth)
     	}
-        
+        let borderLayer = CALayer()
+        borderLayer.backgroundColor = UIColor.blackColor().CGColor
+        borderLayer.frame = CGRectMake(0, 0, CGRectGetWidth(wisaMenu.frame), Tools.toOriginPixel(1.0))
+        wisaMenu.layer.addSublayer(borderLayer)
     	self.view.addSubview(wisaMenu)
         self.webView.scrollView.contentInset.bottom = menuSize
         self.applyThemeFinish()
@@ -61,5 +64,39 @@ class NotiController:WNotiController{
 
 class SettingController:WSettingController{
     
+}
+
+
+
+
+
+class TopNavigation:UIView{
+    
+    @IBOutlet private var contentView:UIView?
+    @IBOutlet private var title:UILabel?
+    @IBOutlet private weak var controller:UIViewController?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commitInit()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commitInit()
+    }
+    
+    private func commitInit(){
+        NSBundle.mainBundle().loadNibNamed("TopNavigation", owner: self, options: nil)
+        self.addSubview(contentView!)
+    }
+    
+    override func awakeFromNib() {
+        print(controller?.title!)
+        self.title?.text = controller?.title!
+    }
+    
+    @IBAction func doBack(sender:AnyObject){
+        controller!.navigationController?.popViewControllerAnimated(true)
+    }
 }
 

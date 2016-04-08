@@ -38,10 +38,9 @@ class WNotiController: UIViewController,UIWebViewDelegate{
     }
     
     
-    @IBAction func doBack(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyleLightContent
     }
-    
     
 
 }

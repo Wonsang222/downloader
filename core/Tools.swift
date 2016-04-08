@@ -22,7 +22,13 @@ class AppProp{
 
 }
 
-
+class Tools{
+    
+    
+    static func toOriginPixel(pixel:CGFloat) -> CGFloat{
+        return (pixel / UIScreen.mainScreen().scale)
+    }
+}
 
 class DownLoader{
 

@@ -34,8 +34,6 @@ class WMainController: UIViewController {
             WInfo.themeInfo = [String:AnyObject]()
             exit(0)
         }
-
-
     }
 
     func reqLogin(){
@@ -166,6 +164,7 @@ class WMainController: UIViewController {
             introController.mainController = self
         }
     }
-
+    
+    
 }
 

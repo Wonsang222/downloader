@@ -23,16 +23,16 @@ class WInfo{
 		}
 	}
 
-	static var gcmId:String{
+	static var deviceToken:String{
 		get{
-			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kGcmId") as? String{
+			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kDeviceToken") as? String{
 				return returnValue;
 			}else{
 				return "";		
 			}
 		}
 		set{
-			NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kGcmId")	
+			NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kDeviceToken")	
 			NSUserDefaults.standardUserDefaults().synchronize()
 		}
 	}
@@ -74,7 +74,7 @@ class WInfo{
 			}
 		}
 		set{
-			NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kThemeInfo")	
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kThemeInfo")
 			NSUserDefaults.standardUserDefaults().synchronize()
 		}
 	}
@@ -85,7 +85,7 @@ class WInfo{
 			if let returnValue = NSUserDefaults.standardUserDefaults().dictionaryForKey("kUserInfo"){
 				return returnValue;
 			}else{
-				return [String:AnyObject]() 		
+				return [String:AnyObject]()
 			}
 		}
 		set{
@@ -94,5 +94,17 @@ class WInfo{
 		}
 	}
 
+    
+    
+    static func defaultCookie() -> String{
+        
+        var arrayValues: [String] = []
+        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string:WInfo.appUrl)!){
+            for cookie in cookies {
+                arrayValues.append("\(cookie.name)=\(cookie.value)")
+            }
+        }
+        return arrayValues.joinWithSeparator(",")
+    }
 
 }

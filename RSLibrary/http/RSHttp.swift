@@ -53,7 +53,10 @@ class RSHttp{
 			for resource in resources{
 				if !self.connectedToNetwork() {
 					resource.errorCode = ResourceCode.E8000
-					continue
+                    dispatch_async(dispatch_get_main_queue()){
+                        self.popup(resource,errorCb:errorCb)
+                    }
+                    break
 				}
 				let semaphore = dispatch_semaphore_create(0)
 				let urlConfig =	NSURLSessionConfiguration.defaultSessionConfiguration()
@@ -99,8 +102,9 @@ class RSHttp{
 
     private func popup(resource:HttpBaseResource,errorCb:RSHttpErrorHandler?){
 		if self.isShowingError && viewController != nil {
+            let message = resource.errorCode == ResourceCode.E9993 ? resource.errorMsg : resource.errorCode.message()
 			if viewController != nil {
-				let alert = UIAlertController(title: "알림", message: resource.errorMsg ,preferredStyle: UIAlertControllerStyle.Alert)
+				let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.Alert)
 				alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.Default, handler:{ action in
 					if errorCb != nil {
                         errorCb!(errorCode:resource.errorCode,resource:resource)

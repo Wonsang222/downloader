@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>NAIN.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>magicapp.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>D414BAC71CC0C5000002DB9A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D416226F1C9C44A300A818DA</key>
 		<dict>
 			<key>primary</key>

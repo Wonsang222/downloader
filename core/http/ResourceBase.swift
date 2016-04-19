@@ -2,6 +2,13 @@ import UIKit
 
 class ApiFormApp : HttpBaseResource{
 	
+    
+    override init() {
+        super.init()
+        ap("device","ios")
+        ap("device_id",UIDevice.currentDevice().identifierForVendor!.UUIDString)
+        
+    }
 
     override var reqUrl:String{
         get{
@@ -18,7 +25,7 @@ class ApiFormApp : HttpBaseResource{
             self.errorCode = ResourceCode.SERVER_ERROR
             self.errorMsg = self.body()["msg"] as! String
         }
-        print(self.body())
+//        print(self.body())
 	}
 }
 
@@ -29,7 +36,7 @@ class WingLogin : HttpBaseResource{
             return WInfo.appUrl + "/main/exec.php"
         }
     }
-
+    
 
     override func parse(_data: NSData) throws{
         print(String(data: _data, encoding: NSUTF8StringEncoding) )
@@ -47,5 +54,33 @@ class WingLogin : HttpBaseResource{
 
     override func parseHeader(_response: NSURLResponse) throws{
         
+//        let httpResponse: NSHTTPURLResponse = _response as! NSHTTPURLResponse
+//        let value = httpResponse.allHeaderFields["Set-Cookie"];
+//        print("Set Cookie  \(value)")
     }
+    
+    
+    override func makeRequest() -> NSMutableURLRequest{
+        let pageUrl:String = {() -> String in
+            if self.reqUrl.hasPrefix("http://") || self.reqUrl.hasPrefix("https://") {
+                return self.reqUrl
+            }else{
+                return HttpInfo.HOST + self.reqUrl
+            }
+        }()
+        let request = NSMutableURLRequest(URL: NSURL(string:pageUrl)!)
+        #if DEBUG
+            print(pageUrl)
+        #endif
+        for(key,value) in self.reqHeader {
+            request.addValue(value, forHTTPHeaderField: key)
+        }
+        request.HTTPMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = self.generateParamter().dataUsingEncoding(NSUTF8StringEncoding)
+        request.setValue(WInfo.defaultCookie(), forHTTPHeaderField: "Cookie")
+        return request
+    }
+    
+    
 }

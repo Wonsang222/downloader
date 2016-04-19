@@ -49,6 +49,7 @@ class WIntroController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if self.saveIntro != nil {
             self.introView.image = self.saveIntro
         }
@@ -68,10 +69,8 @@ class WIntroController: UIViewController {
 		   [ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId)],
 		   successCb: { (resource) -> Void in
 		   		let siteUrl = resource.body()["site_url"] as! String
-		   		let gcmId = resource.body()["gcm_id"] as! String
 		   		let solutionType = resource.body()["solution_type"] as! String
 		   		WInfo.appUrl = siteUrl
-		   		WInfo.gcmId = gcmId
 		   		WInfo.solutionType = solutionType
 		   		self.reqGetIntro()
             },errorCb:{ (errorCode,resource) -> Void in
@@ -115,6 +114,7 @@ class WIntroController: UIViewController {
 		   		let serverVersion = resource.body()["version"] as! String
 		   		if Int(serverVersion)! > self.saveThemeVersion{
 					WInfo.themeInfo = resource.body()
+
 		   		}
 		   		self.reqUpdate()
 		   }
@@ -146,7 +146,22 @@ class WIntroController: UIViewController {
 
     private func dismissProcess(){
         mainController?.endIntro()
-        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }
+
+
+class WIntroSegue : UIStoryboardSegue {
+    
+    override func perform(){
+        let source = self.sourceViewController
+        let destination = self.destinationViewController
+        
+        UIView.transitionFromView(source.view,
+                                  toView: destination.view,
+                                  duration: 1.0,
+                                  options: UIViewAnimationOptions.TransitionCrossDissolve,
+                                  completion: nil)
+    }
+}
+
 

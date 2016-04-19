@@ -7,15 +7,13 @@
 //
 
 import UIKit
+import WebKit
 
-class WMainController: UIViewController {
+class WMainController: BaseWebViewController {
     
-    @IBOutlet weak var webView: UIWebView!
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         dispatch_async(dispatch_get_main_queue(), {
             self.performSegueWithIdentifier("intro", sender: self)
         })
@@ -43,7 +41,7 @@ class WMainController: UIViewController {
                         .ap("pwd",userInfo["password"] as! String)
                         .ap("exec_file","member/login.exe.php")],
            successCb: { (resource) -> Void in
-                self.reqMatching()
+                self.reqMatching(true)
            },
            errorCb : { (errorCode,resource) -> Void in
                 WInfo.userInfo = [String:AnyObject]()
@@ -53,15 +51,15 @@ class WMainController: UIViewController {
     }
 
 
-    func reqMatching(){
+    func reqMatching(isRoot:Bool){
         // Todo : reqMatching
         RSHttp(controller:self).req(
            [ApiFormApp().ap("mode","matching")
                         .ap("pack_name",AppProp.appId)
-                        .ap("token","GCM_KEY")
+                        .ap("token",WInfo.deviceToken)
                         .ap("member_id",WInfo.userInfo["userId"] as! String)],
            successCb: { (resource) -> Void in
-                self.reqMatching()
+                self.loadPage()
            },
            errorCb : { (errorCode,resource) -> Void in
                 WInfo.userInfo = [String:AnyObject]()
@@ -77,26 +75,34 @@ class WMainController: UIViewController {
     }
 
     func applyThemeFinish(){
-        print(WInfo.userInfo)
+    }
+    
+    func beginController(){
         if (WInfo.solutionType == "W") && (WInfo.userInfo.count != 0) {
             self.reqLogin()
         }else{
             loadPage()
         }
-
     }
 
     func loadPage(){
         // Todo : GCM Connect
         let url = NSURL (string: WInfo.appUrl);
-        let requestObj = NSURLRequest(URL: url!);
-        webView.scrollView.contentInset.top = 0
+//        let url = NSURL (string: "http://118.129.243.72:8080");
+        let requestObj = NSMutableURLRequest(URL: url!);
+        requestObj.setValue(WInfo.defaultCookie(), forHTTPHeaderField: "Cookie")
         webView.loadRequest(requestObj);
         view.hidden = false
     }
 
 
-
+    override func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+        if message.body["func"] as! String == "saveInfo"{
+            WInfo.userInfo = [ "userId" : message.body["userId"] as! String , "password" : message.body["password"] as! String ]
+        }
+        reqMatching(false)
+        
+    }
 
 
     func applyAction(button:UIButton,key:String){
@@ -143,13 +149,13 @@ class WMainController: UIViewController {
         webView.loadRequest(requestObj);
     }
     func onShareClick(sender:UIButton!){
-        let objectToShare = [webView.request!.URL!]
+        let objectToShare = [webView.URL!]
         let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
 
         presentViewController(activity, animated: true, completion: nil)
     }
     func onPushClick(sender:UIButton!){
-        self.performSegueWithIdentifier("noti" ,  sender : self)
+        self.performSegueWithIdentifier("noti" ,  sender : nil)
     }
     func onSettingClick(sender:UIButton!){
         self.performSegueWithIdentifier("setting" ,  sender : self)
@@ -166,5 +172,14 @@ class WMainController: UIViewController {
     }
     
     
+    
+    override func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+        super.webView(webView, didFinishNavigation: navigation)
+        if self.presentedViewController != nil {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
+
 }
 

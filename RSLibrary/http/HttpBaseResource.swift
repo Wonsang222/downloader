@@ -9,7 +9,11 @@ class HttpBaseResource{
             return ""
         }
     }
-	var reqMethod = "POST"
+    var reqMethod:String {
+        get{
+            return "POST"
+        }
+    }
 	var charSet = "utf-8"
 	var isMultiPart = false
 	var tag:AnyObject?
@@ -69,6 +73,7 @@ class HttpBaseResource{
 			}else{
 				request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 				request.HTTPBody = self.generateParamter().dataUsingEncoding(NSUTF8StringEncoding)
+                print(self.generateParamter())
 			}
 		}
 		return request

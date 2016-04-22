@@ -15,6 +15,8 @@ class BaseController: UIViewController {
     @IBOutlet var topTitle:UILabel?
  
     
+    var refreshControl:UIRefreshControl?
+    
     
     @IBAction func doBack(sender:AnyObject){
         self.navigationController?.popViewControllerAnimated(true)
@@ -71,13 +73,38 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
         webView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight,UIViewAutoresizing.FlexibleWidth]
         webView.navigationDelegate = self
         webView.UIDelegate = self
+        webView.allowsBackForwardNavigationGestures = true
+        if #available(iOS 9, *) {
+            webView.allowsLinkPreview = true
+        }
         webViewContainer.addSubview(webView)
         
+        refreshControl = UIRefreshControl();
+        refreshControl?.addTarget(self, action: #selector(self.reloadPage), forControlEvents: UIControlEvents.ValueChanged)
+        webView.scrollView.addSubview(refreshControl!)
     }
     
+    func reloadPage(){
+        print("reloadPage")
+        self.webView.reload()
+        refreshControl?.endRefreshing()
+        
+    }
     func webView(webView: WKWebView, createWebViewWithConfiguration configuration: WKWebViewConfiguration, forNavigationAction navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if navigationAction.request.URL != nil {
-            UIApplication.sharedApplication().openURL(navigationAction.request.URL!)
+            if !navigationAction.request.URL!.absoluteString.isEmpty {
+                
+                if navigationAction.request.URL!.absoluteString.hasPrefix("https://smpay.kcp.co.kr") {
+                    return nil
+                }else{
+//                    let subWebView = WKWebView(frame: self.webView.frame, configuration: configuration)
+//                    subWebView.loadRequest(navigationAction.request)
+                    UIApplication.sharedApplication().openURL(navigationAction.request.URL!)
+//                    self.webViewContainer.addSubview(subWebView)
+//                    return subWebView
+                }
+                
+            }
         }
         return nil;
     }
@@ -146,7 +173,7 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
     
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler:
         (WKNavigationActionPolicy) -> Void) {
-//        print(navigationAction.request.URL!.absoluteString)
+        print(navigationAction.request.URL!.absoluteString)
         if navigationAction.request.URL!.absoluteString.hasPrefix("tel:") || navigationAction.request.URL!.absoluteString.hasPrefix("mailto:"){
             UIApplication.sharedApplication().openURL(navigationAction.request.URL!)
             decisionHandler(.Cancel)

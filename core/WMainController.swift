@@ -17,6 +17,8 @@ class WMainController: BaseWebViewController {
         dispatch_async(dispatch_get_main_queue(), {
             self.performSegueWithIdentifier("intro", sender: self)
         })
+        
+        
     }
     
 
@@ -111,7 +113,7 @@ class WMainController: BaseWebViewController {
         let topFix = ui_data["isTopFix"] as? Bool
         if topFix != nil && topFix!{
             dispatch_async(dispatch_get_main_queue()){
-                self.webViewContainer.frame = CGRectInset(self.webViewContainer.frame, 0, 20)
+                self.webViewContainer.frame = CGRectMake(0,20,CGRectGetWidth(self.webViewContainer.frame),CGRectGetHeight(self.webViewContainer.frame) - 20)
                 self.webView.scrollView.contentInset.top = 0
             }
         }
@@ -181,6 +183,7 @@ class WMainController: BaseWebViewController {
 
 
     func onPrevClick(sender:UIButton!){
+
         if webView.canGoBack {
             webView.goBack()
         }else{

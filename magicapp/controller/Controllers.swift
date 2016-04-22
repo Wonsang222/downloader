@@ -36,7 +36,7 @@ class MainController:WMainController{
         let menuSize = CGFloat(uiData["menusSize"] as! Double)
     	let wisaMenu:UIView = UIView(frame : CGRectMake(0,self.view.frame.height - menuSize,self.view.frame.width, menuSize) )
     	let menuWidth = self.view.frame.width / CGFloat(menus.count)
-        wisaMenu.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)
+        let bgColor = UIColor(hexString:uiData["menusBg"] as! String)
         wisaMenu.userInteractionEnabled = true
     	var position = 0
     	for menu in menus {
@@ -45,8 +45,8 @@ class MainController:WMainController{
             let menuIcon = UIImage(named : menuMap[key]!)!
             let menuIconDisable = UIImage(named: menuMap[key]!.replace(".png", withString: "_disable.png"))!
 
-            let newMenuBg = menuIcon.makeFillImage(menuView)
-            let newMenuBgDisable = menuIconDisable.makeFillImage(menuView)
+            let newMenuBg = menuIcon.makeFillImage(menuView,bgColor:bgColor)
+            let newMenuBgDisable = menuIconDisable.makeFillImage(menuView,bgColor:bgColor)
             menuView.setBackgroundImage(newMenuBg, forState: .Normal)
             menuView.setBackgroundImage(newMenuBgDisable, forState: .Disabled)
             menuView.showsTouchWhenHighlighted = true
@@ -86,7 +86,7 @@ class MainController:WMainController{
     
     override func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
         super.webView(webView, didFinishNavigation: navigation)
-        if webView.canGoBack {
+        if webView.canGoBack  {
             prevBtn?.enabled = true
         }else{
             prevBtn?.enabled = false

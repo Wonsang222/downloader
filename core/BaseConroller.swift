@@ -56,7 +56,6 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = .Always
         let configuration = WKWebViewConfiguration()
         if #available(iOS 9, *) {
             configuration.allowsPictureInPictureMediaPlayback = true
@@ -66,24 +65,22 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
         let contentController = WKUserContentController()
         contentController.addScriptMessageHandler(self, name: "wisa")
         configuration.userContentController = contentController
+        configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
+        configuration.processPool = WKProcessPool()
         webView = WKWebView(frame: webViewContainer.bounds, configuration: configuration)
         webView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight,UIViewAutoresizing.FlexibleWidth]
         webView.navigationDelegate = self
-        
-        let userAgent = UIWebView().stringByEvaluatingJavaScriptFromString("navigator.userAgent")!
-        NSUserDefaults.standardUserDefaults().registerDefaults(["UserAgent": userAgent +  " WISAAPP/" + AppProp.appId + "/" + AppProp.appVersion])
-        
-        if #available(iOS 9, *) {
-            webView.customUserAgent = userAgent +  " WISAAPP/" + AppProp.appId + "/" + AppProp.appVersion
-        }else{
-        }
-        
         webView.UIDelegate = self
         webViewContainer.addSubview(webView)
         
     }
     
-    
+    func webView(webView: WKWebView, createWebViewWithConfiguration configuration: WKWebViewConfiguration, forNavigationAction navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.request.URL != nil {
+            UIApplication.sharedApplication().openURL(navigationAction.request.URL!)
+        }
+        return nil;
+    }
     
     func webView(webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         if(interceptWebView(webView.URL!)){
@@ -99,6 +96,10 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
         progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         let javascript = "var meta = document.createElement('meta');meta.setAttribute('name', 'viewport');meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');document.getElementsByTagName('head')[0].appendChild(meta);";
         webView.evaluateJavaScript(javascript, completionHandler: nil)
+    }
+    
+    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
+        print("error \(error)")
     }
     
     func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
@@ -145,7 +146,7 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
     
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler:
         (WKNavigationActionPolicy) -> Void) {
-        print(navigationAction.request.URL!.absoluteString)
+//        print(navigationAction.request.URL!.absoluteString)
         if navigationAction.request.URL!.absoluteString.hasPrefix("tel:") || navigationAction.request.URL!.absoluteString.hasPrefix("mailto:"){
             UIApplication.sharedApplication().openURL(navigationAction.request.URL!)
             decisionHandler(.Cancel)
@@ -159,6 +160,12 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
     
     
     func interceptWebView(url:NSURL) -> Bool {
+        
+        if url.absoluteString.hasSuffix("exec_file=member/logout.exe.php") {
+            WInfo.clearCookie()
+            WInfo.userInfo = [String:AnyObject]()
+            return true
+        }
         let device = UIDevice.currentDevice()
         if !device.multitaskingSupported {
             popup("멀티테스킹을 지원하는 기기 또는 어플만  공인인증서비스가 가능합니다.")

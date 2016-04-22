@@ -34,41 +34,61 @@ class WMainController: BaseWebViewController {
         }
     }
 
-    func reqLogin(){
-        let userInfo = WInfo.userInfo
-        RSHttp(controller:self).req(
-           [WingLogin().ap("member_id",userInfo["userId"] as! String)
-                        .ap("pwd",userInfo["password"] as! String)
-                        .ap("exec_file","member/login.exe.php")],
-           successCb: { (resource) -> Void in
-                self.reqMatching(true)
-           },
-           errorCb : { (errorCode,resource) -> Void in
+    func reqMatchingForLogin(movePage:String){
+
+        // Matching
+        RSHttp(controller:self,showingPopup:false).req(
+            [ApiFormApp().ap("mode","matching")
+                .ap("pack_name",AppProp.appId)
+                .ap("token",WInfo.deviceToken)
+                .ap("member_id",WInfo.userInfo["userId"] as! String)],
+            successCb: { (resource) -> Void in
+                // Login
+                self.reqLogin(movePage)
+            },
+            errorCb : { (errorCode,resource) -> Void in
                 WInfo.userInfo = [String:AnyObject]()
-                self.loadPage()
-           }
+                self.loadPage(movePage)
+            }
+        )
+        
+        
+    }
+
+    
+
+    func reqLogin(movePage:String) {
+        let userInfo = WInfo.userInfo
+        RSHttp(controller:self,showingPopup:false).req(
+            [WingLogin().ap("member_id",userInfo["userId"] as! String)
+                .ap("pwd",userInfo["password"] as! String)
+                .ap("exec_file","member/login.exe.php")],
+            successCb: { (resource) -> Void in
+                self.loadPage(movePage)
+            },
+            errorCb : { (errorCode,resource) -> Void in
+                WInfo.userInfo = [String:AnyObject]()
+                self.loadPage(movePage)
+            }
         )
     }
-
-
-    func reqMatching(isRoot:Bool){
-        // Todo : reqMatching
+    
+    
+    
+    func reqMatching(){
+        
+        // Matching
         RSHttp(controller:self).req(
-           [ApiFormApp().ap("mode","matching")
-                        .ap("pack_name",AppProp.appId)
-                        .ap("token",WInfo.deviceToken)
-                        .ap("member_id",WInfo.userInfo["userId"] as! String)],
-           successCb: { (resource) -> Void in
-                self.loadPage()
-           },
-           errorCb : { (errorCode,resource) -> Void in
-                WInfo.userInfo = [String:AnyObject]()
-                self.loadPage()
-           }
-        )        
-
+            ApiFormApp().ap("mode","matching")
+                .ap("pack_name",AppProp.appId)
+                .ap("token",WInfo.deviceToken)
+                .ap("member_id",WInfo.userInfo["userId"] as! String)
+        )
+        
+        
     }
-
+    
+    
     // Abstract
     func applyTheme() throws{
 
@@ -79,29 +99,63 @@ class WMainController: BaseWebViewController {
     
     func beginController(){
         if (WInfo.solutionType == "W") && (WInfo.userInfo.count != 0) {
-            self.reqLogin()
+            self.reqMatchingForLogin(WInfo.appUrl)
         }else{
-            loadPage()
+            loadPage(WInfo.appUrl)
         }
     }
 
-    func loadPage(){
-        // Todo : GCM Connect
-        let url = NSURL (string: WInfo.appUrl);
-//        let url = NSURL (string: "http://118.129.243.72:8080");
+    func loadPage(url:String){
+        
+        let ui_data = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
+        let topFix = ui_data["isTopFix"] as? Bool
+        if topFix != nil && topFix!{
+            dispatch_async(dispatch_get_main_queue()){
+                self.webViewContainer.frame = CGRectInset(self.webViewContainer.frame, 0, 20)
+                self.webView.scrollView.contentInset.top = 0
+            }
+        }
+
+        
+        let script = "document.cookie = '\(WInfo.defaultCookie())'"
+        let wkUserScript = WKUserScript(source: script, injectionTime: WKUserScriptInjectionTime.AtDocumentStart, forMainFrameOnly: false)
+        webView.configuration.userContentController.addUserScript(wkUserScript)
+        
+        
+        let url = NSURL (string: url);
         let requestObj = NSMutableURLRequest(URL: url!);
+        requestObj.HTTPShouldHandleCookies = true
         requestObj.setValue(WInfo.defaultCookie(), forHTTPHeaderField: "Cookie")
-        webView.loadRequest(requestObj);
+        webView.loadRequest(requestObj)
         view.hidden = false
+    }
+    
+    func movePage(page:String){
+        let url = NSURL (string: page);
+        let requestObj = NSMutableURLRequest(URL: url!);
+
+        
+        webView.loadRequest(requestObj);
     }
 
 
     override func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        if message.body["func"] as! String == "saveInfo"{
-            WInfo.userInfo = [ "userId" : message.body["userId"] as! String , "password" : message.body["password"] as! String ]
-        }
-        reqMatching(false)
         
+        let jsonString = message.body as! String
+        do{
+            let dic = try NSJSONSerialization.JSONObjectWithData(
+                jsonString.dataUsingEncoding(NSUTF8StringEncoding)!,
+                options: NSJSONReadingOptions()) as! [String:AnyObject]
+            print(dic)
+            if dic["func"] as! String == "saveMinfo"{
+                WInfo.userInfo = [ "userId" : dic["param1"] as! String , "password" : dic["param2"] as! String ]
+                self.reqMatching()
+//                self.
+                reqMatchingForLogin(dic["param3"] as! String)
+            }
+        }catch{
+            
+        }
     }
 
 
@@ -173,13 +227,14 @@ class WMainController: BaseWebViewController {
     
     
     
+    
     override func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
         super.webView(webView, didFinishNavigation: navigation)
+        
         if self.presentedViewController != nil {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
-
 }
 

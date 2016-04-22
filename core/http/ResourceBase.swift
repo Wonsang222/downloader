@@ -1,4 +1,5 @@
 import UIKit
+import WebKit
 
 class ApiFormApp : HttpBaseResource{
 	
@@ -18,14 +19,13 @@ class ApiFormApp : HttpBaseResource{
 
 	
 	override func parse(_data: NSData) throws{
-        print(String(data: _data, encoding: NSUTF8StringEncoding) )
         self.responseData = try NSJSONSerialization.JSONObjectWithData(_data, options: NSJSONReadingOptions()) as! [String:AnyObject]
         let isSuccess = self.body()["success"] == nil ? true : self.body()["success"] as! Bool
         if !isSuccess{
             self.errorCode = ResourceCode.SERVER_ERROR
             self.errorMsg = self.body()["msg"] as! String
         }
-//        print(self.body())
+        print(self.body())
 	}
 }
 
@@ -36,7 +36,12 @@ class WingLogin : HttpBaseResource{
             return WInfo.appUrl + "/main/exec.php"
         }
     }
-    
+    override var shouldCookieHandle:Bool{
+        get{
+            return true
+        }
+    }
+
 
     override func parse(_data: NSData) throws{
         print(String(data: _data, encoding: NSUTF8StringEncoding) )
@@ -44,19 +49,24 @@ class WingLogin : HttpBaseResource{
             self.responseData = [String:AnyObject]()
             if value.rangeOfString("login.php?err") == nil{
                 self.responseData["success"]  = false
+                self.errorMsg = "로그인에 실패하였습니다."
             }else{
                 self.responseData["success"]  = true
                 self.errorCode = ResourceCode.SERVER_ERROR
-                self.errorMsg = "로그인에 실패하였습니다."
             }
         }
     }
 
     override func parseHeader(_response: NSURLResponse) throws{
         
-//        let httpResponse: NSHTTPURLResponse = _response as! NSHTTPURLResponse
-//        let value = httpResponse.allHeaderFields["Set-Cookie"];
-//        print("Set Cookie  \(value)")
+        let httpResponse: NSHTTPURLResponse = _response as! NSHTTPURLResponse
+        let value = httpResponse.allHeaderFields["Set-Cookie"]!;
+        print("Set Cookie  \(value)")
+        
+        
+    
+        
+        
     }
     
     
@@ -78,9 +88,10 @@ class WingLogin : HttpBaseResource{
         request.HTTPMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = self.generateParamter().dataUsingEncoding(NSUTF8StringEncoding)
-        request.setValue(WInfo.defaultCookie(), forHTTPHeaderField: "Cookie")
         return request
     }
     
     
 }
+
+

@@ -12,9 +12,10 @@ class WInfo{
 	static var appUrl:String{
 		get{
 			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kAppUrl") as? String{
-				return returnValue;
+                return returnValue
+//				return "http://m.nain.co.kr"
 			}else{
-				return "";		
+				return ""
 			}
 		}
 		set{
@@ -105,6 +106,15 @@ class WInfo{
             }
         }
         return arrayValues.joinWithSeparator(",")
+    }
+    
+    static func clearCookie() {
+        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string:WInfo.appUrl)!){
+            for cookie in cookies {
+                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+            }
+        }
+        
     }
 
 }

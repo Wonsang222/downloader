@@ -19,6 +19,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(pushNotificationSettings)
         application.registerForRemoteNotifications()
+        for cookie in NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies! {
+            NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+        }
+        NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
         return true
     }
     func applicationWillResignActive(application: UIApplication) {
@@ -55,34 +59,35 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         print(userInfo)
         application.applicationIconBadgeNumber = application.applicationIconBadgeNumber + 1
+        
+        print(self.window?.rootViewController)
+        
         let pushSeq = userInfo["push_seq"] as! String
         
         RSHttp().req(
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in
-                let result = resource.body()["result"] as! [String:AnyObject]
-                let objectInfo = result["data"] as! [String:AnyObject]
+                
+                print(resource)
+                let objectInfo = resource.body()["data"] as! [String:AnyObject]
                 if( application.applicationState == .Active){
                     print("active")
                     let link = objectInfo["link"] as? String
                     let subtitle = objectInfo["subtitle"] as? String
-                    let alertController = UIAlertController(title: subtitle!, message: subtitle!,preferredStyle: UIAlertControllerStyle.Alert)
-                    alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.Default,handler: { action in
-                        self.goNotificationLink(link!)
-                    }))
-                    alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.Cancel,handler: { action in
-                        
-                    }))
-                    
-                }else{
-                    let link = objectInfo["link"] as? String
-                    let subtitle = objectInfo["subtitle"] as? String
                     let title = objectInfo["title"] as? String
                     let img_url = objectInfo["img_url"] as? String
-                    let msg = objectInfo["msg"] as? String;
-                    
+                    var msg = objectInfo["msg"] as? String
+                    msg = msg?.replace("<br />", withString: "\r\n")
+                    msg = msg?.replace("<br/>", withString: "\r\n")
                     if img_url != nil {
-                        
+                        let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.Alert)
+                        alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.Default,handler: { action in
+                            self.goNotificationLink(link!)
+                        }))
+                        alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.Cancel,handler: { action in
+                            
+                        }))
+                        self.window?.rootViewController!.presentViewController(alertController,animated:true, completion: nil)
                     }else if msg != nil {
                         let alertController = UIAlertController(title: subtitle!, message: msg!,preferredStyle: UIAlertControllerStyle.Alert)
                         alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.Default,handler: { action in
@@ -103,6 +108,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
                         }))
                         self.window?.rootViewController!.presentViewController(alertController,animated:true, completion: nil)
                     }
+                    
+                }else{
+                    let link = objectInfo["link"] as? String
+                    self.goNotificationLink(link!)
                 }
 
                 

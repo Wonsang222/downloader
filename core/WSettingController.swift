@@ -15,6 +15,8 @@ class WSettingController: BaseController {
     @IBOutlet weak var orderSwitch: UISwitch!
     @IBOutlet weak var eventSwitch: UISwitch!
     
+    var appUpdateUrl:String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         curVersion.text = AppProp.appVersion
@@ -26,6 +28,7 @@ class WSettingController: BaseController {
                 let mode = resource.params["mode"]!
                 if mode == "version_chk" {
                     let version = resource.body()["version"] as! String
+                    self.appUpdateUrl = resource.body()["app_url"] as? String
                     self.newVersion.text = version
                 }else {
                     let json = resource.body()["result"] as! [String:AnyObject]
@@ -58,13 +61,20 @@ class WSettingController: BaseController {
             }
         )
         
-        
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    @IBAction func doUpdateBtn(sender:UIButton){
+        if curVersion.text != newVersion.text {
+            UIApplication.sharedApplication().openURL(NSURL(string:self.appUpdateUrl!)!)
+        }else {
+            self.view.makeToast("최신버전입니다.")
+        }
 
+    }
 }
 

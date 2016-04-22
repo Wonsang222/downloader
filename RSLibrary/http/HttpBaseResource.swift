@@ -14,6 +14,11 @@ class HttpBaseResource{
             return "POST"
         }
     }
+    var shouldCookieHandle:Bool{
+        get{
+            return false
+        }
+    }
 	var charSet = "utf-8"
 	var isMultiPart = false
 	var tag:AnyObject?
@@ -29,10 +34,6 @@ class HttpBaseResource{
 	func generateParamter() -> String{
 		var returnVal = "";
 		for (key,value) in self.params{
-            #if DEBUG
-                print("\(key) , \(value)")
-            #endif
-
             if returnVal != "" {
                 returnVal += "&"
             }
@@ -56,6 +57,7 @@ class HttpBaseResource{
 				return NSMutableURLRequest(URL: NSURL(string:pageUrl)!)
 			}
 		}()
+        request.HTTPShouldHandleCookies = shouldCookieHandle
         #if DEBUG
             print(pageUrl)
         #endif

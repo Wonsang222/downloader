@@ -71,10 +71,14 @@ class RSHttp{
 						do{
 							try resource.parseHeader(response!)
 							try resource.parse(data!)
-						}catch {
+						}catch let error as NSError{
+                            print("Error: \(error)")
+                            print(NSThread.callStackSymbols())
 							resource.errorCode = ResourceCode.E9998
 						}
+                        
 					}else{
+                        print(error)
 						resource.errorCode = ResourceCode.E9994
 					}
 					dispatch_semaphore_signal(semaphore)
@@ -101,8 +105,11 @@ class RSHttp{
 	}
 
     private func popup(resource:HttpBaseResource,errorCb:RSHttpErrorHandler?){
+        #if DEBUG
+        print("Resource Http Error \(resource.errorCode)")
+        #endif
 		if self.isShowingError && viewController != nil {
-            let message = resource.errorCode == ResourceCode.E9993 ? resource.errorMsg : resource.errorCode.message()
+            let message = (resource.errorCode == ResourceCode.E9993 || resource.errorCode == ResourceCode.SERVER_ERROR) ? resource.errorMsg : resource.errorCode.message()
 			if viewController != nil {
 				let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.Alert)
 				alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.Default, handler:{ action in

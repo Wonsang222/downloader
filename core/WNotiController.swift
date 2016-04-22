@@ -32,12 +32,29 @@ class WNotiController: BaseWebViewController{
 
         webView.loadRequest(requestObj);
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        
+        
+//        let deviceId = UILabel(frame: CGRectMake(0,400,320,100))
+//        deviceId.numberOfLines = 10
+//        deviceId.text = WInfo.deviceToken
+//        deviceId.textColor = UIColor.blackColor()
+//        self.view.addSubview(deviceId)
     }
     
     
     override func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        if message.body["func"] as! String == "movePage"{
-            self.navigationController?.popViewControllerAnimated(true)
+        let jsonString = message.body as! String
+        do{
+            let dic = try NSJSONSerialization.JSONObjectWithData(
+            jsonString.dataUsingEncoding(NSUTF8StringEncoding)!,
+            options: NSJSONReadingOptions()) as! [String:AnyObject]
+            if dic["func"] as! String == "movePage"{
+                let moveUrl = dic["param1"] as! String
+                let mainController = self.navigationController?.viewControllers[0] as! WMainController
+                mainController.movePage(moveUrl)
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+        }catch{
             
         }
     }

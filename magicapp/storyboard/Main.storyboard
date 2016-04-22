@@ -315,6 +315,9 @@
                                             <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <state key="highlighted" backgroundImage="setting_update_btn_over.png"/>
+                                        <connections>
+                                            <action selector="doUpdateBtn:" destination="Z6i-7l-Yl5" eventType="touchUpInside" id="Xhd-uX-W1O"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

@@ -534,7 +534,7 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = kr.co.wisaweb.sw.wisa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7a73002a-8d00-4b7f-8928-3f01bdc8d985";
+				PROVISIONING_PROFILE = "44d977d5-7b8a-483f-aa6f-cceef444da83";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Debug;
@@ -544,14 +544,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: YoonSung Kang (U8K2E23EPZ)";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = magicapp/info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = kr.co.wisaweb.sw.wisa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "44d977d5-7b8a-483f-aa6f-cceef444da83";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;

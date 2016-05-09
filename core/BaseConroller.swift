@@ -17,6 +17,19 @@ class BaseController: UIViewController {
     
     var refreshControl:UIRefreshControl?
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let tracker = (UIApplication.sharedApplication().delegate as! WAppDelegate).tracker {
+            if let title = self.title {
+                if !title.isEmpty{
+                    tracker.set(kGAIScreenName, value: self.title!)
+                    let builder = GAIDictionaryBuilder.createScreenView()
+                    tracker.send(builder.build() as [NSObject : AnyObject])
+                }
+            }
+        }
+    }
+    
     
     @IBAction func doBack(sender:AnyObject){
         self.navigationController?.popViewControllerAnimated(true)

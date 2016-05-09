@@ -79,6 +79,20 @@ class WInfo{
 			NSUserDefaults.standardUserDefaults().synchronize()
 		}
 	}
+    
+    static var trackerId:String{
+        get{
+            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kTrackerID"){
+                return returnValue;
+            }else{
+                return ""
+            }
+        }
+        set{
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kTrackerID")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
 
 
 	static var userInfo:[String:AnyObject]{
@@ -94,7 +108,7 @@ class WInfo{
 			NSUserDefaults.standardUserDefaults().synchronize()
 		}
 	}
-
+    
     
     
     static func defaultCookie() -> String{

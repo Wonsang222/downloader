@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="hkA-AM-4G7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="hkA-AM-4G7">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -8,7 +8,7 @@
         <!--Intro Controller-->
         <scene sceneID="hXE-xu-EBn">
             <objects>
-                <viewController id="oDu-yi-FcX" customClass="IntroController" customModule="NAIN" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="oDu-yi-FcX" customClass="IntroController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ElE-XY-vf5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -29,10 +29,10 @@
             </objects>
             <point key="canvasLocation" x="-1006" y="-613"/>
         </scene>
-        <!--Main Controller-->
+        <!--메인-->
         <scene sceneID="ZbL-uQ-wgD">
             <objects>
-                <viewController id="eI9-wm-6KF" customClass="MainController" customModule="NAIN" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="메인" id="eI9-wm-6KF" customClass="MainController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RaD-4A-te3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -63,10 +63,10 @@
             </objects>
             <point key="canvasLocation" x="-1538" y="223"/>
         </scene>
-        <!--Noti Controller-->
+        <!--알림함-->
         <scene sceneID="f8p-4L-e6r">
             <objects>
-                <viewController title="알림함" id="twM-fC-C89" userLabel="Noti Controller" customClass="NotiController" customModule="NAIN" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="알림함" id="twM-fC-C89" customClass="NotiController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3C8-ds-gA5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -132,10 +132,10 @@
             </objects>
             <point key="canvasLocation" x="-757" y="497"/>
         </scene>
-        <!--Setting Controller-->
+        <!--설정-->
         <scene sceneID="BMY-qV-wvF">
             <objects>
-                <viewController id="Z6i-7l-Yl5" customClass="SettingController" customModule="NAIN" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="설정" id="Z6i-7l-Yl5" customClass="SettingController" customModule="magicapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ajL-gY-y3m">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

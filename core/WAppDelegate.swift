@@ -12,9 +12,25 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
     
     
     var window: UIWindow?
+    var tracker: GAITracker?{
+        get{
+            if WInfo.trackerId.isEmpty {
+                return nil
+            }else{
+                return GAI.sharedInstance().trackerWithTrackingId(WInfo.trackerId)
+            }
+            
+        }
+    }
     
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        RSHttp().req(
+            ApiFormApp().ap("mode","add_token")
+                .ap("pack_name",AppProp.appId)
+                .ap("token",WInfo.deviceToken)
+        )
+
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
         let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(pushNotificationSettings)
@@ -23,6 +39,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
             NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
         }
         NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
+        
+        let gai = GAI.sharedInstance()
+        gai.trackUncaughtExceptions = true;
+        gai.logger.logLevel = GAILogLevel.Verbose
         return true
     }
     func applicationWillResignActive(application: UIApplication) {

@@ -180,7 +180,7 @@
 				D4FD0F131CBB5DC000018CDF /* WebKit.framework */,
 				D408A9C41CA2B50400E0DCB5 /* RSLibrary */,
 				D416228B1C9EA6C000A818DA /* core */,
-				D41622721C9C44A300A818DA /* magicapp */,
+				D41622721C9C44A300A818DA /* wing */,
 				D41622711C9C44A300A818DA /* Products */,
 				3C9E170861F3087016DD6D81 /* Frameworks */,
 				5A5EFE1A5D3ECC6C40969127 /* Pods */,
@@ -195,7 +195,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D41622721C9C44A300A818DA /* magicapp */ = {
+		D41622721C9C44A300A818DA /* wing */ = {
 			isa = PBXGroup;
 			children = (
 				D45D647C1CB29B5D004976A2 /* images */,
@@ -206,7 +206,7 @@
 				D41622821C9C44A300A818DA /* Info.plist */,
 				D416227A1C9C44A300A818DA /* magicapp.xcdatamodeld */,
 			);
-			path = magicapp;
+			path = wing;
 			sourceTree = "<group>";
 		};
 		D416228B1C9EA6C000A818DA /* core */ = {

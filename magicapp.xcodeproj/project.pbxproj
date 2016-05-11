@@ -313,7 +313,6 @@
 				TargetAttributes = {
 					D416226F1C9C44A300A818DA = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = GA6CJDPY8P;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -327,7 +326,6 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
 			);
 			mainGroup = D41622671C9C44A300A818DA;

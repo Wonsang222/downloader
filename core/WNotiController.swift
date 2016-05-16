@@ -17,7 +17,7 @@ class WNotiController: BaseWebViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.alpha = 0
-    	var url = NSURL (string: HttpMap.PUSH_PAGE + "?pack_name=" + AppProp.appId);
+    	var url = NSURL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId);
         if link != nil {
         	url = NSURL (string: link!);
         }

@@ -94,6 +94,20 @@ class WInfo{
         }
     }
 
+    static var accountId:String{
+        get{
+            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kAccountID"){
+                return returnValue;
+            }else{
+                return ""
+            }
+        }
+        set{
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kAccountID")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
 
 	static var userInfo:[String:AnyObject]{
 		get{

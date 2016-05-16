@@ -8,7 +8,9 @@ class ApiFormApp : HttpBaseResource{
         super.init()
         ap("device","ios")
         ap("device_id",UIDevice.currentDevice().identifierForVendor!.UUIDString)
-        
+        if !WInfo.accountId.isEmpty{
+            ap("account_id",WInfo.accountId)
+        }
     }
 
     override var reqUrl:String{

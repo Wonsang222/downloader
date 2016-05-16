@@ -15,7 +15,6 @@ class BaseController: UIViewController {
     @IBOutlet var topTitle:UILabel?
  
     
-    var refreshControl:UIRefreshControl?
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -92,15 +91,15 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
         }
         webViewContainer.addSubview(webView)
         
-        refreshControl = UIRefreshControl();
-        refreshControl?.addTarget(self, action: #selector(self.reloadPage), forControlEvents: UIControlEvents.ValueChanged)
-        webView.scrollView.addSubview(refreshControl!)
+//        refreshControl = UIRefreshControl();
+//        refreshControl?.addTarget(self, action: #selector(self.reloadPage), forControlEvents: UIControlEvents.ValueChanged)
+//        webView.scrollView.addSubview(refreshControl!)
     }
     
     func reloadPage(){
         print("reloadPage")
         self.webView.reload()
-        refreshControl?.endRefreshing()
+//        refreshControl?.endRefreshing()
         
     }
     func webView(webView: WKWebView, createWebViewWithConfiguration configuration: WKWebViewConfiguration, forNavigationAction navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {

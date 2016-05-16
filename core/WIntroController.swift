@@ -70,10 +70,12 @@ class WIntroController: BaseController {
 		   successCb: { (resource) -> Void in
 		   		let siteUrl = resource.body()["site_url"] as! String
 		   		let solutionType = resource.body()["solution_type"] as! String
-//                let tracker_id = resource.body()["tracker_id"] as! String
+                let tracker_id = resource.body()["tracker_id"] as! String
+                let account_id = resource.body()["account_id"] as! String
 		   		WInfo.appUrl = siteUrl
 		   		WInfo.solutionType = solutionType
-                WInfo.trackerId = "UA-73251819-2"
+                WInfo.trackerId = tracker_id
+                WInfo.accountId = account_id;
 		   		self.reqGetIntro()
             },errorCb:{ (errorCode,resource) -> Void in
                 exit(0)

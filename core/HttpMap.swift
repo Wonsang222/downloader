@@ -10,8 +10,7 @@ import UIKit
 
 struct HttpMap{
 
-    static let PUSH_PAGE = "http://magicapp.dev.wisaweb.co.kr/notice/list.exe.php"
-
+    static let PUSH_PAGE = "http://magicapp.wisaweb.co.kr/notice/user_list.php"
 
 }
 

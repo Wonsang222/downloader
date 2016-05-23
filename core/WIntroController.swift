@@ -70,12 +70,19 @@ class WIntroController: BaseController {
 		   successCb: { (resource) -> Void in
 		   		let siteUrl = resource.body()["site_url"] as! String
 		   		let solutionType = resource.body()["solution_type"] as! String
-                let tracker_id = resource.body()["tracker_id"] as! String
+                let tracker_id = resource.body()["tracker_id"]
                 let account_id = resource.body()["account_id"] as! String
 		   		WInfo.appUrl = siteUrl
 		   		WInfo.solutionType = solutionType
-                WInfo.trackerId = tracker_id
+                if tracker_id !=  nil {
+                    WInfo.trackerId = tracker_id as! String
+                }
                 WInfo.accountId = account_id;
+                RSHttp().req(
+                    ApiFormApp().ap("mode","add_token")
+                    .ap("pack_name",AppProp.appId)
+                    .ap("token",WInfo.deviceToken)
+                )
 		   		self.reqGetIntro()
             },errorCb:{ (errorCode,resource) -> Void in
                 exit(0)
@@ -124,6 +131,7 @@ class WIntroController: BaseController {
 		   }
 		)
     }
+    
 
 	private func reqUpdate(){
 		RSHttp(controller:self).req(

@@ -52,6 +52,7 @@ class WMainController: BaseWebViewController {
                 WInfo.userInfo = [String:AnyObject]()
                 self.loadPage(movePage)
             }
+            
         )
         
         
@@ -117,47 +118,59 @@ class WMainController: BaseWebViewController {
                 self.webView.scrollView.contentInset.top = 0
             }
         }
-
-        
-        let script = "document.cookie = '\(WInfo.defaultCookie())'"
-        let wkUserScript = WKUserScript(source: script, injectionTime: WKUserScriptInjectionTime.AtDocumentStart, forMainFrameOnly: false)
-        webView.configuration.userContentController.addUserScript(wkUserScript)
-        
-        
         let url = NSURL (string: url);
         let requestObj = NSMutableURLRequest(URL: url!);
         requestObj.HTTPShouldHandleCookies = true
-        requestObj.setValue(WInfo.defaultCookie(), forHTTPHeaderField: "Cookie")
+        print("cookies \(WInfo.defaultCookie())")
+        
+        if let sessionCookie = WInfo.defaultCookieForName("PHPSESSID") {
+            let cookieString = self.wn_javascriptString(sessionCookie);
+            let script = "document.cookie = '\(cookieString)'"
+            let wkUserScript = WKUserScript(source: script, injectionTime: WKUserScriptInjectionTime.AtDocumentStart, forMainFrameOnly: false)
+            webView.configuration.userContentController.addUserScript(wkUserScript)
+
+            requestObj.addValue(cookieString,forHTTPHeaderField:"Cookie")
+        }
         webView.loadRequest(requestObj)
         view.hidden = false
     }
     
+    
+    func wn_javascriptString(cookie:NSHTTPCookie) -> String{
+     var string = "\(cookie.name)=\(cookie.value);domain=\(cookie.domain);path=\(cookie.path)"
+        if(cookie.secure){
+            string += ";secure=true"
+        }
+    return string;
+    }
+    
+    
     func movePage(page:String){
         let url = NSURL (string: page);
         let requestObj = NSMutableURLRequest(URL: url!);
-
-        
+//        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
         webView.loadRequest(requestObj);
     }
 
 
     override func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
         
+        
         let jsonString = message.body as! String
         do{
             let dic = try NSJSONSerialization.JSONObjectWithData(
                 jsonString.dataUsingEncoding(NSUTF8StringEncoding)!,
                 options: NSJSONReadingOptions()) as! [String:AnyObject]
-            print(dic)
+                print(dic)
             if dic["func"] as! String == "saveMinfo"{
-                WInfo.userInfo = [ "userId" : dic["param1"] as! String , "password" : dic["param2"] as! String ]
-                self.reqMatching()
-//                self.
-                reqMatchingForLogin(dic["param3"] as! String)
-            }
+                    WInfo.userInfo = [ "userId" : dic["param1"] as! String , "password" : dic["param2"] as! String ]
+                    self.reqMatching();
+//                    self.reqMatchingForLogin(dic["param3"] as! String)
+                }
         }catch{
-            
+                
         }
+   
     }
 
 
@@ -202,7 +215,8 @@ class WMainController: BaseWebViewController {
     }
     func onHomeClick(sender:UIButton!){
         let url = NSURL (string: WInfo.appUrl);
-        let requestObj = NSURLRequest(URL: url!);
+        let requestObj = NSMutableURLRequest(URL: url!);
+//        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
         webView.loadRequest(requestObj);
     }
     func onShareClick(sender:UIButton!){
@@ -233,7 +247,6 @@ class WMainController: BaseWebViewController {
     
     override func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
         super.webView(webView, didFinishNavigation: navigation)
-        
         if self.presentedViewController != nil {
             self.dismissViewControllerAnimated(true, completion: nil)
         }

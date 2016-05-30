@@ -27,7 +27,6 @@ class ApiFormApp : HttpBaseResource{
             self.errorCode = ResourceCode.SERVER_ERROR
             self.errorMsg = self.body()["msg"] as! String
         }
-        print(self.body())
 	}
 }
 
@@ -46,7 +45,7 @@ class WingLogin : HttpBaseResource{
 
 
     override func parse(_data: NSData) throws{
-        print(String(data: _data, encoding: NSUTF8StringEncoding) )
+//        print(String(data: _data, encoding: NSUTF8StringEncoding) )
         if let value = String(data: _data, encoding: NSUTF8StringEncoding){
             self.responseData = [String:AnyObject]()
             if value.rangeOfString("login.php?err") == nil{

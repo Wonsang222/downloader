@@ -25,6 +25,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
     
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
+        
         RSHttp().req(
             ApiFormApp().ap("mode","add_token")
                 .ap("pack_name",AppProp.appId)
@@ -38,11 +41,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         for cookie in NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies! {
             NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
         }
-        NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
-        
         let gai = GAI.sharedInstance()
         gai.trackUncaughtExceptions = true;
-        gai.logger.logLevel = GAILogLevel.Verbose
+        gai.logger.logLevel = GAILogLevel.None
         return true
     }
     func applicationWillResignActive(application: UIApplication) {
@@ -77,10 +78,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         print(error)
     }
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        print(userInfo)
         application.applicationIconBadgeNumber = application.applicationIconBadgeNumber + 1
-        
-        print(self.window?.rootViewController)
         
         let pushSeq = userInfo["push_seq"] as! String
         

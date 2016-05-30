@@ -13,7 +13,6 @@ class WInfo{
 		get{
 			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kAppUrl") as? String{
                 return returnValue
-//				return "http://m.nain.co.kr"
 			}else{
 				return ""
 			}
@@ -124,16 +123,41 @@ class WInfo{
 	}
     
     
-    
-    static func defaultCookie() -> String{
-        
+    static func defaultCookies() -> [String]{
         var arrayValues: [String] = []
-        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string:WInfo.appUrl)!){
+        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies {
             for cookie in cookies {
-                arrayValues.append("\(cookie.name)=\(cookie.value)")
+                arrayValues.append(cookie.name+"=" + cookie.value)
+                if cookie.domain.containsString( WInfo.appUrl.replace("http://m.", withString: "")){
+                    
+                }
             }
         }
-        return arrayValues.joinWithSeparator(",")
+        return arrayValues;
+    }
+    
+    static func defaultCookieForName(name:String) -> NSHTTPCookie?{
+        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies {
+            for cookie in cookies {
+                if(cookie.name == "PHPSESSID"){
+                    return cookie
+                }
+            }
+        }
+        return nil
+    }
+    
+    static func defaultCookie() -> String{
+        var arrayValues: [String] = []
+        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies {
+            for cookie in cookies {
+                arrayValues.append(cookie.name+"=" + cookie.value)
+                if cookie.domain.containsString( WInfo.appUrl.replace("http://m.", withString: "")){
+                    
+                }
+            }
+        }
+        return arrayValues.joinWithSeparator("; ")
     }
     
     static func clearCookie() {

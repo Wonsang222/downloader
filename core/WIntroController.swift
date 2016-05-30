@@ -63,7 +63,7 @@ class WIntroController: BaseController {
     }
 
 
-
+ 
     private func reqCheckApiKey(){
 		RSHttp(controller:self).req(
 		   [ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId)],

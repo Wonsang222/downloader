@@ -38,7 +38,7 @@ class RSHttp{
 	}
 
 	func req(resources:HttpBaseResource...){
-            print(resources)
+//            print(resources)
         self.req(resources,successCb:nil,errorCb:nil)
 	}
 

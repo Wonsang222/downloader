@@ -74,6 +74,9 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
         if #available(iOS 9, *) {
             configuration.allowsPictureInPictureMediaPlayback = true
             configuration.allowsAirPlayForMediaPlayback = true
+            configuration.allowsAirPlayForMediaPlayback = true
+            configuration.allowsPictureInPictureMediaPlayback = true
+            configuration.mediaPlaybackAllowsAirPlay = true
         }
         configuration.allowsInlineMediaPlayback = true
         let contentController = WKUserContentController()
@@ -82,18 +85,17 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
         configuration.processPool = WKProcessPool()
         webView = WKWebView(frame: webViewContainer.bounds, configuration: configuration)
+        if #available(iOS 9, *) {
+            webView.customUserAgent = "WISAAPP/" + AppProp.appId + "/" + AppProp.appVersion
+        }
+        
         webView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight,UIViewAutoresizing.FlexibleWidth]
         webView.navigationDelegate = self
-        webView.UIDelegate = self
         webView.allowsBackForwardNavigationGestures = true
         if #available(iOS 9, *) {
             webView.allowsLinkPreview = true
         }
         webViewContainer.addSubview(webView)
-        
-//        refreshControl = UIRefreshControl();
-//        refreshControl?.addTarget(self, action: #selector(self.reloadPage), forControlEvents: UIControlEvents.ValueChanged)
-//        webView.scrollView.addSubview(refreshControl!)
     }
     
     func reloadPage(){
@@ -126,7 +128,7 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
             progressView.setProgress(0, animated: false)
             UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 1 }, completion: nil)
         }else{
-            webView.stopLoading()
+//            webView.stopLoading()
         }
         
     }
@@ -185,7 +187,6 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
     
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler:
         (WKNavigationActionPolicy) -> Void) {
-        print(navigationAction.request.URL!.absoluteString)
         if navigationAction.request.URL!.absoluteString.hasPrefix("tel:") || navigationAction.request.URL!.absoluteString.hasPrefix("mailto:"){
             UIApplication.sharedApplication().openURL(navigationAction.request.URL!)
             decisionHandler(.Cancel)
@@ -199,7 +200,7 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
     
     
     func interceptWebView(url:NSURL) -> Bool {
-        
+        print("interceptWebView \(url)")
         if url.absoluteString.hasSuffix("exec_file=member/logout.exe.php") {
             WInfo.clearCookie()
             WInfo.userInfo = [String:AnyObject]()

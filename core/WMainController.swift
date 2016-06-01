@@ -243,13 +243,19 @@ class WMainController: BaseWebViewController {
     }
     
     
-    
-    
-    override func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-        super.webView(webView, didFinishNavigation: navigation)
+    override func webView(webView: WKWebView, didCommitNavigation navigation: WKNavigation!) {
+        super.webView(webView, didCommitNavigation: navigation)
         if self.presentedViewController != nil {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
+
+    }
+    
+    override func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+        super.webView(webView, didFinishNavigation: navigation)
+//        if self.presentedViewController != nil {
+//            self.dismissViewControllerAnimated(true, completion: nil)
+//        }
     }
     
 }

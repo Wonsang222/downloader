@@ -33,12 +33,13 @@ class MainController:WMainController{
 
     	let uiData = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
     	let menus = uiData["menus"] as! [[String:AnyObject]]
-        let menuSize = CGFloat(uiData["menusSize"] as! Double)
-    	let wisaMenu:UIView = UIView(frame : CGRectMake(0,self.view.frame.height - menuSize,self.view.frame.width, menuSize) )
-    	let menuWidth = self.view.frame.width / CGFloat(menus.count)
+        let menuSize = CGFloat((uiData["menusSize"] as! NSString).floatValue)
+    	let wisaMenu:UIView = UIView(frame : CGRectMake(0,self.view.frame.height - menuSize,UIScreen.mainScreen().bounds.width, menuSize) )
+    	let menuWidth = UIScreen.mainScreen().bounds.width / CGFloat(menus.count)
         let bgColor = UIColor(hexString:uiData["menusBg"] as! String)
         wisaMenu.userInteractionEnabled = true
-    	var position = 0
+        wisaMenu.backgroundColor = bgColor
+        var position = CGFloat(0)
     	for menu in menus {
     		let menuView = UIButton(frame : CGRectMake(CGFloat(position), 0 , menuWidth ,wisaMenu.frame.height))
             let key = menu["click"] as! String
@@ -52,7 +53,7 @@ class MainController:WMainController{
             menuView.showsTouchWhenHighlighted = true
             self.applyAction(menuView, key: key)
             wisaMenu.addSubview(menuView)
-            position += Int(menuWidth)
+            position += menuWidth
             
             if key == "next" {
                 nextBtn = menuView

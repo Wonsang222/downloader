@@ -11,8 +11,8 @@ import UIKit
 class AppProp{
 	static var appId:String{
 		get{
-//			return NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
-            return "com.looket.naingirl1.adhoc"
+			return NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
+//            return "com.looket.naingirl1.adhoc"
 		}
 	}
 	static var appVersion:String{

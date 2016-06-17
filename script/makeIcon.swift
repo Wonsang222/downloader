@@ -1,7 +1,7 @@
 import Foundation
 import Cocoa
 
-let saveIconPath = "magicapp/Assets.xcassets/AppIcon.appiconset"
+let saveIconPath = "wing/Assets.xcassets/AppIcon.appiconset"
 
 let externalIconsProperty = [
     ["name":"Icon-60"           ,"size": 60],

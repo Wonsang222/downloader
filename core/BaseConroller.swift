@@ -118,7 +118,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             }catch{
                 
             }
-
+            return false
         }
        
         return interceptWebView(request.URL!)

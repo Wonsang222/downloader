@@ -153,10 +153,11 @@ class WMainController: BaseWebViewController {
     }
     
     override func hybridEvent(value: [String : AnyObject]) {
-        print(value)
         if value["func"] as! String == "saveMinfo"{
             WInfo.userInfo = [ "userId" : value["param1"] as! String , "password" : value["param2"] as! String ]
             self.reqMatching();
+            movePage(value["param3"] as! String)
+            
         }
     }
     

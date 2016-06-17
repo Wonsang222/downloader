@@ -23,15 +23,12 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>ispmobile</string>
-				<string>paypinreturl</string>
-				<string>smartxpay</string>
-				<string>transreturl</string>
+				<string>[[APP_SCHEMA]]</string>
 			</array>
 		</dict>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string></string>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>

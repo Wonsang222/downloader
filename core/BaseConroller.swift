@@ -8,7 +8,6 @@
 
 import UIKit
 import WebKit
-
 class BaseController: UIViewController {
 
 	@IBOutlet weak var topView: UIView?
@@ -36,11 +35,11 @@ class BaseController: UIViewController {
     
 }
 
-class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WKScriptMessageHandler {
+class BaseWebViewController: BaseController,UIWebViewDelegate {
     
     @IBOutlet weak var webViewContainer: UIView!
     @IBOutlet weak var progressView: UIProgressView!
-    var webView:WKWebView!
+    var webView:UIWebView!
     
     
     let paySchema = [
@@ -70,40 +69,83 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let configuration = WKWebViewConfiguration()
-        if #available(iOS 9, *) {
-            configuration.allowsPictureInPictureMediaPlayback = true
-            configuration.allowsAirPlayForMediaPlayback = true
-            configuration.allowsAirPlayForMediaPlayback = true
-            configuration.allowsPictureInPictureMediaPlayback = true
-            configuration.mediaPlaybackAllowsAirPlay = true
-        }
-        configuration.allowsInlineMediaPlayback = true
-        let contentController = WKUserContentController()
-        contentController.addScriptMessageHandler(self, name: "wisa")
-        configuration.userContentController = contentController
-        configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
-        configuration.processPool = WKProcessPool()
-        webView = WKWebView(frame: webViewContainer.bounds, configuration: configuration)
-        if #available(iOS 9, *) {
-            webView.customUserAgent = "WISAAPP/" + AppProp.appId + "/" + AppProp.appVersion
-        }
+        webView = UIWebView(frame: webViewContainer.bounds)
+        webView.allowsInlineMediaPlayback = true
         
-        webView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight,UIViewAutoresizing.FlexibleWidth]
-        webView.navigationDelegate = self
-        webView.allowsBackForwardNavigationGestures = true
+        let userAgent = webView.stringByEvaluatingJavaScriptFromString("navigator.userAgent")!;
+        NSUserDefaults.standardUserDefaults().registerDefaults(
+            ["UserAgent":
+                userAgent + " WISAAPP/" + AppProp.appId + "/" + AppProp.appVersion]
+        )
         if #available(iOS 9, *) {
             webView.allowsLinkPreview = true
+            webView.allowsPictureInPictureMediaPlayback = true
         }
+
+        webView.delegate = self
+        webView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight,UIViewAutoresizing.FlexibleWidth]
+
         webViewContainer.addSubview(webView)
     }
     
     func reloadPage(){
         print("reloadPage")
         self.webView.reload()
-//        refreshControl?.endRefreshing()
         
     }
+    
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        print("shouldStartLoadWithRequest \(request.URL!) navigationType \(navigationType)")
+        var backgroundSupported = false
+        let device = UIDevice.currentDevice()
+        if device.respondsToSelector(Selector("isMultitaskingSupported")){
+            backgroundSupported = device.multitaskingSupported;
+        }
+        if !backgroundSupported {
+            popup("멀티테스킹을 지원하는 기기 또한 어플만 공인인증서비스가 가능합니다.")
+            return true
+        }
+        
+        if request.URL!.absoluteString.hasPrefix("wisamagic://event?json=") {
+            let json = request.URL?.absoluteString.replace("wisamagic://event?json=", withString: "")
+            do{
+                let json_decode = json!.stringByRemovingPercentEncoding
+                let value = try
+                            NSJSONSerialization.JSONObjectWithData(
+                            json_decode!.dataUsingEncoding(NSUTF8StringEncoding)!
+                            ,options: NSJSONReadingOptions()) as! [String:AnyObject]
+                hybridEvent(value)
+            }catch{
+                
+            }
+
+        }
+       
+        return interceptWebView(request.URL!)
+    }
+    
+    func webViewDidStartLoad(webView: UIWebView){
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+//        progressView.setProgress(0, animated: false)
+//        progressView.setProgress(0.8, animated: true)
+//        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 1 }, completion: nil)
+        
+    }
+    
+    func webViewDidFinishLoad(webView: UIWebView) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+//        progressView.setProgress(1, animated: true)
+//        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 0 }, completion: nil)
+
+    }
+    
+    func hybridEvent(value: [String:AnyObject]){
+        
+    }
+    
+    
+    
+/*
     func webView(webView: WKWebView, createWebViewWithConfiguration configuration: WKWebViewConfiguration, forNavigationAction navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if navigationAction.request.URL != nil {
             if !navigationAction.request.URL!.absoluteString.isEmpty {
@@ -123,20 +165,11 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
         return nil;
     }
     
-    func webView(webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        if(interceptWebView(webView.URL!)){
-            progressView.setProgress(0, animated: false)
-            UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 1 }, completion: nil)
-        }else{
-//            webView.stopLoading()
-        }
-        
-    }
     
     func webView(webView: WKWebView, didCommitNavigation navigation: WKNavigation!) {
         progressView.setProgress(Float(webView.estimatedProgress), animated: true)
-        let javascript = "var meta = document.createElement('meta');meta.setAttribute('name', 'viewport');meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');document.getElementsByTagName('head')[0].appendChild(meta);";
-        webView.evaluateJavaScript(javascript, completionHandler: nil)
+//        let javascript = "var meta = document.createElement('meta');meta.setAttribute('name', 'viewport');meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');document.getElementsByTagName('head')[0].appendChild(meta);";
+//        webView.evaluateJavaScript(javascript, completionHandler: nil)
     }
     
     func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
@@ -198,9 +231,11 @@ class BaseWebViewController: BaseController,WKNavigationDelegate,WKUIDelegate,WK
     func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
     }
     
+ */
+    
+    
     
     func interceptWebView(url:NSURL) -> Bool {
-        print("interceptWebView \(url)")
         if url.absoluteString.hasSuffix("exec_file=member/logout.exe.php") {
             WInfo.clearCookie()
             WInfo.userInfo = [String:AnyObject]()

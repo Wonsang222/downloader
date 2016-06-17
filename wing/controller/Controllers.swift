@@ -85,13 +85,14 @@ class MainController:WMainController{
     }
     
     
-    override func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-        super.webView(webView, didFinishNavigation: navigation)
+    
+    override func webViewDidFinishLoad(webView: UIWebView) {
+        super.webViewDidFinishLoad(webView)
         if webView.canGoBack  {
             prevBtn?.enabled = true
         }else{
             prevBtn?.enabled = false
-
+            
         }
         if webView.canGoForward {
             nextBtn?.enabled = true
@@ -99,9 +100,8 @@ class MainController:WMainController{
         }else{
             nextBtn?.enabled = false
         }
-        
     }
-    
+  
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if UIApplication.sharedApplication().applicationIconBadgeNumber == 0 {

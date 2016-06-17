@@ -101,7 +101,7 @@ class WMainController: BaseWebViewController {
     }
     
     func beginController(){
-        if (WInfo.solutionType == "W") && (WInfo.userInfo.count != 0) {
+        if (WInfo.userInfo.count != 0) {
             self.reqMatchingForLogin(WInfo.appUrl)
         }else{
             loadPage(WInfo.appUrl)
@@ -123,14 +123,14 @@ class WMainController: BaseWebViewController {
         requestObj.HTTPShouldHandleCookies = true
         print("cookies \(WInfo.defaultCookie())")
         
-        if let sessionCookie = WInfo.defaultCookieForName("PHPSESSID") {
-            let cookieString = self.wn_javascriptString(sessionCookie);
-            let script = "document.cookie = '\(cookieString)'"
-            let wkUserScript = WKUserScript(source: script, injectionTime: WKUserScriptInjectionTime.AtDocumentStart, forMainFrameOnly: false)
-            webView.configuration.userContentController.addUserScript(wkUserScript)
-
-            requestObj.addValue(cookieString,forHTTPHeaderField:"Cookie")
-        }
+//        if let sessionCookie = WInfo.defaultCookieForName("PHPSESSID") {
+//            let cookieString = self.wn_javascriptString(sessionCookie);
+//            let script = "document.cookie = '\(cookieString)'"
+//            let wkUserScript = WKUserScript(source: script, injectionTime: WKUserScriptInjectionTime.AtDocumentStart, forMainFrameOnly: false)
+//            webView.configuration.userContentController.addUserScript(wkUserScript)
+//
+//            requestObj.addValue(cookieString,forHTTPHeaderField:"Cookie")
+//        }
         webView.loadRequest(requestObj)
         view.hidden = false
     }
@@ -151,28 +151,15 @@ class WMainController: BaseWebViewController {
 //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
         webView.loadRequest(requestObj);
     }
-
-
-    override func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        
-        
-        let jsonString = message.body as! String
-        do{
-            let dic = try NSJSONSerialization.JSONObjectWithData(
-                jsonString.dataUsingEncoding(NSUTF8StringEncoding)!,
-                options: NSJSONReadingOptions()) as! [String:AnyObject]
-                print(dic)
-            if dic["func"] as! String == "saveMinfo"{
-                    WInfo.userInfo = [ "userId" : dic["param1"] as! String , "password" : dic["param2"] as! String ]
-                    self.reqMatching();
-//                    self.reqMatchingForLogin(dic["param3"] as! String)
-                }
-        }catch{
-                
+    
+    override func hybridEvent(value: [String : AnyObject]) {
+        print(value)
+        if value["func"] as! String == "saveMinfo"{
+            WInfo.userInfo = [ "userId" : value["param1"] as! String , "password" : value["param2"] as! String ]
+            self.reqMatching();
         }
-   
     }
-
+    
 
     func applyAction(button:UIButton,key:String){
         if key == "prev"{
@@ -220,7 +207,7 @@ class WMainController: BaseWebViewController {
         webView.loadRequest(requestObj);
     }
     func onShareClick(sender:UIButton!){
-        let objectToShare = [webView.URL!]
+        let objectToShare = [webView.request!.URL!]
         let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
 
         presentViewController(activity, animated: true, completion: nil)
@@ -243,20 +230,14 @@ class WMainController: BaseWebViewController {
     }
     
     
-    override func webView(webView: WKWebView, didCommitNavigation navigation: WKNavigation!) {
-        super.webView(webView, didCommitNavigation: navigation)
+    override func webViewDidFinishLoad(webView: UIWebView) {
+        super.webViewDidFinishLoad(webView)
         if self.presentedViewController != nil {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
 
     }
     
-    override func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-        super.webView(webView, didFinishNavigation: navigation)
-//        if self.presentedViewController != nil {
-//            self.dismissViewControllerAnimated(true, completion: nil)
-//        }
-    }
-    
+
 }
 

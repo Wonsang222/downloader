@@ -23,6 +23,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>ispmobile</string>
 				<string>paypinreturl</string>
 				<string>smartxpay</string>
 				<string>transreturl</string>

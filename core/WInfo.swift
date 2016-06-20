@@ -12,7 +12,7 @@ class WInfo{
 	static var appUrl:String{
 		get{
 			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kAppUrl") as? String{
-                return returnValue
+              return returnValue
 			}else{
 				return ""
 			}

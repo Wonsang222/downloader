@@ -105,6 +105,11 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             popup("멀티테스킹을 지원하는 기기 또한 어플만 공인인증서비스가 가능합니다.")
             return true
         }
+//        if request.URL!.absoluteString == "about:blank" {
+//            UIWebView(frame: CGRectZero).loadRequest(request)
+//            return false
+//        }
+
         
         if request.URL!.absoluteString.hasPrefix("wisamagic://event?json=") {
             let json = request.URL?.absoluteString.replace("wisamagic://event?json=", withString: "")
@@ -121,11 +126,23 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             return false
         }
        
-        return interceptWebView(request.URL!)
+        let returval = interceptWebView(request.URL!)
+        print(returval)
+        return returval
     }
     
     func webViewDidStartLoad(webView: UIWebView){
+        print("start " + webView.request!.URL!.absoluteString)
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        let access_cookie_dic : [String:AnyObject] = [
+            NSHTTPCookieDomain : WInfo.appUrl.replace("http://", withString: "").replace("https://", withString: ""),
+            NSHTTPCookiePath : "/",
+            NSHTTPCookieName : "wisamall_access_device",
+            NSHTTPCookieValue : "APP",
+            NSHTTPCookieExpires : NSDate().dateByAddingTimeInterval(60*60*24*365*300)
+        ];
+        let cookie:NSHTTPCookie = NSHTTPCookie(properties: access_cookie_dic)!
+        NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie)
 //        progressView.setProgress(0, animated: false)
 //        progressView.setProgress(0.8, animated: true)
 //        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 1 }, completion: nil)
@@ -133,7 +150,11 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
+        print("end " + webView.request!.URL!.absoluteString)
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        if webView.request!.URL!.absoluteString.hasSuffix("smpay.kcp.co.kr/card.do") {
+            webView.stringByEvaluatingJavaScriptFromString("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
+        }
 //        progressView.setProgress(1, animated: true)
 //        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 0 }, completion: nil)
 
@@ -234,7 +255,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
  */
     
     
-    
+     
     func interceptWebView(url:NSURL) -> Bool {
         if url.absoluteString.hasSuffix("exec_file=member/logout.exe.php") {
             WInfo.clearCookie()

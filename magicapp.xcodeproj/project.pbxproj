@@ -38,6 +38,7 @@
 		D416227C1C9C44A300A818DA /* magicapp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D416227A1C9C44A300A818DA /* magicapp.xcdatamodeld */; };
 		D416227E1C9C44A300A818DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D416227D1C9C44A300A818DA /* Assets.xcassets */; };
 		D42321C31CC5CDB3007C2F3C /* ic_a_isnew.png in Resources */ = {isa = PBXBuildFile; fileRef = D42321C21CC5CDB3007C2F3C /* ic_a_isnew.png */; };
+		D42673141D1A30A800F73865 /* WisaTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42673131D1A30A800F73865 /* WisaTracker.swift */; };
 		D4326BD01CB561E8007A07C6 /* WAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */; };
 		D45D64751CB28B64004976A2 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D64731CB28B64004976A2 /* Toast.swift */; };
 		D45D64771CB29370004976A2 /* ExtensionUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D64761CB29370004976A2 /* ExtensionUIColor.swift */; };
@@ -89,6 +90,7 @@
 		D416227D1C9C44A300A818DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D41622821C9C44A300A818DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D42321C21CC5CDB3007C2F3C /* ic_a_isnew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_isnew.png; sourceTree = "<group>"; };
+		D42673131D1A30A800F73865 /* WisaTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WisaTracker.swift; sourceTree = "<group>"; };
 		D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WAppDelegate.swift; sourceTree = "<group>"; };
 		D45D64731CB28B64004976A2 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		D45D64761CB29370004976A2 /* ExtensionUIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUIColor.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				D4932E7F1CA432710014B769 /* WNotiController.swift */,
 				D4932E801CA432710014B769 /* WSettingController.swift */,
 				D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */,
+				D42673131D1A30A800F73865 /* WisaTracker.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -313,7 +316,7 @@
 				TargetAttributes = {
 					D416226F1C9C44A300A818DA = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = E3GB4PB99C;
+						DevelopmentTeam = GA6CJDPY8P;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -428,6 +431,7 @@
 				D4932E821CA432710014B769 /* WIntroController.swift in Sources */,
 				D4932E831CA432710014B769 /* WMainController.swift in Sources */,
 				D45D64771CB29370004976A2 /* ExtensionUIColor.swift in Sources */,
+				D42673141D1A30A800F73865 /* WisaTracker.swift in Sources */,
 				D408A9CE1CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift in Sources */,
 				D4932E931CA433E10014B769 /* Controllers.swift in Sources */,
 				D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */,
@@ -470,7 +474,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -515,7 +519,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -541,7 +545,7 @@
 			baseConfigurationReference = F296F2851C9807176E303594 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = wing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -559,7 +563,7 @@
 			baseConfigurationReference = 094422137CE74568E19969C5 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = wing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;

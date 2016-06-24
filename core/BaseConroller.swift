@@ -26,6 +26,13 @@ class BaseController: UIViewController {
                 }
             }
         }
+        if let title = self.title {
+            if !title.isEmpty{
+                WisaTracker().page(self.title!)
+            }
+        }
+        
+        
     }
     
     

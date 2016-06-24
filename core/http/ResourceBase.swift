@@ -8,6 +8,7 @@ class ApiFormApp : HttpBaseResource{
         super.init()
         ap("device","ios")
         ap("device_id",UIDevice.currentDevice().identifierForVendor!.UUIDString)
+        ap("country_code",WInfo.countryCode)
         if !WInfo.accountId.isEmpty{
             ap("account_id",WInfo.accountId)
         }
@@ -89,6 +90,7 @@ class WingLogin : HttpBaseResource{
         for(key,value) in self.reqHeader {
             request.addValue(value, forHTTPHeaderField: key)
         }
+        request.addValue(self.reqUrl, forHTTPHeaderField: "Referer")
         request.HTTPMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = self.generateParamter().dataUsingEncoding(NSUTF8StringEncoding)

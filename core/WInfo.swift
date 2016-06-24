@@ -36,6 +36,17 @@ class WInfo{
 			NSUserDefaults.standardUserDefaults().synchronize()
 		}
 	}
+    
+    static var countryCode:String{
+        get{
+            
+            if let value = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) {
+               return value as! String
+            }else{
+                return ""
+            }
+        }
+    }
 
 	static var solutionType:String{
 		get{

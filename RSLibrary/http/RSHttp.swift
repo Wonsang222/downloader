@@ -20,18 +20,18 @@ class RSHttp{
 	init(){
 
 	}
-	init(controller:UIViewController){
+	init(controller:UIViewController?){
 		self.viewController = controller
 	}
-	init(controller:UIViewController, progress:Bool){
+	init(controller:UIViewController?, progress:Bool){
 		self.viewController = controller
 		self.isProgress = progress
 	}
-	init(controller:UIViewController, showingPopup:Bool){
+	init(controller:UIViewController?, showingPopup:Bool){
 		self.viewController = controller
 		self.isShowingError = showingPopup
 	}
-	init(controller:UIViewController, progress:Bool, showingPopup:Bool){
+	init(controller:UIViewController?, progress:Bool, showingPopup:Bool){
 		self.viewController = controller
 		self.isProgress = progress
 		self.isShowingError = showingPopup

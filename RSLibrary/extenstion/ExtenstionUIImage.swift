@@ -7,18 +7,16 @@
 //
 
 import Foundation
-
 import UIKit
 
 extension UIImage{
     
     
-    func makeFillImage(parent:UIView,bgColor:UIColor) -> UIImage {
-        
+    func makeFillImage(parent:UIView) -> UIImage {
         
         UIGraphicsBeginImageContext(CGSizeMake(parent.frame.width*2, parent.frame.height*2))
         let context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context, bgColor.CGColor);
+        CGContextSetFillColorWithColor(context, UIColor.clearColor().CGColor);
         
         CGContextFillRect(context,CGRectMake(0,0,parent.bounds.width*UIScreen.mainScreen().scale,parent.bounds.height*UIScreen.mainScreen().scale));
         self.drawInRect(CGRectMake(
@@ -29,6 +27,30 @@ extension UIImage{
         let returnVal = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return returnVal
+        
+    }
+    func tintWithColor(color:UIColor)->UIImage {
+        
+        UIGraphicsBeginImageContext(self.size)
+        let context = UIGraphicsGetCurrentContext()
+        
+        // flip the image
+        CGContextScaleCTM(context, 1.0, -1.0)
+        CGContextTranslateCTM(context, 0.0, -self.size.height)
+        
+        // multiply blend mode
+        CGContextSetBlendMode(context, .Multiply)
+        
+        let rect = CGRectMake(0, 0, self.size.width, self.size.height)
+        CGContextClipToMask(context, rect, self.CGImage)
+        color.setFill()
+        CGContextFillRect(context, rect)
+        
+        // create uiimage
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
         
     }
     

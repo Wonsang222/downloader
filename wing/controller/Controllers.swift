@@ -37,6 +37,9 @@ class MainController:WMainController{
     	let wisaMenu:UIView = UIView(frame : CGRectMake(0,self.view.frame.height - menuSize,UIScreen.mainScreen().bounds.width, menuSize) )
     	let menuWidth = UIScreen.mainScreen().bounds.width / CGFloat(menus.count)
         let bgColor = UIColor(hexString:uiData["menusBg"] as! String)
+        let iconColor = UIColor(hexString:uiData["menuIcon"] as! String)
+        let iconDisable = UIColor(hexString:uiData["menuIcon"] as! String)
+        
         wisaMenu.userInteractionEnabled = true
         wisaMenu.backgroundColor = bgColor
         var position = CGFloat(0)
@@ -45,11 +48,10 @@ class MainController:WMainController{
             let key = menu["click"] as! String
             let menuIcon = UIImage(named : menuMap[key]!)!
             let menuIconDisable = UIImage(named: menuMap[key]!.replace(".png", withString: "_disable.png"))!
-
-            let newMenuBg = menuIcon.makeFillImage(menuView,bgColor:bgColor)
-            let newMenuBgDisable = menuIconDisable.makeFillImage(menuView,bgColor:bgColor)
-            menuView.setBackgroundImage(newMenuBg, forState: .Normal)
-            menuView.setBackgroundImage(newMenuBgDisable, forState: .Disabled)
+            let newMenuBg = menuIcon.makeFillImage(menuView)
+            let newMenuBgDisable = menuIconDisable.makeFillImage(menuView)
+            menuView.setBackgroundImage(newMenuBg.tintWithColor(iconColor), forState: .Normal)
+            menuView.setBackgroundImage(newMenuBgDisable.tintWithColor(iconDisable), forState: .Disabled)
             menuView.showsTouchWhenHighlighted = true
             self.applyAction(menuView, key: key)
             wisaMenu.addSubview(menuView)

@@ -17,6 +17,6 @@ class WisaTracker {
                 .ap("pack_name",AppProp.appId)
                 .ap("page",page)
         )
-    }
+    } 
     
 }

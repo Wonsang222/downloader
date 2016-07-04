@@ -137,10 +137,12 @@ class WIntroController: BaseController {
 		RSHttp(controller:self).req(
 		   ApiFormApp().ap("mode","version_chk").ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
-		   		let serverVersion = resource.body()["version"] as! String
+		   		let serverVersion = (resource.body()["version"] as! String).replace(".", withString: "")
                 let appUrl = resource.body()["app_url"] as! String
-		   		let curVersion = AppProp.appVersion
-		   		if serverVersion.compare(curVersion,options:NSStringCompareOptions.NumericSearch) == NSComparisonResult.OrderedDescending {
+                let curVersion = AppProp.appVersion.replace(".", withString: "")
+            
+            
+		   		if Int(serverVersion) > Int(curVersion) {
 					let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.Alert)
 					alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.Default, handler:{ action in
                         UIApplication.sharedApplication().openURL(NSURL(string:appUrl)!)

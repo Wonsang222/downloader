@@ -43,6 +43,11 @@ class WSettingController: BaseController {
         
         self.orderSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
         self.eventSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
+
+        
+
+        
+        
     }
 
     
@@ -58,6 +63,7 @@ class WSettingController: BaseController {
             ,
             successCb: { (resource) -> Void in
                
+                
             }
         )
         
@@ -69,12 +75,13 @@ class WSettingController: BaseController {
     }
     
     @IBAction func doUpdateBtn(sender:UIButton){
-        if curVersion.text != newVersion.text {
+        
+        if Int(newVersion.text!.replace(".", withString: "")) > Int(curVersion.text!.replace(".", withString: "")) {
             UIApplication.sharedApplication().openURL(NSURL(string:self.appUpdateUrl!)!)
-        }else {
+        }else{
             self.view.makeToast("최신버전입니다.")
         }
-
+        
     }
 }
 

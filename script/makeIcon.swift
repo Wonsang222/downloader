@@ -120,10 +120,10 @@ func imageResize(path:String,newSize:NSSize) -> NSImage? {
         print("Not Found File...... \(path)")
         return nil
     }
-    if !anImage!.valid {
+//    if !anImage!.valid {
         print("Source File Not Image...")
-        return nil
-    }
+//        return nil
+//    }
     let newImage = NSImage(size: newSize)
     newImage.lockFocus()
     NSGraphicsContext.currentContext()?.imageInterpolation = NSImageInterpolation.High

@@ -148,6 +148,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             NSHTTPCookieValue : "APP",
             NSHTTPCookieExpires : NSDate().dateByAddingTimeInterval(60*60*24*365*300)
         ];
+//        print(access_cookie_dic)
         let cookie:NSHTTPCookie = NSHTTPCookie(properties: access_cookie_dic)!
         NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie)
 //        progressView.setProgress(0, animated: false)

@@ -81,7 +81,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         application.applicationIconBadgeNumber = application.applicationIconBadgeNumber + 1
         
         let pushSeq = userInfo["push_seq"] as! String
-        
         RSHttp().req(
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in

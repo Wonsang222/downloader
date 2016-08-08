@@ -101,6 +101,7 @@
 		D49E63121D587DBD00C057B9 /* magicapp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D49E62F61D587DBD00C057B9 /* magicapp.xcdatamodeld */; };
 		D49E63131D587DBD00C057B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D49E62F91D587DBD00C057B9 /* LaunchScreen.storyboard */; };
 		D49E63141D587DBD00C057B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D49E62FA1D587DBD00C057B9 /* Main.storyboard */; };
+		D49E63151D58824300C057B9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D41622821C9C44A300A818DA /* Info.plist */; };
 		D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EE91CAC06A200BF545E /* ResourceBase.swift */; };
 		D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEA1CAC06A200BF545E /* Tools.swift */; };
 		D4C64EEE1CAC06A200BF545E /* WInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEB1CAC06A200BF545E /* WInfo.swift */; };
@@ -531,6 +532,7 @@
 				D4154F601CBF723900ED25CE /* setting_update_btn_over.png in Resources */,
 				D4154F521CBF569C00ED25CE /* ic_a_prev_disable.png in Resources */,
 				D4154F5E1CBF6F9D00ED25CE /* setting_update_btn.png in Resources */,
+				D49E63151D58824300C057B9 /* Info.plist in Resources */,
 				D4154F571CBF569C00ED25CE /* ic_a_share.png in Resources */,
 				D4154F501CBF569C00ED25CE /* ic_a_next_disable.png in Resources */,
 				D4154F541CBF569C00ED25CE /* ic_a_refresh_disable.png in Resources */,

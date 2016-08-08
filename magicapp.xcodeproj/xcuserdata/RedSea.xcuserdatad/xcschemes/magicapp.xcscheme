@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D416226F1C9C44A300A818DA"
-               BuildableName = "magicapp.app"
-               BlueprintName = "magicapp"
+               BuildableName = "wing.app"
+               BlueprintName = "wing"
                ReferencedContainer = "container:magicapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D416226F1C9C44A300A818DA"
-            BuildableName = "magicapp.app"
-            BlueprintName = "magicapp"
+            BuildableName = "wing.app"
+            BlueprintName = "wing"
             ReferencedContainer = "container:magicapp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -56,8 +56,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D416226F1C9C44A300A818DA"
-            BuildableName = "magicapp.app"
-            BlueprintName = "magicapp"
+            BuildableName = "wing.app"
+            BlueprintName = "wing"
             ReferencedContainer = "container:magicapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -75,8 +75,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D416226F1C9C44A300A818DA"
-            BuildableName = "magicapp.app"
-            BlueprintName = "magicapp"
+            BuildableName = "wing.app"
+            BlueprintName = "wing"
             ReferencedContainer = "container:magicapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

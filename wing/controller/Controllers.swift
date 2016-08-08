@@ -83,15 +83,6 @@ class MainController:WMainController{
         wisaMenu.layer.addSublayer(borderLayer)
     	self.view.addSubview(wisaMenu)
         self.webView.scrollView.contentInset.bottom = menuSize
-        
-        
-        if AppProp.appId.hasPrefix("kr.co.tbhshop.wisa") {
-            let border = UIView(frame:CGRectZero)
-            border.backgroundColor = UIColor(hexString: "#cbcbcb")
-            border.frame = CGRectMake(0, UIApplication.sharedApplication().statusBarFrame.height, CGRectGetWidth(view.frame), 1)
-            self.view.addSubview(border)
-        }
-        
         self.beginController()
     }
     

@@ -9,10 +9,15 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>magicapp_dist.xcscheme</key>
+		<key>tbhshop.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>5</integer>
+		</dict>
+		<key>wing.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>D416226F1C9C44A300A818DA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D49E62A01D587D0C00C057B9</key>
 		<dict>
 			<key>primary</key>
 			<true/>

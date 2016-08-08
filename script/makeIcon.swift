@@ -1,7 +1,6 @@
 import Foundation
 import Cocoa
 
-let saveIconPath = "wing/Assets.xcassets/AppIcon.appiconset"
 
 let externalIconsProperty = [
     ["name":"Icon-60"           ,"size": 60],
@@ -30,16 +29,22 @@ let iconsProperty = [
 
 
 func main(){
-    for argument in Process.arguments {
-        if argument != "makeIcon.swift" {
-            makeImage(argument)
-        }
-    }
+
+    let arguments = Process.arguments as NSArray
+    
+    print(arguments[1])
+    print(arguments[2])
+
+    makeImage(arguments[1],arguments[2])
     return
 }
 
-func makeImage(path:String){
+func makeImage(path:String,target:String){
     print("MakeImage Input:  \(path)")
+    
+    let saveIconPath = "\(target)/Assets.xcassets/AppIcon.appiconset"
+    
+    
     let fileManager = NSFileManager.defaultManager()
     fileManager.changeCurrentDirectoryPath("..")
     

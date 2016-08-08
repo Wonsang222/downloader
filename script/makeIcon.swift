@@ -35,7 +35,8 @@ func main(){
     print(arguments[1])
     print(arguments[2])
 
-    makeImage(arguments[1],arguments[2])
+    
+    makeImage(arguments[1].description,target: arguments[2].description)
     return
 }
 

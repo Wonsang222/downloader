@@ -70,12 +70,11 @@ class WIntroController: BaseController {
 		   successCb: { (resource) -> Void in
 		   		let siteUrl = resource.body()["site_url"] as! String
 		   		let solutionType = resource.body()["solution_type"] as! String
-                let tracker_id = resource.body()["tracker_id"]
                 let account_id = resource.body()["account_id"] as! String
 		   		WInfo.appUrl = siteUrl
 		   		WInfo.solutionType = solutionType
-                if tracker_id !=  nil {
-                    WInfo.trackerId = tracker_id as! String
+                if let tracker_id = resource.body()["tracker_id"] as? String {
+                    WInfo.trackerId = tracker_id
                 }
                 WInfo.accountId = account_id;
                 RSHttp().req(

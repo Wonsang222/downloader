@@ -12,12 +12,17 @@
 		<key>tbhshop.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>3</integer>
+		</dict>
+		<key>wing copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 		<key>wing.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -33,6 +38,11 @@
 			<true/>
 		</dict>
 		<key>D49E62A01D587D0C00C057B9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D49E63171D59632C00C057B9</key>
 		<dict>
 			<key>primary</key>
 			<true/>

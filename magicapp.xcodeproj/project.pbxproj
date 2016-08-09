@@ -482,7 +482,6 @@
 				TargetAttributes = {
 					D416226F1C9C44A300A818DA = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = GA6CJDPY8P;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -490,7 +489,6 @@
 						};
 					};
 					D49E62A01D587D0C00C057B9 = {
-						DevelopmentTeam = GA6CJDPY8P;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;

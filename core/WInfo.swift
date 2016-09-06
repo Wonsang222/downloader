@@ -179,5 +179,32 @@ class WInfo{
         }
         
     }
+    
+    static var firstProcess:Bool{
+        get{
+            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kFirstProcess"){
+                return returnValue == "NO" ? false : true
+            }else{
+                return true
+            }
+        }
+        set{
+            NSUserDefaults.standardUserDefaults().setObject(newValue ? "YES" : "NO", forKey: "kFirstProcess")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
 
+    static var agreeMarketing:Bool{
+        get{
+            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kAgreeMarketing"){
+                return returnValue == "NO" ? false : true
+            }else{
+                return false
+            }
+        }
+        set{
+            NSUserDefaults.standardUserDefaults().setObject(newValue ? "YES" : "NO", forKey: "kAgreeMarketing")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
 }

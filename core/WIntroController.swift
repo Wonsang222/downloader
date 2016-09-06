@@ -62,7 +62,33 @@ class WIntroController: BaseController {
         // Dispose of any resources that can be recreated.
     }
 
+    private func showMarketingPopup(next:(()-> Void)){
+        if WInfo.firstProcess {
+            let dialog = createMarketingDialog({ (UIAlertAction) in
+                self.reqMarketingAgree("Y", next: next)
+            }) { (UIAlertAction) in
+                self.reqMarketingAgree("N", next: next)
+            }
+            self.presentViewController(dialog, animated: true, completion: nil)
+        }else{
+            next()
+        }
+    }
 
+    private func reqMarketingAgree(yn:String,next:(()->Void)){
+        RSHttp(controller:self).req(
+            [ApiFormApp().ap("mode","set_marketing_agree").ap("pack_name",AppProp.appId).ap("marketing_agree",yn)],
+            successCb: { (resource) -> Void in
+                WInfo.firstProcess = false
+                WInfo.agreeMarketing = (yn == "Y") ? true : false
+                next()
+            },errorCb:{ (errorCode,resource) -> Void in
+                self.finishPopup()
+                
+            }
+        )
+    }
+    
  
     private func reqCheckApiKey(){
 		RSHttp(controller:self).req(
@@ -84,8 +110,7 @@ class WIntroController: BaseController {
                 )
 		   		self.reqGetIntro()
             },errorCb:{ (errorCode,resource) -> Void in
-                exit(0)
-                
+                self.finishPopup()
             }
 		)
     }
@@ -107,11 +132,11 @@ class WIntroController: BaseController {
                             saveIntroInfo["file"] = filePath
                             WInfo.introInfo = saveIntroInfo
                             self.introView.image = image
-                            self.reqTheme()
+                            self.showMarketingPopup(self.reqTheme)
 		   				}
 		   			})
 		   		}else{
-		   			self.reqTheme()
+                    self.showMarketingPopup(self.reqTheme)
 		   		}
 		   }
 		)
@@ -124,7 +149,6 @@ class WIntroController: BaseController {
 		   		let serverVersion = resource.body()["version"] as! String
 		   		if Int(serverVersion)! > self.saveThemeVersion{
 					WInfo.themeInfo = resource.body()
-
 		   		}
 		   		self.reqUpdate()
 		   }
@@ -160,6 +184,16 @@ class WIntroController: BaseController {
 
     private func dismissProcess(){
         mainController?.endIntro()
+    }
+    
+    
+    private func finishPopup(){
+        let alert = UIAlertController(title: "알림", message: "데이터가 잘못되어 앱을종료합니다.\n다시실행해주세요." ,preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "종료" , style: UIAlertActionStyle.Default, handler:{ action in
+            exit(0)
+        }))
+        self.presentViewController(alert,animated:true, completion: nil)
+
     }
 }
 

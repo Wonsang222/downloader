@@ -40,6 +40,15 @@ class BaseController: UIViewController {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
+    
+    func createMarketingDialog(agree:((UIAlertAction) -> Void),disagree:((UIAlertAction) -> Void)) -> UIAlertController {
+        let alert = UIAlertController(title: "알림", message: "모바일앱 알림에 동의하시겠습니까?" ,preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "동의" , style: UIAlertActionStyle.Default, handler:agree))
+        alert.addAction(UIAlertAction(title: "미동의" , style: UIAlertActionStyle.Default, handler:disagree))
+        return alert
+    }
+    
+    
 }
 
 class BaseWebViewController: BaseController,UIWebViewDelegate {

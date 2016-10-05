@@ -54,56 +54,58 @@ class WSettingController: BaseController {
     func switchChange(sender:UISwitch){
         let event = eventSwitch.on ? "Y" : "N"
         let order = orderSwitch.on ? "Y" : "N"
-        
-        if eventSwitch.on && !WInfo.agreeMarketing {
-            let dialog = createMarketingDialog({ (UIAlertAction) in
-                RSHttp(controller:self).req(
-                    [ApiFormApp().ap("mode","set_marketing_agree").ap("pack_name",AppProp.appId).ap("marketing_agree","Y")],
-                    successCb: { (resource) -> Void in
-                        WInfo.firstProcess = true
-                        WInfo.agreeMarketing = true
-                        self.eventSwitch.on = true
-                        
-                        RSHttp(controller:self).req(
-                            ApiFormApp().ap("mode","set_agree")
-                                .ap("pack_name", AppProp.appId)
-                                .ap("notice_push_agree", "Y")
-                                .ap("order_push_agree", order)
-                            ,
-                            successCb: { (resource) -> Void in
-                            }
-                        )
-                        
-                    },errorCb:{ (errorCode,resource) -> Void in
-                        self.eventSwitch.on = false
-                    }
-                )
-                
-            }) { (UIAlertAction) in
-                self.eventSwitch.on = false
-                RSHttp(controller:self).req(
-                    ApiFormApp().ap("mode","set_agree")
-                        .ap("pack_name", AppProp.appId)
-                        .ap("notice_push_agree", "N")
-                        .ap("order_push_agree", order)
-                    ,
-                    successCb: { (resource) -> Void in
-                    }
-                )
-                
+
+        RSHttp(controller:self).req(
+            ApiFormApp().ap("mode","set_agree")
+                .ap("pack_name", AppProp.appId)
+                .ap("notice_push_agree", event)
+                .ap("order_push_agree", order)
+            ,
+            successCb: { (resource) -> Void in
             }
-            self.presentViewController(dialog, animated: true, completion: nil)
-        }else{
-            RSHttp(controller:self).req(
-                ApiFormApp().ap("mode","set_agree")
-                    .ap("pack_name", AppProp.appId)
-                    .ap("notice_push_agree", event)
-                    .ap("order_push_agree", order)
-                ,
-                successCb: { (resource) -> Void in
-                }
-            )
-        }
+        )
+        
+//        if eventSwitch.on && !WInfo.agreeMarketing {
+//            let dialog = createMarketingDialog({ (UIAlertAction) in
+//                RSHttp(controller:self).req(
+//                    [ApiFormApp().ap("mode","set_marketing_agree").ap("pack_name",AppProp.appId).ap("marketing_agree","Y")],
+//                    successCb: { (resource) -> Void in
+//                        WInfo.firstProcess = true
+//                        WInfo.agreeMarketing = true
+//                        self.eventSwitch.on = true
+//                        
+//                        RSHttp(controller:self).req(
+//                            ApiFormApp().ap("mode","set_agree")
+//                                .ap("pack_name", AppProp.appId)
+//                                .ap("notice_push_agree", "Y")
+//                                .ap("order_push_agree", order)
+//                            ,
+//                            successCb: { (resource) -> Void in
+//                            }
+//                        )
+//                        
+//                    },errorCb:{ (errorCode,resource) -> Void in
+//                        self.eventSwitch.on = false
+//                    }
+//                )
+//                
+//            }) { (UIAlertAction) in
+//                self.eventSwitch.on = false
+//                RSHttp(controller:self).req(
+//                    ApiFormApp().ap("mode","set_agree")
+//                        .ap("pack_name", AppProp.appId)
+//                        .ap("notice_push_agree", "N")
+//                        .ap("order_push_agree", order)
+//                    ,
+//                    successCb: { (resource) -> Void in
+//                    }
+//                )
+//                
+//            }
+//            self.presentViewController(dialog, animated: true, completion: nil)
+//        }else{
+//           
+//        }
         
         
         

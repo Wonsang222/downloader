@@ -180,6 +180,17 @@ class WInfo{
         
     }
     
+    static func clearSessionCookie() {
+        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string:WInfo.appUrl)!){
+            for cookie in cookies {
+                if cookie.sessionOnly {
+                    NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+                }
+            }
+        }
+        
+    }
+    
     static var firstProcess:Bool{
         get{
             if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kFirstProcess"){

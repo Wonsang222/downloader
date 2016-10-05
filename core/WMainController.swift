@@ -58,7 +58,15 @@ class WMainController: BaseWebViewController {
         
     }
 
-    
+    func reqSetLoginStat(yn:String){
+        let userInfo = WInfo.userInfo
+        if let member_id = userInfo["userId"] as? String{
+            let resource = ApiFormApp().ap("mode","set_login_stat").ap("pack_name",AppProp.appId).ap("login_stat",yn).ap("member_id",member_id)
+            RSHttp(controller: nil, progress: false, showingPopup: false).req(resource) { (resource) -> (Void) in
+                
+            }
+        }
+    }
 
     func reqLogin(movePage:String) {
         let userInfo = WInfo.userInfo
@@ -68,10 +76,12 @@ class WMainController: BaseWebViewController {
                 .ap("exec_file","member/login.exe.php")],
             successCb: { (resource) -> Void in
                 self.loadPage(movePage)
+                self.reqSetLoginStat("Y")
             },
             errorCb : { (errorCode,resource) -> Void in
                 WInfo.userInfo = [String:AnyObject]()
                 self.loadPage(movePage)
+                self.reqSetLoginStat("N")
             }
         )
     }
@@ -155,9 +165,10 @@ class WMainController: BaseWebViewController {
     override func hybridEvent(value: [String : AnyObject]) {
         if value["func"] as! String == "saveMinfo"{
             WInfo.userInfo = [ "userId" : value["param1"] as! String , "password" : value["param2"] as! String ]
-            self.reqMatching();
+            self.reqSetLoginStat("Y")
+            self.reqMatching()
             movePage(value["param3"] as! String)
-            
+
         }
     }
     

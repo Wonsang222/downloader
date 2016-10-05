@@ -42,7 +42,7 @@ class BaseController: UIViewController {
     
     
     func createMarketingDialog(agree:((UIAlertAction) -> Void),disagree:((UIAlertAction) -> Void)) -> UIAlertController {
-        let alert = UIAlertController(title: "알림", message: "모바일앱 알림에 동의하시겠습니까?" ,preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "알림", message: "해당기기로 이벤트, 상품할인 등의 정보를\n전송하려고 합니다." ,preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "동의" , style: UIAlertActionStyle.Default, handler:agree))
         alert.addAction(UIAlertAction(title: "미동의" , style: UIAlertActionStyle.Default, handler:disagree))
         return alert
@@ -160,6 +160,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
 //        print(access_cookie_dic)
         let cookie:NSHTTPCookie = NSHTTPCookie(properties: access_cookie_dic)!
         NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie)
+        
 //        progressView.setProgress(0, animated: false)
 //        progressView.setProgress(0.8, animated: true)
 //        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 1 }, completion: nil)
@@ -275,7 +276,14 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
      
     func interceptWebView(url:NSURL) -> Bool {
         if url.absoluteString.hasSuffix("exec_file=member/logout.exe.php") {
-            WInfo.clearCookie()
+            let userInfo = WInfo.userInfo
+            if let member_id = userInfo["userId"] as? String{
+                let resource = ApiFormApp().ap("mode","set_login_stat").ap("pack_name",AppProp.appId).ap("login_stat","N").ap("member_id",member_id)
+                RSHttp(controller: nil, progress: false, showingPopup: false).req(resource) { (resource) -> (Void) in
+                    
+                }
+            }
+            WInfo.clearSessionCookie()
             WInfo.userInfo = [String:AnyObject]()
             return true
         }

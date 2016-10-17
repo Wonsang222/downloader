@@ -127,8 +127,8 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
 //        }
 
         
-        if request.URL!.absoluteString.hasPrefix("wisamagic://event?json=") {
-            let json = request.URL?.absoluteString.replace("wisamagic://event?json=", withString: "")
+        if request.URL!.absoluteString!.hasPrefix("wisamagic://event?json=") {
+            let json = request.URL?.absoluteString!.replace("wisamagic://event?json=", withString: "")
             do{
                 let json_decode = json!.stringByRemovingPercentEncoding
                 let value = try
@@ -148,7 +148,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
     }
     
     func webViewDidStartLoad(webView: UIWebView){
-        print("start " + webView.request!.URL!.absoluteString)
+        print("start " + webView.request!.URL!.absoluteString!)
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         let access_cookie_dic : [String:AnyObject] = [
             NSHTTPCookieDomain : WInfo.appUrl.replace("http://", withString: "").replace("https://", withString: ""),
@@ -168,9 +168,9 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-        print("end " + webView.request!.URL!.absoluteString)
+        print("end " + webView.request!.URL!.absoluteString!)
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-        if webView.request!.URL!.absoluteString.hasSuffix("smpay.kcp.co.kr/card.do") {
+        if webView.request!.URL!.absoluteString!.hasSuffix("smpay.kcp.co.kr/card.do") {
             webView.stringByEvaluatingJavaScriptFromString("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
         }
 //        progressView.setProgress(1, animated: true)
@@ -275,7 +275,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
     
      
     func interceptWebView(url:NSURL) -> Bool {
-        if url.absoluteString.hasSuffix("exec_file=member/logout.exe.php") {
+        if url.absoluteString!.hasSuffix("exec_file=member/logout.exe.php") {
             let userInfo = WInfo.userInfo
             if let member_id = userInfo["userId"] as? String{
                 let resource = ApiFormApp().ap("mode","set_login_stat").ap("pack_name",AppProp.appId).ap("login_stat","N").ap("member_id",member_id)
@@ -293,7 +293,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             return false;
         }
 
-        if url.absoluteString.hasPrefix("smartxpay-transfer://"){
+        if url.absoluteString!.hasPrefix("smartxpay-transfer://"){
             if UIApplication.sharedApplication().canOpenURL(NSURL(string:"smartxpay-transfer://")!) {
                 UIApplication.sharedApplication().openURL(url)
             }else{
@@ -304,7 +304,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             }
             return false
         }
-        if url.absoluteString.hasPrefix("paypin://MP_2APP"){
+        if url.absoluteString!.hasPrefix("paypin://MP_2APP"){
             if UIApplication.sharedApplication().canOpenURL(NSURL(string:"paypin://MP_2APP")!) {
                 UIApplication.sharedApplication().openURL(url)
             }else{
@@ -312,7 +312,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             }
             return false
         }
-        if url.absoluteString.hasPrefix("smartxpay-transfer://"){
+        if url.absoluteString!.hasPrefix("smartxpay-transfer://"){
             if UIApplication.sharedApplication().canOpenURL(NSURL(string:"smartxpay-transfer://")!) {
                 UIApplication.sharedApplication().openURL(url)
             }else{
@@ -323,29 +323,29 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
         
         
         
-        if url.absoluteString.hasPrefix("https://itunes.apple.com/kr/app/") {
+        if url.absoluteString!.hasPrefix("https://itunes.apple.com/kr/app/") {
             UIApplication.sharedApplication().openURL(url)
             return false
         }
-        if url.absoluteString.hasPrefix("https://itunes.apple.com/us/app/") {
+        if url.absoluteString!.hasPrefix("https://itunes.apple.com/us/app/") {
             UIApplication.sharedApplication().openURL(url)
             return false
         }
-        if url.absoluteString.hasPrefix("http://itunes.apple.com/us/app/") {
+        if url.absoluteString!.hasPrefix("http://itunes.apple.com/us/app/") {
             UIApplication.sharedApplication().openURL(url)
             return false
         }
-        if url.absoluteString.hasPrefix("http://itunes.apple.com/kr/app/") {
+        if url.absoluteString!.hasPrefix("http://itunes.apple.com/kr/app/") {
             UIApplication.sharedApplication().openURL(url)
             return false
         }
-        if url.absoluteString.hasPrefix("itms-appss://") {
+        if url.absoluteString!.hasPrefix("itms-appss://") {
             UIApplication.sharedApplication().openURL(url)
             return false
         }
         
         for appSchema in paySchema {
-            if url.absoluteString.hasPrefix(appSchema["schema"]! as String) {
+            if url.absoluteString!.hasPrefix(appSchema["schema"]! as String) {
                 if UIApplication.sharedApplication().canOpenURL(url) {
                     UIApplication.sharedApplication().openURL(url)
                 }else{

@@ -16,9 +16,9 @@ extension UIImage{
         
         UIGraphicsBeginImageContext(CGSizeMake(parent.frame.width*2, parent.frame.height*2))
         let context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context, UIColor.clearColor().CGColor);
+        CGContextSetFillColorWithColor(context!, UIColor.clearColor().CGColor);
         
-        CGContextFillRect(context,CGRectMake(0,0,parent.bounds.width*UIScreen.mainScreen().scale,parent.bounds.height*UIScreen.mainScreen().scale));
+        CGContextFillRect(context!,CGRectMake(0,0,parent.bounds.width*UIScreen.mainScreen().scale,parent.bounds.height*UIScreen.mainScreen().scale));
         self.drawInRect(CGRectMake(
             parent.frame.width - self.size.width/2.0,
             parent.frame.height - self.size.height/2.0,
@@ -26,7 +26,7 @@ extension UIImage{
             self.size.height))
         let returnVal = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return returnVal
+        return returnVal!
         
     }
     func tintWithColor(color:UIColor)->UIImage {
@@ -35,22 +35,22 @@ extension UIImage{
         let context = UIGraphicsGetCurrentContext()
         
         // flip the image
-        CGContextScaleCTM(context, 1.0, -1.0)
-        CGContextTranslateCTM(context, 0.0, -self.size.height)
+        CGContextScaleCTM(context!, 1.0, -1.0)
+        CGContextTranslateCTM(context!, 0.0, -self.size.height)
         
         // multiply blend mode
-        CGContextSetBlendMode(context, .Multiply)
+        CGContextSetBlendMode(context!, .Multiply)
         
         let rect = CGRectMake(0, 0, self.size.width, self.size.height)
-        CGContextClipToMask(context, rect, self.CGImage)
+        CGContextClipToMask(context!, rect, self.CGImage!)
         color.setFill()
-        CGContextFillRect(context, rect)
+        CGContextFillRect(context!, rect)
         
         // create uiimage
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return newImage!
         
     }
     

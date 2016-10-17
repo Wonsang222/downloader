@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D416226F1C9C44A300A818DA"
-            BuildableName = "wing.app"
-            BlueprintName = "wing"
+            BlueprintIdentifier = "D49E63171D59632C00C057B9"
+            BuildableName = "test.app"
+            BlueprintName = "test"
             ReferencedContainer = "container:magicapp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -55,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D416226F1C9C44A300A818DA"
-            BuildableName = "wing.app"
-            BlueprintName = "wing"
+            BlueprintIdentifier = "D49E63171D59632C00C057B9"
+            BuildableName = "test.app"
+            BlueprintName = "test"
             ReferencedContainer = "container:magicapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

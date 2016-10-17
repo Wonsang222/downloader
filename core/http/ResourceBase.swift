@@ -22,7 +22,7 @@ class ApiFormApp : HttpBaseResource{
 
 	
 	override func parse(_data: NSData) throws{
-//        print( NSString(data: _data, encoding: NSUTF8StringEncoding))
+        //print( NSString(data: _data, encoding: NSUTF8StringEncoding))
         self.responseData = try NSJSONSerialization.JSONObjectWithData(_data, options: NSJSONReadingOptions()) as! [String:AnyObject]
         let isSuccess = self.body()["success"] == nil ? true : self.body()["success"] as! Bool
         if !isSuccess{

@@ -11,14 +11,16 @@ import UIKit
 class AppProp{
 	static var appId:String{
 		get{
-			let bundle_id = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
-            if bundle_id.hasSuffix(".lh"){
-                return bundle_id.replace(".lh", withString: "")
-            }
-            if bundle_id.hasSuffix(".adhoc") {
-                return bundle_id.replace(".adhoc", withString: "")
-            }
-            return bundle_id
+//			let bundle_id = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
+//            if bundle_id.hasSuffix(".lh"){
+//                return bundle_id.replace(".lh", withString: "")
+//            }
+//            if bundle_id.hasSuffix(".adhoc") {
+//                return bundle_id.replace(".adhoc", withString: "")
+//            }
+//            return bundle_id
+            return "com.looket.naingirl1"
+            
 
 		}
 	}

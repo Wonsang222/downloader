@@ -124,7 +124,7 @@ class WIntroController: BaseController {
 		   		let introImg = resource.body()["intro_img"] as! String
 		   		if Int(serverVersion)! > self.saveVersion{
                     let documentDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-                    let filePath = documentDirectoryURL.URLByAppendingPathComponent(NSUUID().UUIDString).filePathURL!.path!
+                    let filePath = documentDirectoryURL.URLByAppendingPathComponent(NSUUID().UUIDString)!.filePathURL!.path!
                     DownLoader().loadImg(introImg,filePath:filePath,after:{ (image) -> Void in
 		   				if image != nil {
                             var saveIntroInfo:[String:AnyObject] = [String:AnyObject]()

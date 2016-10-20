@@ -218,4 +218,18 @@ class WInfo{
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
+    static var urlParam:String{
+        get{
+            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kUrlParam"){
+                return returnValue;
+            }else{
+                return ""
+            }
+        }
+        set{
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kUrlParam")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+
 }

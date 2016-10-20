@@ -97,8 +97,11 @@ class WIntroController: BaseController {
 		   		let siteUrl = resource.body()["site_url"] as! String
 		   		let solutionType = resource.body()["solution_type"] as! String
                 let account_id = resource.body()["account_id"] as! String
+                let urlParam = resource.body()["url_param"] as! String
+
 		   		WInfo.appUrl = siteUrl
-		   		WInfo.solutionType = solutionType
+                WInfo.urlParam = urlParam;
+                WInfo.solutionType = solutionType
                 if let tracker_id = resource.body()["tracker_id"] as? String {
                     WInfo.trackerId = tracker_id
                 }

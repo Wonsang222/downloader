@@ -128,10 +128,17 @@ class WMainController: BaseWebViewController {
                 self.webView.scrollView.contentInset.top = 0
             }
         }
-        let url = NSURL (string: url);
-        let requestObj = NSMutableURLRequest(URL: url!);
+        var url_obj = NSURL (string: url);
+        
+        if url == WInfo.appUrl {
+            let new_url = "\(WInfo.appUrl)?\(WInfo.urlParam)"
+            url_obj = NSURL (string: new_url);
+        }
+
+        
+        let requestObj = NSMutableURLRequest(URL: url_obj!);
         requestObj.HTTPShouldHandleCookies = true
-        print("cookies \(WInfo.defaultCookie())")
+        print(url_obj?.absoluteString)
         
 //        if let sessionCookie = WInfo.defaultCookieForName("PHPSESSID") {
 //            let cookieString = self.wn_javascriptString(sessionCookie);
@@ -156,8 +163,15 @@ class WMainController: BaseWebViewController {
     
     
     func movePage(page:String){
-        let url = NSURL (string: page);
-        let requestObj = NSMutableURLRequest(URL: url!);
+        var url_obj = NSURL (string: page);
+        if page == WInfo.appUrl {
+            let new_url = "\(WInfo.appUrl)?\(WInfo.urlParam)"
+            url_obj = NSURL (string: new_url);
+        }
+        print(url_obj?.absoluteString)
+
+        
+        let requestObj = NSMutableURLRequest(URL: url_obj!);
 //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
         webView.loadRequest(requestObj);
     }

@@ -35,6 +35,7 @@
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>nhallonepayansimclick</string>
 		<string>hdcardappcardansimclick</string>
 		<string>shinhan-sr-ansimclick</string>
 		<string>kb-acp</string>

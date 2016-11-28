@@ -73,7 +73,8 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
         
         ["schema" : "smhyundaiansimclick", "url" : ""],
         ["schema" : "nonghyupcardansimclick", "url" : ""],
-        
+        ["schema" : "nhallonepayansimclick" , "url" : ""],  // 농협앱카드 추가 관련
+
         ["schema" : "lguthepay", "url" : ""],
         ["schema" : "payco", "url" : ""],
         

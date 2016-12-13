@@ -12,8 +12,7 @@ class WInfo{
 	static var appUrl:String{
 		get{
 			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kAppUrl") as? String{
-                return "http://118.129.243.73:80/ws_magic.html"
-//              return returnValue
+              return returnValue
 			}else{
 				return ""
 			}

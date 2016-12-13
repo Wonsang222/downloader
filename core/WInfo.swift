@@ -12,7 +12,8 @@ class WInfo{
 	static var appUrl:String{
 		get{
 			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kAppUrl") as? String{
-              return returnValue
+                return "http://118.129.243.73:80/ws_magic.html"
+//              return returnValue
 			}else{
 				return ""
 			}
@@ -117,6 +118,19 @@ class WInfo{
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
+    static var getMarketingPopupUrl:String{
+        get{
+            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kGetMarketingPopupUrl"){
+                return returnValue;
+            }else{
+                return ""
+            }
+        }
+        set{
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kGetMarketingPopupUrl")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
     
 
 	static var userInfo:[String:AnyObject]{
@@ -218,6 +232,22 @@ class WInfo{
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
+    
+    static var ignoreUpdateVersion:String{
+        get{
+            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kIgnoreUpdateVersion"){
+                return returnValue;
+            }else{
+                return ""
+            }
+        }
+        set{
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kIgnoreUpdateVersion")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    
     static var urlParam:String{
         get{
             if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kUrlParam"){

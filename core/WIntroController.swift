@@ -61,19 +61,28 @@ class WIntroController: BaseController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     private func showMarketingPopup(next:(()-> Void)){
         if WInfo.firstProcess {
-            let dialog = createMarketingDialog({ (UIAlertAction) in
-                self.reqMarketingAgree("Y", next: next)
-            }) { (UIAlertAction) in
-                self.reqMarketingAgree("N", next: next)
+            
+            if WInfo.getMarketingPopupUrl == "" {
+                let dialog = createMarketingAlert({ (UIAlertAction) in
+                    self.reqMarketingAgree("Y", next: next)
+                }) { (UIAlertAction) in
+                    self.reqMarketingAgree("N", next: next)
+                }
+                self.presentViewController(dialog, animated: true, completion: nil)
+            }else{
+                let dialog = createMarketingDialog(WInfo.getMarketingPopupUrl, resp: { (value) in
+                    self.reqMarketingAgree(value, next: next)
+                })
+                self.presentViewController(dialog, animated: false, completion: nil)
             }
-            self.presentViewController(dialog, animated: true, completion: nil)
         }else{
             next()
         }
     }
+
 
     private func reqMarketingAgree(yn:String,next:(()->Void)){
         RSHttp(controller:self).req(
@@ -125,6 +134,11 @@ class WIntroController: BaseController {
 		   successCb: { (resource) -> Void in
 		   		let serverVersion = resource.body()["version"] as! String
 		   		let introImg = resource.body()["intro_img"] as! String
+            
+                if let marketingUrl = resource.body()["marketing_url"] as? String{
+                    WInfo.getMarketingPopupUrl = marketingUrl
+                }
+            
 		   		if Int(serverVersion)! > self.saveVersion{
                     let documentDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
                     let filePath = documentDirectoryURL.URLByAppendingPathComponent(NSUUID().UUIDString)!.filePathURL!.path!
@@ -168,13 +182,14 @@ class WIntroController: BaseController {
                 let curVersion = AppProp.appVersion.replace(".", withString: "")
             
             
-		   		if Int(serverVersion) > Int(curVersion) {
+		   		if Int(serverVersion) > Int(curVersion) && WInfo.ignoreUpdateVersion != serverVersion {
 					let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.Alert)
 					alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.Default, handler:{ action in
                         UIApplication.sharedApplication().openURL(NSURL(string:appUrl)!)
                         exit(0)
 					}))
 					alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.Default, handler:{ action in
+                        WInfo.ignoreUpdateVersion = serverVersion
 						self.dismissProcess()
 					}))
 					self.presentViewController(alert,animated:true, completion: nil)

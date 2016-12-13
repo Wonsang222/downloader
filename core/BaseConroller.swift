@@ -8,6 +8,8 @@
 
 import UIKit
 import WebKit
+import CoreLocation
+
 class BaseController: UIViewController {
 
 	@IBOutlet weak var topView: UIView?
@@ -41,12 +43,25 @@ class BaseController: UIViewController {
     }
     
     
-    func createMarketingDialog(agree:((UIAlertAction) -> Void),disagree:((UIAlertAction) -> Void)) -> UIAlertController {
+    func createMarketingDialog(url:String ,resp:((String) -> Void)) -> RPopupController {
+        
+        let controller = self.storyboard?.instantiateViewControllerWithIdentifier("push_agree_popup") as! MarketingPopupController
+        controller.url = url
+        let bizPoup = RPopupController(controlller: controller,height: 0)
+        bizPoup.cancelabld = false
+        bizPoup.resp = resp
+        return bizPoup
+    }
+    
+    
+    func createMarketingAlert(agree:((UIAlertAction) -> Void),disagree:((UIAlertAction) -> Void)) -> UIAlertController {
         let alert = UIAlertController(title: "알림", message: "해당기기로 이벤트, 상품할인 등의 정보를\n전송하려고 합니다." ,preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "동의" , style: UIAlertActionStyle.Default, handler:agree))
         alert.addAction(UIAlertAction(title: "미동의" , style: UIAlertActionStyle.Default, handler:disagree))
         return alert
     }
+    
+   
     
     
 }
@@ -142,7 +157,13 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             }
             return false
         }
-       
+        if request.URL!.absoluteString!.hasPrefix("wisamagic://api") {
+            let api_string = request.URL!.absoluteString?.replace("wisamagic://api?", withString: "")
+            if let api_dic = api_string?.paramParse() {
+                self.baseHybridEvent(api_dic)
+            }
+            return false
+        }
         let returval = interceptWebView(request.URL!)
         print(returval)
         return returval
@@ -183,6 +204,32 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
         
     }
     
+    func baseHybridEvent(value: [String:String]){
+        if value["func"] == "deviceId" {
+            let callback = value["callback"]!.stringByRemovingPercentEncoding!
+            let value = UIDevice.currentDevice().identifierForVendor!.UUIDString
+            print("javascript:\(callback)('\(value)')")
+            webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
+        }else if value["func"] == "version" {
+            let callback = value["callback"]!.stringByRemovingPercentEncoding!
+            let value = AppProp.appVersion
+            webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
+        }else if value["func"] == "os_version" {
+            let callback = value["callback"]!.stringByRemovingPercentEncoding!
+            let value = UIDevice.currentDevice().systemVersion
+            webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
+        }else if value["func"] == "isGpsEnabled" {
+            let callback = value["callback"]!.stringByRemovingPercentEncoding!
+            var value:String = "N"
+            if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.Denied
+                && CLLocationManager.locationServicesEnabled() {
+                value = "Y"
+            }
+            webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
+        }else if value["func"] == "goGPSConfig" {
+            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        }
+    }
     
     
 /*

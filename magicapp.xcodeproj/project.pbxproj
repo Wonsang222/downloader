@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		B02778C8F497859E8DDC3F04 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD129BDA686D308F6FD3048 /* libPods.a */; };
 		CAAAC7CC1CB6245E00031667 /* ExtenstionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAAC7CB1CB6245E00031667 /* ExtenstionUIImage.swift */; };
+		D405296C1DFE7CD600E09FAD /* MarketingPopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D405296B1DFE7CD600E09FAD /* MarketingPopupController.swift */; };
+		D405296E1DFE7CFA00E09FAD /* RPopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D405296D1DFE7CFA00E09FAD /* RPopupController.swift */; };
+		D40529701DFE7D1B00E09FAD /* Funcs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D405296F1DFE7D1B00E09FAD /* Funcs.swift */; };
 		D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C61CA2B50400E0DCB5 /* ExtensionString.swift */; };
 		D408A9CE1CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C71CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift */; };
 		D408A9CF1CA2B50400E0DCB5 /* HttpBaseResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A9C91CA2B50400E0DCB5 /* HttpBaseResource.swift */; };
@@ -60,6 +63,9 @@
 /* Begin PBXFileReference section */
 		094422137CE74568E19969C5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		CAAAC7CB1CB6245E00031667 /* ExtenstionUIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtenstionUIImage.swift; sourceTree = "<group>"; };
+		D405296B1DFE7CD600E09FAD /* MarketingPopupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketingPopupController.swift; sourceTree = "<group>"; };
+		D405296D1DFE7CFA00E09FAD /* RPopupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPopupController.swift; sourceTree = "<group>"; };
+		D405296F1DFE7D1B00E09FAD /* Funcs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Funcs.swift; sourceTree = "<group>"; };
 		D408A9C61CA2B50400E0DCB5 /* ExtensionString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
 		D408A9C71CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtenstionNSMutableData.swift; sourceTree = "<group>"; };
 		D408A9C91CA2B50400E0DCB5 /* HttpBaseResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpBaseResource.swift; sourceTree = "<group>"; };
@@ -92,6 +98,7 @@
 		D42321C21CC5CDB3007C2F3C /* ic_a_isnew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_isnew.png; sourceTree = "<group>"; };
 		D42673131D1A30A800F73865 /* WisaTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WisaTracker.swift; sourceTree = "<group>"; };
 		D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WAppDelegate.swift; sourceTree = "<group>"; };
+		D442391F1E07A8120009E862 /* wing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wing.entitlements; sourceTree = "<group>"; };
 		D45D64731CB28B64004976A2 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		D45D64761CB29370004976A2 /* ExtensionUIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUIColor.swift; sourceTree = "<group>"; };
 		D45D648F1CB5217D004976A2 /* ExtensionUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUIButton.swift; sourceTree = "<group>"; };
@@ -173,6 +180,7 @@
 		D408A9C41CA2B50400E0DCB5 /* RSLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				D405296D1DFE7CFA00E09FAD /* RPopupController.swift */,
 				D408A9C51CA2B50400E0DCB5 /* extenstion */,
 				D408A9C81CA2B50400E0DCB5 /* http */,
 			);
@@ -182,6 +190,7 @@
 		D408A9C51CA2B50400E0DCB5 /* extenstion */ = {
 			isa = PBXGroup;
 			children = (
+				D405296F1DFE7D1B00E09FAD /* Funcs.swift */,
 				D45D64761CB29370004976A2 /* ExtensionUIColor.swift */,
 				D408A9C61CA2B50400E0DCB5 /* ExtensionString.swift */,
 				D408A9C71CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift */,
@@ -229,6 +238,7 @@
 		D41622721C9C44A300A818DA /* wing */ = {
 			isa = PBXGroup;
 			children = (
+				D442391F1E07A8120009E862 /* wing.entitlements */,
 				D45D647C1CB29B5D004976A2 /* images */,
 				D4932E891CA433740014B769 /* storyboard */,
 				D4932E881CA4330A0014B769 /* controller */,
@@ -252,6 +262,7 @@
 				D4932E7D1CA432710014B769 /* WIntroController.swift */,
 				D4932E7E1CA432710014B769 /* WMainController.swift */,
 				D4932E7F1CA432710014B769 /* WNotiController.swift */,
+				D405296B1DFE7CD600E09FAD /* MarketingPopupController.swift */,
 				D4932E801CA432710014B769 /* WSettingController.swift */,
 				D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */,
 				D42673131D1A30A800F73865 /* WisaTracker.swift */,
@@ -515,9 +526,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D40529701DFE7D1B00E09FAD /* Funcs.swift in Sources */,
 				D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */,
 				D4932E821CA432710014B769 /* WIntroController.swift in Sources */,
 				D4932E831CA432710014B769 /* WMainController.swift in Sources */,
+				D405296E1DFE7CFA00E09FAD /* RPopupController.swift in Sources */,
 				D45D64771CB29370004976A2 /* ExtensionUIColor.swift in Sources */,
 				D42673141D1A30A800F73865 /* WisaTracker.swift in Sources */,
 				D408A9CE1CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift in Sources */,
@@ -537,6 +550,7 @@
 				D416227C1C9C44A300A818DA /* magicapp.xcdatamodeld in Sources */,
 				CAAAC7CC1CB6245E00031667 /* ExtenstionUIImage.swift in Sources */,
 				D45D64751CB28B64004976A2 /* Toast.swift in Sources */,
+				D405296C1DFE7CD600E09FAD /* MarketingPopupController.swift in Sources */,
 				D4C64EEE1CAC06A200BF545E /* WInfo.swift in Sources */,
 				D4932E841CA432710014B769 /* WNotiController.swift in Sources */,
 			);
@@ -638,9 +652,10 @@
 			baseConfigurationReference = F296F2851C9807176E303594 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = wing/wing.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = GA6CJDPY8P;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = wing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -661,9 +676,10 @@
 			baseConfigurationReference = 094422137CE74568E19969C5 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = wing/wing.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = GA6CJDPY8P;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = wing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;

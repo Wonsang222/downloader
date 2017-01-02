@@ -12,8 +12,16 @@ extension String {
     func globalUrl() -> String {
         var temp = self.replace("http://m.", withString: "")
         temp = temp.replace("https://m.", withString: "")
-        temp = self.replace("http://", withString: "")
+        temp = temp.replace("http://", withString: "")
         temp = temp.replace("https://", withString: "")
+        let index = temp.rangeOfString(":",
+                           options: NSStringCompareOptions.LiteralSearch,
+                           range:temp.startIndex..<temp.endIndex,
+                           locale: nil)
+        if index != nil {
+            temp = temp
+                .substringWithRange(temp.startIndex...index!.startIndex.advancedBy(-1))
+        }
         return temp
     }
     

@@ -147,5 +147,8 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         }
     }
     
+    
+//    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+//    }
 }
 

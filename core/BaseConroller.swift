@@ -126,6 +126,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
         
     }
     
+    
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         print("shouldStartLoadWithRequest \(request.URL!) navigationType \(navigationType)")
         var backgroundSupported = false
@@ -165,24 +166,23 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             return false
         }
         let returval = interceptWebView(request.URL!)
-        print(returval)
         return returval
     }
     
     func webViewDidStartLoad(webView: UIWebView){
+        
+        
         print("start " + webView.request!.URL!.absoluteString!)
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         let access_cookie_dic : [String:AnyObject] = [
-            NSHTTPCookieDomain : WInfo.appUrl.replace("http://", withString: "").replace("https://", withString: ""),
+            NSHTTPCookieDomain : WInfo.appUrl.globalUrl(),
             NSHTTPCookiePath : "/",
             NSHTTPCookieName : "wisamall_access_device",
             NSHTTPCookieValue : "APP",
             NSHTTPCookieExpires : NSDate().dateByAddingTimeInterval(60*60*24*365*300)
         ];
-//        print(access_cookie_dic)
         let cookie:NSHTTPCookie = NSHTTPCookie(properties: access_cookie_dic)!
         NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie)
-        
 //        progressView.setProgress(0, animated: false)
 //        progressView.setProgress(0.8, animated: true)
 //        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 1 }, completion: nil)
@@ -195,6 +195,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
         if webView.request!.URL!.absoluteString!.hasSuffix("smpay.kcp.co.kr/card.do") {
             webView.stringByEvaluatingJavaScriptFromString("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
         }
+        
 //        progressView.setProgress(1, animated: true)
 //        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 0 }, completion: nil)
 

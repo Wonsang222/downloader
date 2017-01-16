@@ -81,6 +81,8 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
         ["schema" : "tswansimclick", "url" : "https://itunes.apple.com/kr/app/id430282710"],   //삼성 서랍
 
         ["schema" : "lotteappcard", "url" : "https://itunes.apple.com/kr/app/losde-aebkadeu/id688047200?mt=8"], //롯데카드
+        ["schema" : "lottesmartpay", "url" : ""], //롯데
+        
         ["schema" : "cloudpay", "url" : "itmss://itunes.apple.com/app/id847268987"], //외환카드 , 하나카드
         ["schema" : "nhappcardansimclick", "url" : "http://itunes.apple.com/kr/app/nhnonghyeob-mobailkadeu-aebkadeu/id698023004?mt=8"], //NH카드
         ["schema" : "citispay", "url" : "https://itunes.apple.com/kr/app/citi-cards-mobile-ssitikadeu/id373559493?l=en&mt=8"],          //NH카드
@@ -90,13 +92,26 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
         ["schema" : "nonghyupcardansimclick", "url" : ""],
         ["schema" : "nhallonepayansimclick" , "url" : ""],  // 농협앱카드 추가 관련
 
-        ["schema" : "lguthepay", "url" : ""],
+        ["schema" : "lguthepay-xpay", "url" : ""],
         ["schema" : "payco", "url" : ""],
+        ["schema" : "smshinhanansimclick", "url" : ""],
+        ["schema" : "ansimclickscard", "url" : ""],     // 삼성카드
+        ["schema" : "ansimclickipcollect", "url" : ""], // 삼성카드
+        ["schema" : "vguardstart", "url" : ""], // 삼성카드
+        ["schema" : "samsungpay", "url" : ""], // 삼성카드
+        ["schema" : "scardcertiapp", "url" : ""], // 삼성카드
+
+        ["schema" : "ispmobile", "url" : "https://itunes.apple.com/kr/app/mobail-anjeongyeolje-isp/id369125087?mt=8"],  // ISP
         
-        ["schema" : "ispmobile", "url" : "https://itunes.apple.com/kr/app/mobail-anjeongyeolje-isp/id369125087?mt=8"]   // ISP 
+        ["schema" : "citispay", "url" : ""], // 삼성카드
+        ["schema" : "nhallonepayansimclick", "url" : ""], // 삼성카드
+        ["schema" : "citispay", "url" : ""], // 삼성카드
+        ["schema" : "citicardappkr", "url" : ""], // 삼성카드
+        ["schema" : "citimobileapp", "url" : ""], // 삼성카드
+        ["schema" : "uppay", "url" : ""], // 삼성카드
+        ["schema" : "shinsegaeeasypayment", "url" : ""], // 삼성카드
+
     ]
-    
-    
 
     
     override func viewDidLoad() {

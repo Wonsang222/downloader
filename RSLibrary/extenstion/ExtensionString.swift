@@ -10,10 +10,10 @@ extension String {
     }
     
     func globalUrl() -> String {
-        var temp = self.replace("http://m.", withString: "")
-        temp = temp.replace("https://m.", withString: "")
-        temp = temp.replace("http://", withString: "")
+        var temp = self.replace("http://", withString: "")
         temp = temp.replace("https://", withString: "")
+//        temp = temp.replace("http://", withString: "")
+//        temp = temp.replace("https://", withString: "")
         let index = temp.rangeOfString(":",
                            options: NSStringCompareOptions.LiteralSearch,
                            range:temp.startIndex..<temp.endIndex,

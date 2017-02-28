@@ -9,12 +9,18 @@
 import UIKit
 import WebKit
 import CoreLocation
+import AddressBook
+import AddressBookUI
+
 
 class BaseController: UIViewController {
 
 	@IBOutlet weak var topView: UIView?
     @IBOutlet var topTitle:UILabel?
- 
+
+    let CONTACT_CALLBACK = 40
+    
+    var controllerCallback:[Int:String] = [:]
     
     
     override func viewWillAppear(animated: Bool) {
@@ -66,7 +72,7 @@ class BaseController: UIViewController {
     
 }
 
-class BaseWebViewController: BaseController,UIWebViewDelegate {
+class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavigationControllerDelegate {
     
     @IBOutlet weak var webViewContainer: UIView!
     @IBOutlet weak var progressView: UIProgressView!
@@ -119,11 +125,6 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
         webView = UIWebView(frame: webViewContainer.bounds)
         webView.allowsInlineMediaPlayback = true
         
-        let userAgent = webView.stringByEvaluatingJavaScriptFromString("navigator.userAgent")!;
-        NSUserDefaults.standardUserDefaults().registerDefaults(
-            ["UserAgent":
-                userAgent + " WISAAPP/" + AppProp.appId + "/" + AppProp.appVersion]
-        )
         if #available(iOS 9, *) {
             webView.allowsLinkPreview = true
             webView.allowsPictureInPictureMediaPlayback = true
@@ -205,7 +206,6 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-        print("end " + webView.request!.URL!.absoluteString!)
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         if webView.request!.URL!.absoluteString!.hasSuffix("smpay.kcp.co.kr/card.do") {
             webView.stringByEvaluatingJavaScriptFromString("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
@@ -244,6 +244,14 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
             webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
         }else if value["func"] == "goGPSConfig" {
             UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        }else if value["func"] == "contact" {
+            let callback = value["callback"]!.stringByRemovingPercentEncoding!
+            controllerCallback[CONTACT_CALLBACK] = callback
+            let picker = ABPeoplePickerNavigationController()
+            picker.peoplePickerDelegate = self
+            self.presentViewController(picker, animated: true, completion: { 
+                
+            });
         }
     }
     
@@ -435,5 +443,27 @@ class BaseWebViewController: BaseController,UIWebViewDelegate {
         self.presentViewController(alert,animated:true, completion: nil)
     }
     
+    
+    
+    func peoplePickerNavigationController(peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord) {
+        let contactNm = ABRecordCopyCompositeName(person).takeRetainedValue()
+        let unmanagePhones = ABRecordCopyValue(person, kABPersonPhoneProperty)
+        var returnPhone:String?
+        if unmanagePhones != nil {
+            let phones : ABMultiValueRef = unmanagePhones.takeUnretainedValue() as ABMultiValueRef
+            let allPhones = ABMultiValueCopyArrayOfAllValues(phones).takeRetainedValue() as NSArray
+            for eachPhone in allPhones {
+                if(returnPhone == nil || eachPhone.hasPrefix("+821") || eachPhone.hasPrefix("821") || eachPhone.hasPrefix("01") || eachPhone.hasPrefix("(01")){
+                    returnPhone = eachPhone as? String
+                }
+            }
+        }
+        let returnObj = [ "name" : contactNm , "number" : returnPhone == nil ? "" : returnPhone! ]
+        webView.stringByEvaluatingJavaScriptFromString("javascript:\(controllerCallback[CONTACT_CALLBACK]!)('\(toJSONString(returnObj))')")
+    }
+
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+        print(error)
+    }
 }
 

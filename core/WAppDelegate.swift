@@ -25,6 +25,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
     
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        let userAgent = UIWebView().stringByEvaluatingJavaScriptFromString("navigator.userAgent")
+        NSUserDefaults.standardUserDefaults().registerDefaults(
+            ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(AppProp.appVersion)"]
+        )
         
         NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
         
@@ -84,11 +88,8 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         RSHttp().req(
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in
-                
-                print(resource)
                 let objectInfo = resource.body()["data"] as! [String:AnyObject]
                 if( application.applicationState == .Active){
-                    print("active")
                     let link = objectInfo["link"] as? String
                     let subtitle = objectInfo["subtitle"] as? String
                     let title = objectInfo["title"] as? String

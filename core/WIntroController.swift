@@ -180,7 +180,10 @@ class WIntroController: BaseController {
 		   		let serverVersion = (resource.body()["version"] as! String).replace(".", withString: "")
                 let appUrl = resource.body()["app_url"] as! String
                 let curVersion = AppProp.appVersion.replace(".", withString: "")
-            
+                if Int(serverVersion) < 0 {
+                    self.dismissProcess()
+                    return
+                }
             
 		   		if Int(serverVersion) > Int(curVersion) && WInfo.ignoreUpdateVersion != serverVersion {
 					let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.Alert)

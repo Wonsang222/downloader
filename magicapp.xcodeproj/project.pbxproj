@@ -99,6 +99,7 @@
 		D42673131D1A30A800F73865 /* WisaTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WisaTracker.swift; sourceTree = "<group>"; };
 		D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WAppDelegate.swift; sourceTree = "<group>"; };
 		D442391F1E07A8120009E862 /* wing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wing.entitlements; sourceTree = "<group>"; };
+		D45369EA1E63E34B0026E571 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		D45D64731CB28B64004976A2 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		D45D64761CB29370004976A2 /* ExtensionUIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUIColor.swift; sourceTree = "<group>"; };
 		D45D648F1CB5217D004976A2 /* ExtensionUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUIButton.swift; sourceTree = "<group>"; };
@@ -137,7 +138,6 @@
 		D49E62F71D587DBD00C057B9 /* magicapp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = magicapp.xcdatamodel; sourceTree = "<group>"; };
 		D49E62F91D587DBD00C057B9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D49E62FA1D587DBD00C057B9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		D49E63531D59632D00C057B9 /* test.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = test.plist; path = /Users/RedSea/Desktop/wmagic_ios/test.plist; sourceTree = "<absolute>"; };
 		D4C64EE91CAC06A200BF545E /* ResourceBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceBase.swift; sourceTree = "<group>"; };
 		D4C64EEA1CAC06A200BF545E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		D4C64EEB1CAC06A200BF545E /* WInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WInfo.swift; sourceTree = "<group>"; };
@@ -163,6 +163,7 @@
 		3C9E170861F3087016DD6D81 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D45369EA1E63E34B0026E571 /* CoreTelephony.framework */,
 				FAD129BDA686D308F6FD3048 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -214,16 +215,15 @@
 		D41622671C9C44A300A818DA = {
 			isa = PBXGroup;
 			children = (
-				D47A8D5A1CE0448900E655F1 /* BridgingHeader.h */,
 				D4FD0F131CBB5DC000018CDF /* WebKit.framework */,
-				D408A9C41CA2B50400E0DCB5 /* RSLibrary */,
+				D47A8D5A1CE0448900E655F1 /* BridgingHeader.h */,
 				D416228B1C9EA6C000A818DA /* core */,
-				D41622721C9C44A300A818DA /* wing */,
-				D49E62DC1D587DBD00C057B9 /* tbhshop */,
-				D41622711C9C44A300A818DA /* Products */,
 				3C9E170861F3087016DD6D81 /* Frameworks */,
 				5A5EFE1A5D3ECC6C40969127 /* Pods */,
-				D49E63531D59632D00C057B9 /* test.plist */,
+				D41622711C9C44A300A818DA /* Products */,
+				D408A9C41CA2B50400E0DCB5 /* RSLibrary */,
+				D49E62DC1D587DBD00C057B9 /* tbhshop */,
+				D41622721C9C44A300A818DA /* wing */,
 			);
 			sourceTree = "<group>";
 		};

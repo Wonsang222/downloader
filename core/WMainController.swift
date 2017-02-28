@@ -138,7 +138,6 @@ class WMainController: BaseWebViewController {
         
         let requestObj = NSMutableURLRequest(URL: url_obj!);
         requestObj.HTTPShouldHandleCookies = true
-        print(url_obj?.absoluteString)
         
 //        if let sessionCookie = WInfo.defaultCookieForName("PHPSESSID") {
 //            let cookieString = self.wn_javascriptString(sessionCookie);
@@ -168,9 +167,6 @@ class WMainController: BaseWebViewController {
             let new_url = "\(WInfo.appUrl)?\(WInfo.urlParam)"
             url_obj = NSURL (string: new_url);
         }
-        print(url_obj?.absoluteString)
-
-        
         let requestObj = NSMutableURLRequest(URL: url_obj!);
 //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
         webView.loadRequest(requestObj);

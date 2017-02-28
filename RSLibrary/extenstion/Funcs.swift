@@ -34,4 +34,13 @@ func CRectChangeX(rect:CGRect,x:CGFloat) -> CGRect{
 func CRectChangeY(rect:CGRect,y:CGFloat) -> CGRect{
     return CGRectMake(rect.origin.x, y, rect.size.width, rect.size.height)
 }
+func toJSONString(dic:Dictionary<String,AnyObject>) -> String{
+    do{
+        let returnData = try NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions())
+        return (NSString(data:returnData,encoding:NSUTF8StringEncoding) as! String).urlEncode()!
+    }catch{
+        return "{}"
+    }
 
+    
+}

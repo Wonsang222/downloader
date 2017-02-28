@@ -12,6 +12,8 @@ class ApiFormApp : HttpBaseResource{
         if !WInfo.accountId.isEmpty{
             ap("account_id",WInfo.accountId)
         }
+        ap("version_app" ,AppProp.appVersion)
+
     }
 
     override var reqUrl:String{

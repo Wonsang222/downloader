@@ -23,6 +23,10 @@ class BaseController: UIViewController {
     var controllerCallback:[Int:String] = [:]
     
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if let tracker = (UIApplication.sharedApplication().delegate as! WAppDelegate).tracker {
@@ -66,6 +70,8 @@ class BaseController: UIViewController {
         alert.addAction(UIAlertAction(title: "미동의" , style: UIAlertActionStyle.Default, handler:disagree))
         return alert
     }
+    
+    
     
    
     

@@ -3,4 +3,4 @@
 # Uncomment this line if you're using Swift
 # use_frameworks!
 pod 'Google/Analytics'
-link_with 'magicapp'
+link_with 'wing'

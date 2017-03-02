@@ -184,7 +184,6 @@ class WIntroController: BaseController {
                     self.dismissProcess()
                     return
                 }
-            
 		   		if Int(serverVersion) > Int(curVersion) && WInfo.ignoreUpdateVersion != serverVersion {
 					let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.Alert)
 					alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.Default, handler:{ action in

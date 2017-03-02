@@ -13,6 +13,8 @@ class ApiFormApp : HttpBaseResource{
             ap("account_id",WInfo.accountId)
         }
         ap("version_app" ,AppProp.appVersion)
+        
+        reqHeader["core_version"] = WInfo.coreVersion
 
     }
 
@@ -22,6 +24,7 @@ class ApiFormApp : HttpBaseResource{
         }
     }
 
+    
 	
 	override func parse(_data: NSData) throws{
         //print( NSString(data: _data, encoding: NSUTF8StringEncoding))

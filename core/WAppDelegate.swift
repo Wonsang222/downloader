@@ -27,7 +27,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let userAgent = UIWebView().stringByEvaluatingJavaScriptFromString("navigator.userAgent")
         NSUserDefaults.standardUserDefaults().registerDefaults(
-            ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(AppProp.appVersion)"]
+            ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
         )
         
         NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always

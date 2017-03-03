@@ -14,6 +14,9 @@ class ThemeFactory {
         if themeInfo == nil{
             return nil
         }
+        if themeInfo!["theme"] == nil {
+            return nil
+        }
         let theme = themeInfo!["theme"] as! String
         let theme_select = themeInfo!["theme_select"] == nil ? "" : themeInfo!["theme_select"] as! String
         switch theme {

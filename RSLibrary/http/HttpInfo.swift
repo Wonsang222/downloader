@@ -1,4 +1,4 @@
 struct HttpInfo{
-	static let HOST = "http://magicapp.wisaweb.co.kr"
+	static let HOST = "http://admin.magicapp.co.kr"
 	static let TIMEOUT = 5000
 }

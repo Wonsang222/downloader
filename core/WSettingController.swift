@@ -10,6 +10,8 @@ import UIKit
 
 class WSettingController: BaseController {
 
+    var tapCount = 0
+    
     @IBOutlet weak var curVersion: UILabel!
     @IBOutlet weak var newVersion: UILabel!
     @IBOutlet weak var orderSwitch: UISwitch!
@@ -45,9 +47,28 @@ class WSettingController: BaseController {
         self.eventSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
 
         
+        
+        let bundle_id = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
+        if bundle_id.hasSuffix(".lh") || bundle_id.hasSuffix(".adhoc"){
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(WSettingController.push_test))
+            self.newVersion.addGestureRecognizer(gesture)
+        }
+        
+        
+        
+    }
+    
+    func push_test(){
+        tapCount = tapCount + 1
+        if tapCount == 10 {
+            tapCount = 0;
+            let bundle_id = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
 
-        
-        
+            RSHttp(controller: self).req(
+                ResourceBuilderPushTest().ap("token",WInfo.deviceToken).ap("package",bundle_id)
+            )
+            self.view.makeToast("테스트 푸쉬 발송")
+        }
     }
 
     

@@ -106,3 +106,30 @@ class WingLogin : HttpBaseResource{
 }
 
 
+class ResourceBuilderPushTest : HttpBaseResource{
+    
+    
+    override init() {
+        super.init()
+        reqHeader["core_version"] = WInfo.coreVersion
+        
+    }
+    
+    override func makeRequest() -> NSMutableURLRequest{
+        let request = NSMutableURLRequest(URL: NSURL(string:"http://118.129.243.173:8080/apn")!)
+        request.addValue(self.reqUrl, forHTTPHeaderField: "Referer")
+        request.HTTPMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = self.generateParamter().dataUsingEncoding(NSUTF8StringEncoding)
+        return request
+    }
+    
+    
+    
+    override func parse(_data: NSData) throws{
+        self.errorCode = ResourceCode.SUCCESS
+    }
+}
+
+
+

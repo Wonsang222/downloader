@@ -14,18 +14,18 @@ class ThemeFactory {
         if themeInfo == nil{
             return nil
         }
+        let core = themeInfo!["core"] == nil ? "v1" : themeInfo!["core"] as! String
         if themeInfo!["theme"] == nil {
             return nil
         }
         let theme = themeInfo!["theme"] as! String
-        let theme_select = themeInfo!["theme_select"] == nil ? "" : themeInfo!["theme_select"] as! String
-        switch theme {
-            case "wing":
+        switch core {
+            case "v1":
                 return ThemeV1( controller: contoller, object:themeInfo!)
             case "v2":
-                if theme_select == "t1" {
+                if theme == "t1" {
                     return ThemeV2T1( controller: contoller, object:themeInfo!)
-                }else if theme_select == "t2" {
+                }else if theme == "t2" {
                     return ThemeV2T2( controller: contoller, object:themeInfo!)
                 }else{
                     return ThemeV2T1( controller: contoller, object:themeInfo!)

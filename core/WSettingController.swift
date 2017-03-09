@@ -51,7 +51,8 @@ class WSettingController: BaseController {
         let bundle_id = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
         if bundle_id.hasSuffix(".lh") || bundle_id.hasSuffix(".adhoc"){
             let gesture = UITapGestureRecognizer(target: self, action: #selector(WSettingController.push_test))
-            self.newVersion.addGestureRecognizer(gesture)
+            gesture.numberOfTapsRequired = 1;
+            self.newVersion.superview!.addGestureRecognizer(gesture)
         }
         
         

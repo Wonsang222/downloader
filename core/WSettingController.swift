@@ -66,9 +66,16 @@ class WSettingController: BaseController {
             let bundle_id = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
 
             RSHttp(controller: self).req(
-                ResourceBuilderPushTest().ap("token",WInfo.deviceToken).ap("package",bundle_id)
+                
+                
             )
-            self.view.makeToast("테스트 푸쉬 발송")
+            RSHttp(controller: self).req(
+                ResourceBuilderPushTest().ap("token",WInfo.deviceToken).ap("package",bundle_id)
+                , successCb: { (resource) -> (Void) in
+                    self.view.makeToast("테스트 푸쉬 발송")
+                UIApplication.sharedApplication().openURL(NSURL(string: "http://naver.com")!)
+            })
+
         }
     }
 

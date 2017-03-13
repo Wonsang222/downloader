@@ -18,7 +18,8 @@ class WInfo{
 //                return "http://m.nain.co.kr"
 //                return "http://m.bh.wisaweb.co.kr"
 //                return "http://118.129.243.73/ws_magic.html"
-              return returnValue
+                return "http://118.129.243.248:8109"
+//              return returnValue
 			}else{
 				return ""
 			}

@@ -85,7 +85,11 @@ class WingLogin : HttpBaseResource{
             if self.reqUrl.hasPrefix("http://") || self.reqUrl.hasPrefix("https://") {
                 return self.reqUrl
             }else{
-                return HttpInfo.HOST + self.reqUrl
+                if AppProp.appId.containsString("com.mywisa.kollshopsg.magicapp") {
+                    return "http://118.129.243.248:8109" + self.reqUrl
+                }else{
+                    return HttpInfo.HOST + self.reqUrl
+                }
             }
         }()
         let request = NSMutableURLRequest(URL: NSURL(string:pageUrl)!)

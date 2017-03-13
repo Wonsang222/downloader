@@ -108,6 +108,10 @@ class WIntroController: BaseController {
                 let account_id = resource.body()["account_id"] as! String
                 let urlParam = resource.body()["url_param"] as! String
 
+                if let marketingUrl = resource.body()["marketing_url"] as? String{
+                    WInfo.getMarketingPopupUrl = marketingUrl
+                }
+
 		   		WInfo.appUrl = siteUrl
                 WInfo.urlParam = urlParam;
                 WInfo.solutionType = solutionType
@@ -134,11 +138,6 @@ class WIntroController: BaseController {
 		   successCb: { (resource) -> Void in
 		   		let serverVersion = resource.body()["version"] as! String
 		   		let introImg = resource.body()["intro_img"] as! String
-            
-                if let marketingUrl = resource.body()["marketing_url"] as? String{
-                    WInfo.getMarketingPopupUrl = marketingUrl
-                }
-            
 		   		if Int(serverVersion)! > self.saveVersion{
                     let documentDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
                     let filePath = documentDirectoryURL.URLByAppendingPathComponent(NSUUID().UUIDString)!.filePathURL!.path!

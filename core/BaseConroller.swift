@@ -138,7 +138,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
 
         webView.delegate = self
         webView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight,UIViewAutoresizing.FlexibleWidth]
-
+        webView.scalesPageToFit = true
         webViewContainer.addSubview(webView)
     }
     

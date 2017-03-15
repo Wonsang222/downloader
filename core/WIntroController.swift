@@ -179,7 +179,9 @@ class WIntroController: BaseController {
 		   		let serverVersion = (resource.body()["version"] as! String).replace(".", withString: "")
                 let appUrl = resource.body()["app_url"] as! String
                 let curVersion = AppProp.appVersion.replace(".", withString: "")
-                if Int(serverVersion) < 0 {
+                let update_use = resource.body()["update_use"] as! String
+
+                if update_use == "N" {
                     self.dismissProcess()
                     return
                 }

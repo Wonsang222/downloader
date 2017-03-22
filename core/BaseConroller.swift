@@ -258,9 +258,31 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
             self.presentViewController(picker, animated: true, completion: { 
                 
             });
+        }else if value["func"] == "shareUrl" {
+            if value["params"] == nil {
+                self.view.makeToast("파라미터가 없습니다.")
+                return
+            }
+            let value = toJsonString(value["params"])
+            let objectToShare = [ NSURL(string: value["url"] as! String)! ]
+            let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
+            presentViewController(activity, animated: true, completion: nil)
+
         }
     }
     
+    func toJsonString(json_decode:String?) -> [String:AnyObject]{
+        do{
+            let value = try
+                NSJSONSerialization.JSONObjectWithData(
+                    json_decode!.stringByRemovingPercentEncoding!.dataUsingEncoding(NSUTF8StringEncoding)!
+                    ,options: NSJSONReadingOptions()) as! [String:AnyObject]
+            return value
+        }catch{
+            return [String:AnyObject]()
+        }
+
+    }
     
 /*
     func webView(webView: WKWebView, createWebViewWithConfiguration configuration: WKWebViewConfiguration, forNavigationAction navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {

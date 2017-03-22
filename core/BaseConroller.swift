@@ -264,6 +264,9 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
                 return
             }
             let value = toJsonString(value["params"])
+            if value["url"] == nil {
+                return
+            }
             let objectToShare = [ NSURL(string: value["url"] as! String)! ]
             let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
             presentViewController(activity, animated: true, completion: nil)
@@ -279,6 +282,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
                     ,options: NSJSONReadingOptions()) as! [String:AnyObject]
             return value
         }catch{
+            print(error)
             return [String:AnyObject]()
         }
 
@@ -487,7 +491,8 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
             }
         }
         let returnObj = [ "name" : contactNm , "number" : returnPhone == nil ? "" : returnPhone! ]
-        webView.stringByEvaluatingJavaScriptFromString("javascript:\(controllerCallback[CONTACT_CALLBACK]!)('\(toJSONString(returnObj))')")
+        self.webView.stringByEvaluatingJavaScriptFromString("javascript:\(self.controllerCallback[self.CONTACT_CALLBACK]!)('\(toJSONString(returnObj))')")
+        
     }
 
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {

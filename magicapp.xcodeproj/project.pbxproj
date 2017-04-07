@@ -46,6 +46,8 @@
 		D45D64751CB28B64004976A2 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D64731CB28B64004976A2 /* Toast.swift */; };
 		D45D64771CB29370004976A2 /* ExtensionUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D64761CB29370004976A2 /* ExtensionUIColor.swift */; };
 		D45D64901CB5217D004976A2 /* ExtensionUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D648F1CB5217D004976A2 /* ExtensionUIButton.swift */; };
+		D48808501E9756B8009D3DB1 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D488084F1E9756B8009D3DB1 /* AdSupport.framework */; };
+		D48808531E975D70009D3DB1 /* EventAdbrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48808521E975D70009D3DB1 /* EventAdbrix.swift */; };
 		D4932E811CA432710014B769 /* HttpMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4932E7C1CA432710014B769 /* HttpMap.swift */; };
 		D4932E821CA432710014B769 /* WIntroController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4932E7D1CA432710014B769 /* WIntroController.swift */; };
 		D4932E831CA432710014B769 /* WMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4932E7E1CA432710014B769 /* WMainController.swift */; };
@@ -111,6 +113,11 @@
 		D45D64761CB29370004976A2 /* ExtensionUIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUIColor.swift; sourceTree = "<group>"; };
 		D45D648F1CB5217D004976A2 /* ExtensionUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUIButton.swift; sourceTree = "<group>"; };
 		D47A8D5A1CE0448900E655F1 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
+		D48808491E975565009D3DB1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		D488084B1E97556C009D3DB1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		D488084D1E975574009D3DB1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		D488084F1E9756B8009D3DB1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		D48808521E975D70009D3DB1 /* EventAdbrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAdbrix.swift; sourceTree = "<group>"; };
 		D4932E7C1CA432710014B769 /* HttpMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpMap.swift; sourceTree = "<group>"; };
 		D4932E7D1CA432710014B769 /* WIntroController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WIntroController.swift; sourceTree = "<group>"; };
 		D4932E7E1CA432710014B769 /* WMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMainController.swift; sourceTree = "<group>"; };
@@ -136,6 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D48808501E9756B8009D3DB1 /* AdSupport.framework in Frameworks */,
 				D4154F641CBF93D000ED25CE /* WebKit.framework in Frameworks */,
 				4867A458847E14ACBE8CFF29 /* Pods_wing.framework in Frameworks */,
 			);
@@ -147,6 +155,10 @@
 		3C9E170861F3087016DD6D81 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D488084F1E9756B8009D3DB1 /* AdSupport.framework */,
+				D488084D1E975574009D3DB1 /* CoreMedia.framework */,
+				D488084B1E97556C009D3DB1 /* AVFoundation.framework */,
+				D48808491E975565009D3DB1 /* AVKit.framework */,
 				D45369EA1E63E34B0026E571 /* CoreTelephony.framework */,
 				B8F876D90701912874616002 /* Pods_wing.framework */,
 			);
@@ -236,6 +248,7 @@
 		D416228B1C9EA6C000A818DA /* core */ = {
 			isa = PBXGroup;
 			children = (
+				D48808511E975D59009D3DB1 /* external */,
 				D4ABD0F31E6562BD00EC0649 /* theme */,
 				D4C64EE81CAC06A200BF545E /* http */,
 				D45D64731CB28B64004976A2 /* Toast.swift */,
@@ -278,6 +291,14 @@
 				D4154F4B1CBF569C00ED25CE /* ic_navi_back.png */,
 			);
 			path = images;
+			sourceTree = "<group>";
+		};
+		D48808511E975D59009D3DB1 /* external */ = {
+			isa = PBXGroup;
+			children = (
+				D48808521E975D70009D3DB1 /* EventAdbrix.swift */,
+			);
+			name = external;
 			sourceTree = "<group>";
 		};
 		D4932E881CA4330A0014B769 /* controller */ = {
@@ -499,6 +520,7 @@
 				D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */,
 				D416227C1C9C44A300A818DA /* magicapp.xcdatamodeld in Sources */,
 				CAAAC7CC1CB6245E00031667 /* ExtenstionUIImage.swift in Sources */,
+				D48808531E975D70009D3DB1 /* EventAdbrix.swift in Sources */,
 				D45D64751CB28B64004976A2 /* Toast.swift in Sources */,
 				D4ABD0FA1E6562BD00EC0649 /* ThemeFactory.swift in Sources */,
 				D405296C1DFE7CD600E09FAD /* MarketingPopupController.swift in Sources */,

@@ -6,4 +6,5 @@ use_frameworks!
 target 'wing' do
 pod 'Google/Analytics'
 pod 'IgaworksCore'
+pod 'AdBrix'
 end

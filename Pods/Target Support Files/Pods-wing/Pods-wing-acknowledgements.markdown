@@ -1,6 +1,15 @@
 # Acknowledgements
 This application makes use of the following third party libraries:
 
+## AdBrix
+
+All text and design is copyright 2006-2015 igaworks, Inc.
+
+All rights reserved.
+
+https://github.com/IGAWorksDev/AdBrix-iOS
+
+
 ## FirebaseAnalytics
 
 Copyright 2017 Google

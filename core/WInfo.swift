@@ -11,7 +11,7 @@ import UIKit
 class WInfo{
     
 //    static let coreVersion:String = "wmgkcore_v2"
-    static let coreVersion:String = "wmgkcore_v2.0.1" //공유하기 API 추가
+    static let coreVersion:String = "wmgkcore_v2.1.1" //공유하기 API 추가
     
 	static var appUrl:String{
 		get{

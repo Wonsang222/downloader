@@ -7,3 +7,5 @@
 //
 
 #import <Google/Analytics.h>
+#import <IgaworksCore/IgaworksCore.h>
+#import <AdBrix/AdBrix.h>

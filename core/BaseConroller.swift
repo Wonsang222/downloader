@@ -263,14 +263,31 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
                 self.view.makeToast("파라미터가 없습니다.")
                 return
             }
-            let value = toJsonString(value["params"])
-            if value["url"] == nil {
+            let json = toJsonString(value["params"])
+            if json["url"] == nil {
                 return
             }
-            let objectToShare = [ NSURL(string: value["url"] as! String)! ]
+            let objectToShare = [ NSURL(string: json["url"] as! String)! ]
             let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
             presentViewController(activity, animated: true, completion: nil)
-
+        }else if value["func"] == "adbrixFirstTimeExperience" {
+            let json = toJsonString(value["params"])
+            EventAdbrix.firstTimeExperience(json)
+        }else if value["func"] == "adbrixRetention" {
+            let json = toJsonString(value["params"])
+            EventAdbrix.retention(json)
+        }else if value["func"] == "adbrixSetAge" {
+            let json = toJsonString(value["params"])
+            EventAdbrix.setAge(json)
+        }else if value["func"] == "adbrixSetGender" {
+            let json = toJsonString(value["params"])
+            EventAdbrix.setGender(json)
+        }else if value["func"] == "adbrixPurchase" {
+            let json = toJsonString(value["params"])
+            EventAdbrix.purchase(json)
+        }else if value["func"] == "adbrixSetCustomCohort" {
+            let json = toJsonString(value["params"])
+            EventAdbrix.setCustomCohort(json)
         }
     }
     

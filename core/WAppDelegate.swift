@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AdSupport
 
 class WAppDelegate: UIResponder, UIApplicationDelegate  {
     
@@ -48,6 +49,19 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         let gai = GAI.sharedInstance()
         gai.trackUncaughtExceptions = true;
         gai.logger.logLevel = GAILogLevel.None
+        
+        
+        if AppProp.isAdbrix {
+            if NSClassFromString("ASIdentifierManager") != nil {
+                let ifa = ASIdentifierManager.sharedManager().advertisingIdentifier
+                let isAppleAdvertisingTrackingEnabled = ASIdentifierManager.sharedManager().advertisingTrackingEnabled
+                IgaworksCore.setAppleAdvertisingIdentifier(ifa.UUIDString, isAppleAdvertisingTrackingEnabled: isAppleAdvertisingTrackingEnabled)
+            }
+            
+            
+            IgaworksCore.igaworksCoreWithAppKey(AppProp.adbrixAppKey, andHashKey: AppProp.adbrixHashKey)
+            IgaworksCore.setLogLevel(IgaworksCoreLogTrace)
+        }
         return true
     }
     func applicationWillResignActive(application: UIApplication) {

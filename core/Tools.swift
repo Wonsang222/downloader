@@ -29,6 +29,25 @@ class AppProp{
             return NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as! String
 		}
 	}
+    
+    static var adbrixAppKey:String?{
+        get{
+            return NSBundle.mainBundle().infoDictionary?["WGAdbrixAppKey"] as? String
+        }
+    }
+    static var adbrixHashKey:String?{
+        get{
+            return NSBundle.mainBundle().infoDictionary?["WGAdbrixHashKey"] as? String
+        }
+    }
+    static var isAdbrix:Bool{
+        get{
+            if AppProp.adbrixAppKey != nil && !AppProp.adbrixAppKey!.isEmpty {
+                return true
+            }
+            return false
+        }
+    }
  
 }
 

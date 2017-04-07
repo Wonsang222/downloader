@@ -180,7 +180,6 @@ class WIntroController: BaseController {
                 let appUrl = resource.body()["app_url"] as! String
                 let curVersion = AppProp.appVersion.replace(".", withString: "")
                 let update_use = resource.body()["update_use"] as! String
-
                 if update_use == "N" {
                     self.dismissProcess()
                     return

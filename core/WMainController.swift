@@ -231,7 +231,6 @@ class WMainController: BaseWebViewController {
     func onShareClick(sender:UIButton!){
         let objectToShare = [webView.request!.URL!]
         let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
-
         presentViewController(activity, animated: true, completion: nil)
     }
     func onPushClick(sender:UIButton!){

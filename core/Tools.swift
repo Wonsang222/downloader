@@ -40,14 +40,6 @@ class AppProp{
             return NSBundle.mainBundle().infoDictionary?["WGAdbrixHashKey"] as? String
         }
     }
-    static var isAdbrix:Bool{
-        get{
-            if AppProp.adbrixAppKey != nil && !AppProp.adbrixAppKey!.isEmpty {
-                return true
-            }
-            return false
-        }
-    }
  
 }
 

@@ -51,17 +51,15 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         gai.logger.logLevel = GAILogLevel.None
         
         
-        if AppProp.isAdbrix {
-            if NSClassFromString("ASIdentifierManager") != nil {
-                let ifa = ASIdentifierManager.sharedManager().advertisingIdentifier
-                let isAppleAdvertisingTrackingEnabled = ASIdentifierManager.sharedManager().advertisingTrackingEnabled
-                IgaworksCore.setAppleAdvertisingIdentifier(ifa.UUIDString, isAppleAdvertisingTrackingEnabled: isAppleAdvertisingTrackingEnabled)
-            }
-            
-            
-            IgaworksCore.igaworksCoreWithAppKey(AppProp.adbrixAppKey, andHashKey: AppProp.adbrixHashKey)
-            IgaworksCore.setLogLevel(IgaworksCoreLogTrace)
+        #if ADBRIX
+        if NSClassFromString("ASIdentifierManager") != nil {
+            let ifa = ASIdentifierManager.sharedManager().advertisingIdentifier
+            let isAppleAdvertisingTrackingEnabled = ASIdentifierManager.sharedManager().advertisingTrackingEnabled
+            IgaworksCore.setAppleAdvertisingIdentifier(ifa.UUIDString, isAppleAdvertisingTrackingEnabled: isAppleAdvertisingTrackingEnabled)
         }
+        IgaworksCore.igaworksCoreWithAppKey(AppProp.adbrixAppKey, andHashKey: AppProp.adbrixHashKey)
+            //            IgaworksCore.setLogLevel(IgaworksCoreLogTrace)
+        #endif
         return true
     }
     func applicationWillResignActive(application: UIApplication) {

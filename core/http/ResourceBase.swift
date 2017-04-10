@@ -67,11 +67,11 @@ class WingLogin : HttpBaseResource{
 
     override func parseHeader(_response: NSURLResponse) throws{
         
-        let httpResponse: NSHTTPURLResponse = _response as! NSHTTPURLResponse
+//        let httpResponse: NSHTTPURLResponse = _response as! NSHTTPURLResponse
         
-        if let value = httpResponse.allHeaderFields["Set-Cookie"]{
-            print("Set Cookie  \(value)")
-        }
+//        if let value = httpResponse.allHeaderFields["Set-Cookie"]{
+//            print("Set Cookie  \(value)")
+//        }
         
         
     

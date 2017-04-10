@@ -143,14 +143,12 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
     }
     
     func reloadPage(){
-        print("reloadPage")
         self.webView.reload()
         
     }
     
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        print("shouldStartLoadWithRequest \(request.URL!) navigationType \(navigationType)")
         var backgroundSupported = false
         let device = UIDevice.currentDevice()
         if device.respondsToSelector(Selector("isMultitaskingSupported")){
@@ -230,7 +228,6 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
         if value["func"] == "deviceId" {
             let callback = value["callback"]!.stringByRemovingPercentEncoding!
             let value = UIDevice.currentDevice().identifierForVendor!.UUIDString
-            print("javascript:\(callback)('\(value)')")
             webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
         }else if value["func"] == "version" {
             let callback = value["callback"]!.stringByRemovingPercentEncoding!

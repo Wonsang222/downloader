@@ -79,7 +79,9 @@ class HttpBaseResource{
 			}else{
 				request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 				request.HTTPBody = self.generateParamter().dataUsingEncoding(NSUTF8StringEncoding)
+                #if DEBUG
                 print(self.generateParamter())
+                #endif
 			}
 		}
 		return request

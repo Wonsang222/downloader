@@ -12,47 +12,41 @@ class EventAdbrix {
     
     
     static func firstTimeExperience(param:[String:AnyObject]){
-        if !AppProp.isAdbrix {
-            return
-        }
+        #if ADBRIX
         if let fParam = param["param"] as? String{
             AdBrix.firstTimeExperience(param["name"] as! String, param: fParam)
         }else{
             AdBrix.firstTimeExperience(param["name"] as! String)
         }
+        #endif
     }
     static func retention(param:[String:AnyObject]){
-        if !AppProp.isAdbrix {
-            return
-        }
+        #if ADBRIX
         if let fParam = param["param"] as? String{
             AdBrix.retention(param["name"] as! String, param: fParam)
         }else{
             AdBrix.retention(param["name"] as! String)
         }
+        #endif
     }
     static func setAge(param:[String:AnyObject]){
-        if !AppProp.isAdbrix {
-            return
-        }
+        #if ADBRIX
         let age:Int = param["age"] as! Int
         IgaworksCore.setAge(Int32(age))
+        #endif
     }
     static func setGender(param:[String:AnyObject]){
-        if !AppProp.isAdbrix {
-            return
-        }
+        #if ADBRIX
         let gender = param["gender"] as! String
         if gender == "M" {
             IgaworksCore.setGender(IgaworksCoreGenderMale)
         }else{
             IgaworksCore.setGender(IgaworksCoreGenderFemale)
         }
+        #endif
     }
     static func purchase(param:[String:AnyObject]){
-        if !AppProp.isAdbrix {
-            return
-        }
+        #if ADBRIX
         var productModels = [AdBrixCommerceProductModel]()
         let products = param["products"] as! [[String:AnyObject]]
         for product in products {
@@ -83,18 +77,22 @@ class EventAdbrix {
                                                                  extraAttrsMap: nil)
             productModels.append(productModel)
         }
-        
-        AdBrix.purchase(param["orderId"] as! String, productsInfos: products, paymentMethod: AdBrix.paymentMethod(UInt(AdbrixPaymentMethod.AdBrixPaymentMobilePayment.rawValue)))
+        if productModels.count == 1 {
+            AdBrix.purchase(param["orderId"] as! String, product: productModels[0], paymentMethod: AdBrix.paymentMethod(UInt(AdbrixPaymentMethod.AdBrixPaymentMobilePayment.rawValue)))
+        }else{
+            AdBrix.purchase(param["orderId"] as! String, productsInfos: productModels, paymentMethod: AdBrix.paymentMethod(UInt(AdbrixPaymentMethod.AdBrixPaymentMobilePayment.rawValue)))
+            
+        }
+        #endif
     }
     
     static func setCustomCohort(param:[String:AnyObject]){
-        if !AppProp.isAdbrix {
-            return
-        }
+        #if ADBRIX
         let index = param["index"] as! Int
         if let type = AdBrixCustomCohortType(rawValue: index) {
             AdBrix.setCustomCohort(type, filterName: param["value"] as! String)
         }
+        #endif
     }
     
     static func currencyValue(value:String) -> UInt{

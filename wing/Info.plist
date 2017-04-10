@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>WGAdbrixAppKey</key>
-	<string>247604365</string>
+	<string></string>
 	<key>WGAdbrixHashKey</key>
-	<string>49644a5f3fc94d46</string>
+	<string></string>
 	<key>NSCameraUsageDescription</key>
 	<string>파일첨부</string>
 	<key>NSLocationAlwaysUsageDescription</key>

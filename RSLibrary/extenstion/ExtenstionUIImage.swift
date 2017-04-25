@@ -28,17 +28,18 @@ extension UIImage{
     }
     
     func makeFillImageV2(parent:UIView) -> UIImage {
+        let parentSizeScale = CGSizeMake(parent.frame.width*UIScreen.mainScreen().scale, parent.frame.height*UIScreen.mainScreen().scale)
         let scale_factor:CGFloat = 3.0/UIScreen.mainScreen().scale
-        UIGraphicsBeginImageContext(CGSizeMake(parent.frame.width*UIScreen.mainScreen().scale, parent.frame.height*UIScreen.mainScreen().scale))
+        UIGraphicsBeginImageContext(parentSizeScale)
         let context = UIGraphicsGetCurrentContext();
         CGContextSetFillColorWithColor(context!, UIColor.clearColor().CGColor);
         CGContextFillRect(context!,CGRectMake(0,0,parent.bounds.width*UIScreen.mainScreen().scale,parent.bounds.height*UIScreen.mainScreen().scale));
+        print(self.size.width)
         let resize_width = self.size.width/scale_factor
         let resize_height = self.size.height/scale_factor
-        
         self.drawInRect(CGRectMake(
-            parent.frame.width - resize_width/2.0,
-            parent.frame.height - resize_height/2.0,
+            (parentSizeScale.width - resize_width)/2,
+            (parentSizeScale.height - resize_height)/2,
             resize_width,
             resize_height))
         let returnVal = UIGraphicsGetImageFromCurrentImageContext()

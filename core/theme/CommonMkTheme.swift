@@ -12,11 +12,11 @@ import UIKit
 class CommonMkTheme {
     
     var viewController:UIViewController
-    var uiData:[String:AnyObject]
+    var uiData:[String:Any]
     
     
-    init(controller:UIViewController, object:[String:AnyObject]){
-        self.uiData = object["ui_data"] as! [String:AnyObject]
+    init(controller:UIViewController, object:[String:Any]){
+        self.uiData = object["ui_data"] as! [String:Any]
         self.viewController = controller
     }
     
@@ -28,26 +28,26 @@ class CommonMkTheme {
         
     }
     func preferredStatusBarStyle() -> UIStatusBarStyle{
-        return .Default
+        return .default
     }
     
     
-    func applyAction(button:UIButton,key:String){
+    func applyAction(_ button:UIButton,key:String){
         if key == "prev"{
-            button.addTarget(self.viewController , action: #selector(WMainController.onPrevClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self.viewController , action: #selector(WMainController.onPrevClick(_:)) , for: UIControlEvents.touchUpInside)
         }else if key == "next"{
-            button.addTarget(self.viewController , action: #selector(WMainController.onNextClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self.viewController , action: #selector(WMainController.onNextClick(_:)) , for: UIControlEvents.touchUpInside)
         }else if key == "reload"{
-            button.addTarget(self.viewController , action: #selector(WMainController.onReloadClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self.viewController , action: #selector(WMainController.onReloadClick(_:)) , for: UIControlEvents.touchUpInside)
         }else if key == "home"{
-            button.addTarget(self.viewController , action: #selector(WMainController.onHomeClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self.viewController , action: #selector(WMainController.onHomeClick(_:)) , for: UIControlEvents.touchUpInside)
         }else if key == "share"{
-            button.addTarget(self.viewController , action: #selector(WMainController.onShareClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self.viewController , action: #selector(WMainController.onShareClick(_:)) , for: UIControlEvents.touchUpInside)
         }else if key == "push"{
-            button.addTarget(self.viewController , action: #selector(WMainController.onPushClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self.viewController , action: #selector(WMainController.onPushClick(_:)) , for: UIControlEvents.touchUpInside)
         }else if key == "tab"{
         }else if key == "setting"{
-            button.addTarget(self.viewController , action: #selector(WMainController.onSettingClick(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self.viewController , action: #selector(WMainController.onSettingClick(_:)) , for: UIControlEvents.touchUpInside)
             
         }
     }

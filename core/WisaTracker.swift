@@ -11,7 +11,7 @@ import Foundation
 class WisaTracker {
     
     
-    func page(page:String){
+    func page(_ page:String){
         RSHttp(controller:nil,progress:false,showingPopup:false).req(
             ApiFormApp().ap("mode","set_statistic")
                 .ap("pack_name",AppProp.appId)

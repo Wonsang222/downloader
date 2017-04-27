@@ -2,7 +2,7 @@ import UIKit
 import MobileCoreServices
 
 class HttpBaseResource{
-	var errorCode:ResourceCode = ResourceCode.SUCCESS
+	var errorCode:ResourceCode = ResourceCode.success
 	var errorMsg = ""
     var reqUrl:String {
         get{
@@ -42,43 +42,43 @@ class HttpBaseResource{
 		return returnVal
 	}
 
-	func makeRequest() -> NSMutableURLRequest{
+	func makeRequest() -> URLRequest{
 		let pageUrl:String = {() -> String in
 			if self.reqUrl.hasPrefix("http://") || self.reqUrl.hasPrefix("https://") {
 				return self.reqUrl
 			}else{
-                if AppProp.appId.containsString("com.mywisa.kollshopsg.magicapp") {
+                if AppProp.appId.contains("com.mywisa.kollshopsg.magicapp") {
                     return "http://118.129.243.248:8109" + self.reqUrl
                 }else{
                     return HttpInfo.HOST + self.reqUrl
                 }
 			}
 		}()
-		let request = {() -> NSMutableURLRequest in
+		var request = {() -> URLRequest in
 			if self.reqMethod == "GET" {
-				return NSMutableURLRequest(URL: NSURL(string:pageUrl + "?" + self.generateParamter())!)
+				return URLRequest(url: URL(string:pageUrl + "?" + self.generateParamter())!)
 			}else{
-				return NSMutableURLRequest(URL: NSURL(string:pageUrl)!)
+				return URLRequest(url: URL(string:pageUrl)!)
 			}
 		}()
-        request.HTTPShouldHandleCookies = shouldCookieHandle
+        request.httpShouldHandleCookies = shouldCookieHandle
         #if DEBUG
             print(pageUrl)
         #endif
 		for(key,value) in self.reqHeader {
 			request.addValue(value, forHTTPHeaderField: key)
 		}
-		request.HTTPMethod = self.reqMethod
+		request.httpMethod = self.reqMethod
 		if(self.reqMethod != "GET"){
 			if self.isMultiPart {
                 
-				let boundary = "===" + String(Int(NSDate().timeIntervalSince1970)) + "==="
+				let boundary = "===" + String(Int(Date().timeIntervalSince1970)) + "==="
 				request.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
 				request.setValue("multipart/form-data;boundary=" + boundary, forHTTPHeaderField: "Content-Type")
-				request.HTTPBody = self.makeMultipart(boundary)
+				request.httpBody = self.makeMultipart(boundary) as Data
 			}else{
 				request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-				request.HTTPBody = self.generateParamter().dataUsingEncoding(NSUTF8StringEncoding)
+				request.httpBody = self.generateParamter().data(using: String.Encoding.utf8)
                 #if DEBUG
                 print(self.generateParamter())
                 #endif
@@ -87,7 +87,7 @@ class HttpBaseResource{
 		return request
 	}
 
-	private func makeMultipart(boundary:String) -> NSMutableData{
+	fileprivate func makeMultipart(_ boundary:String) -> NSMutableData{
 		let multipartData = NSMutableData()
 		let delimiter = "--\(boundary)\r\n"
 		for (key,value) in self.params{
@@ -95,14 +95,14 @@ class HttpBaseResource{
                 print("\(key) , \(value)")
             #endif
 			if key.hasPrefix("$") {
-				let fileUrl = NSURL(fileURLWithPath: value)
+				let fileUrl = URL(fileURLWithPath: value)
 				let mimetype = self.mimeTypeForPath(value)
-				let fileData = NSData(contentsOfFile: value)!
+				let fileData = try! Data(contentsOf: URL(fileURLWithPath: value))
 				multipartData.appendString(delimiter)
 				multipartData.appendString("Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(fileUrl.lastPathComponent)\"\r\n")
 				multipartData.appendString("Content-Type: \(mimetype)\r\n")
 				multipartData.appendString("Content-Transfer-Encoding: binary\r\n\r\n")
-				multipartData.appendData(fileData)
+				multipartData.append(fileData)
 				multipartData.appendString("\r\n")
 
 			}else{
@@ -117,11 +117,11 @@ class HttpBaseResource{
 	}
 
 
-	private func mimeTypeForPath(path: String) -> String {
-	    let url = NSURL(fileURLWithPath: path)
+	fileprivate func mimeTypeForPath(_ path: String) -> String {
+	    let url = URL(fileURLWithPath: path)
 	    let pathExtension = url.pathExtension
 
-	    if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension! as NSString, nil)?.takeRetainedValue() {
+	    if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue() {
 	        if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
 	            return mimetype as String
 	        }
@@ -130,14 +130,14 @@ class HttpBaseResource{
 	}
 
 
-    func ap(param:String...) -> HttpBaseResource{
+    func ap(_ param:String...) -> HttpBaseResource{
         params[param[0]] = param[1]
         return self;
 	}
     
-    func parse(_data: NSData) throws{
+    func parse(_ _data: Data) throws{
     }
     
-    func parseHeader(_response: NSURLResponse) throws{
+    func parseHeader(_ _response: URLResponse) throws{
     }
 }

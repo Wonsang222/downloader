@@ -3,6 +3,17 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "DownLoader.(loadImg(String, filePath : String, after : ([String : Any]) -&gt; ()) -&gt; ()).(closure #1).(closure #1):Tools.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "options[&quot;loopCount&quot;]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WIntroController.(saveVersion in _815D9AE7BF3442704604C870B9B826C5).getter:WIntroController.swift">
+      </ContextState>
+      <ContextState
          contextName = "static EventAdbrix.purchase([String : AnyObject]) -&gt; ():EventAdbrix.swift">
          <PersistentStrings>
             <PersistentString

@@ -20,14 +20,14 @@ class ThemeV2T2: CommonMkTheme {
         }
         
         let menus = uiData["menus"] as! [[String:AnyObject]]
-        let wisaMenu:UIView = UIView(frame : CGRectMake(0,view.frame.height - 50,UIScreen.mainScreen().bounds.width, 50) )
-        let menuWidth = UIScreen.mainScreen().bounds.width / CGFloat(menus.count)
+        let wisaMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - 50,width: UIScreen.main.bounds.width, height: 50) )
+        let menuWidth = UIScreen.main.bounds.width / CGFloat(menus.count)
         let bgColor = UIColor(hexString:uiData["menusBg"] as! String)
-        wisaMenu.userInteractionEnabled = true
+        wisaMenu.isUserInteractionEnabled = true
         wisaMenu.backgroundColor = bgColor
         var position = CGFloat(0)
         for menu in menus {
-            let menuView = UIButton(frame : CGRectMake(CGFloat(position), 0 , menuWidth ,wisaMenu.frame.height))
+            let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: menuWidth ,height: wisaMenu.frame.height))
             let key = menu["click"] as! String
             let icon_url = menu["icon_url"] as! String
             menuView.themeIconLoader(icon_url)
@@ -47,31 +47,30 @@ class ThemeV2T2: CommonMkTheme {
             
             if key == "next" {
                 mainController?.nextBtn = menuView
-                menuView.enabled = false
+                menuView.isEnabled = false
             }
             if key == "prev" {
                 mainController?.prevBtn = menuView
-                menuView.enabled = false
+                menuView.isEnabled = false
             }
             
             if key == "push" {
                 let newView = UIImageView()
                 newView.themeIconLoaderN(menu["badge_url"] as! String)
                 mainController?.isNewBadge = newView
-                newView.frame = CGRectMake(30,
-                                           13.166,
-                                           23.666,
-                                           23.666)
+                newView.frame = CGRect(x: 30,
+                                           y: 13.166,
+                                           width: 23.666,
+                                           height: 23.666)
                 newView.center.y = menuView.center.y
                 menuView.addSubview(newView)
-                print(newView)
             }
         }
         let borderLayer = CALayer()
-        borderLayer.backgroundColor = UIColor(hexString:"#c7c7c7").CGColor
-        borderLayer.frame = CGRectMake(0, 0, CGRectGetWidth(wisaMenu.frame), Tools.toOriginPixel(1.0))
+        borderLayer.backgroundColor = UIColor(hexString:"#c7c7c7").cgColor
+        borderLayer.frame = CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: Tools.toOriginPixel(1.0))
         wisaMenu.layer.addSublayer(borderLayer)
-        view.addSubview(wisaMenu)
+        view?.addSubview(wisaMenu)
         mainController!.webView.scrollView.contentInset.bottom = 50
     }
     
@@ -88,29 +87,29 @@ class ThemeV2T2: CommonMkTheme {
         let height = CGFloat(naviBar["height"] as! Int)
         back_button.themeIconLoaderN(naviBar["icon_url"] as! String)
         topView.backgroundColor = UIColor(hexString:naviBar["bg"] as! String)
-        topView.frame = CGRectMake(0, 0, CGRectGetWidth(topView.frame), CGFloat(height + 20))
+        topView.frame = CGRect(x: 0, y: 0, width: topView.frame.width, height: CGFloat(height + 20))
         let borderLayer = CALayer()
-        borderLayer.backgroundColor = UIColor(hexString: "#cbcbcb").CGColor
-        borderLayer.frame = CGRectMake(0, CGRectGetHeight(topView.frame) - 1.0 , CGRectGetWidth(topView.frame), Tools.toOriginPixel(1.0))
+        borderLayer.backgroundColor = UIColor(hexString: "#cbcbcb").cgColor
+        borderLayer.frame = CGRect(x: 0, y: topView.frame.height - 1.0 , width: topView.frame.width, height: Tools.toOriginPixel(1.0))
         topView.layer.addSublayer(borderLayer)
-        titleView.font = UIFont.boldSystemFontOfSize(CGFloat(naviBar["title_size"] as! Int ))
+        titleView.font = UIFont.boldSystemFont(ofSize: CGFloat(naviBar["title_size"] as! Int ))
         titleView.textColor = UIColor(hexString: naviBar["title_color"] as! String )
         
-        back_button.frame = CGRectMake(0, 0, height,height)
+        back_button.frame = CGRect(x: 0, y: 0, width: height,height: height)
         
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         if let ui_data = WInfo.themeInfo["ui_data"] {
-            let naviBar = ui_data["navibar"]! as! [String:AnyObject]
+            let naviBar = ui_data["navibar"] as! [String:AnyObject]
             let style = naviBar["status_style"]
             if style as! String == "Dark" {
-                return .Default
+                return .default
             }else{
-                return .LightContent
+                return .lightContent
             }
         }else{
-            return .Default
+            return .default
             
         }
     }    

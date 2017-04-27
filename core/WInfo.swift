@@ -11,11 +11,12 @@ import UIKit
 class WInfo{
     
 //    static let coreVersion:String = "wmgkcore_v2"
-    static let coreVersion:String = "wmgkcore_v2.1.1" //공유하기 API 추가
+//    static let coreVersion:String = "wmgkcore_v2.1.1" //공유하기 API 추가
+    static let coreVersion:String = "wmgkcore_v2.1.2" //GIF Splash 추가
     
 	static var appUrl:String{
 		get{
-			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kAppUrl") as? String{
+			if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{
 //              return "http://118.129.243.73/ws_magic.html"
               return returnValue
 			}else{
@@ -23,29 +24,29 @@ class WInfo{
 			}
 		}
 		set{
-			NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kAppUrl")	
-			NSUserDefaults.standardUserDefaults().synchronize()
+			UserDefaults.standard.set(newValue, forKey: "kAppUrl")	
+			UserDefaults.standard.synchronize()
 		}
 	}
 
 	static var deviceToken:String{
 		get{
-			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kDeviceToken") as? String{
+			if let returnValue = UserDefaults.standard.object(forKey: "kDeviceToken") as? String{
 				return returnValue;
 			}else{
 				return "";		
 			}
 		}
 		set{
-			NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kDeviceToken")	
-			NSUserDefaults.standardUserDefaults().synchronize()
+			UserDefaults.standard.set(newValue, forKey: "kDeviceToken")	
+			UserDefaults.standard.synchronize()
 		}
 	}
     
     static var countryCode:String{
         get{
             
-            if let value = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) {
+            if let value = (Locale.current as NSLocale).object(forKey: NSLocale.Key.countryCode) {
                return value as! String
             }else{
                 return ""
@@ -55,110 +56,110 @@ class WInfo{
 
 	static var solutionType:String{
 		get{
-			if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("kSolutionType") as? String{
+			if let returnValue = UserDefaults.standard.object(forKey: "kSolutionType") as? String{
 				return returnValue;
 			}else{
 				return "";		
 			}
 		}
 		set{
-			NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kSolutionType")	
-			NSUserDefaults.standardUserDefaults().synchronize()
+			UserDefaults.standard.set(newValue, forKey: "kSolutionType")	
+			UserDefaults.standard.synchronize()
 		}
 	}
 
-	static var introInfo:[String:AnyObject]{
+	static var introInfo:[String:Any]{
 		get{
-			if let returnValue = NSUserDefaults.standardUserDefaults().dictionaryForKey("kIntroInfo"){
-				return returnValue;
+			if let returnValue = UserDefaults.standard.dictionary(forKey: "kIntroInfo"){
+				return returnValue as [String : Any];
 			}else{
-				return [String:AnyObject]() 		
+				return [String:Any]() 		
 			}
 		}
 		set{
-			NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kIntroInfo")	
-			NSUserDefaults.standardUserDefaults().synchronize()
+			UserDefaults.standard.set(newValue, forKey: "kIntroInfo")	
+			UserDefaults.standard.synchronize()
 		}
 	}
 
 	static var themeInfo:[String:AnyObject]{
 		get{
             
-			if let returnValue = NSUserDefaults.standardUserDefaults().dictionaryForKey("kThemeInfo"){
-                return returnValue;
+			if let returnValue = UserDefaults.standard.dictionary(forKey: "kThemeInfo"){
+                return returnValue as [String : AnyObject];
             }else{
 				return [String:AnyObject]()
 			}
 		}
 		set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kThemeInfo")
-			NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue, forKey: "kThemeInfo")
+			UserDefaults.standard.synchronize()
 		}
 	}
     
     static var trackerId:String{
         get{
-            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kTrackerID"){
+            if let returnValue = UserDefaults.standard.string(forKey: "kTrackerID"){
                 return returnValue;
             }else{
                 return ""
             }
         }
         set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kTrackerID")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue, forKey: "kTrackerID")
+            UserDefaults.standard.synchronize()
         }
     }
 
     static var accountId:String{
         get{
-            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kAccountID"){
+            if let returnValue = UserDefaults.standard.string(forKey: "kAccountID"){
                 return returnValue;
             }else{
                 return ""
             }
         }
         set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kAccountID")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue, forKey: "kAccountID")
+            UserDefaults.standard.synchronize()
         }
     }
     static var getMarketingPopupUrl:String{
         get{
-            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kGetMarketingPopupUrl"){
+            if let returnValue = UserDefaults.standard.string(forKey: "kGetMarketingPopupUrl"){
                 return returnValue;
             }else{
                 return ""
             }
         }
         set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kGetMarketingPopupUrl")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue, forKey: "kGetMarketingPopupUrl")
+            UserDefaults.standard.synchronize()
         }
     }
     
 
 	static var userInfo:[String:AnyObject]{
 		get{
-			if let returnValue = NSUserDefaults.standardUserDefaults().dictionaryForKey("kUserInfo"){
-				return returnValue;
+			if let returnValue = UserDefaults.standard.dictionary(forKey: "kUserInfo"){
+				return returnValue as [String : AnyObject];
 			}else{
 				return [String:AnyObject]()
 			}
 		}
 		set{
-			NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kUserInfo")	
-			NSUserDefaults.standardUserDefaults().synchronize()
+			UserDefaults.standard.set(newValue, forKey: "kUserInfo")	
+			UserDefaults.standard.synchronize()
 		}
 	}
     
     
     static func defaultCookies() -> [String]{
         var arrayValues: [String] = []
-        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies {
+        if let cookies = HTTPCookieStorage.shared.cookies {
             for cookie in cookies {
                 arrayValues.append(cookie.name+"=" + cookie.value)
-                if cookie.domain.containsString( WInfo.appUrl.replace("http://m.", withString: "")){
+                if cookie.domain.contains( WInfo.appUrl.replace("http://m.", withString: "")){
                     
                 }
             }
@@ -166,8 +167,8 @@ class WInfo{
         return arrayValues;
     }
     
-    static func defaultCookieForName(name:String) -> NSHTTPCookie?{
-        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies {
+    static func defaultCookieForName(_ name:String) -> HTTPCookie?{
+        if let cookies = HTTPCookieStorage.shared.cookies {
             for cookie in cookies {
                 if(cookie.name == "PHPSESSID"){
                     return cookie
@@ -179,31 +180,31 @@ class WInfo{
     
     static func defaultCookie() -> String{
         var arrayValues: [String] = []
-        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies {
+        if let cookies = HTTPCookieStorage.shared.cookies {
             for cookie in cookies {
                 arrayValues.append(cookie.name+"=" + cookie.value)
-                if cookie.domain.containsString( WInfo.appUrl.replace("http://m.", withString: "")){
+                if cookie.domain.contains( WInfo.appUrl.replace("http://m.", withString: "")){
                     
                 }
             }
         }
-        return arrayValues.joinWithSeparator("; ")
+        return arrayValues.joined(separator: "; ")
     }
     
     static func clearCookie() {
-        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string:WInfo.appUrl)!){
+        if let cookies = HTTPCookieStorage.shared.cookies(for: URL(string:WInfo.appUrl)!){
             for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+                HTTPCookieStorage.shared.deleteCookie(cookie)
             }
         }
         
     }
     
     static func clearSessionCookie() {
-        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string:WInfo.appUrl)!){
+        if let cookies = HTTPCookieStorage.shared.cookies(for: URL(string:WInfo.appUrl)!){
             for cookie in cookies {
-                if cookie.sessionOnly {
-                    NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+                if cookie.isSessionOnly {
+                    HTTPCookieStorage.shared.deleteCookie(cookie)
                 }
             }
         }
@@ -212,58 +213,58 @@ class WInfo{
     
     static var firstProcess:Bool{
         get{
-            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kFirstProcess"){
+            if let returnValue = UserDefaults.standard.string(forKey: "kFirstProcess"){
                 return returnValue == "NO" ? false : true
             }else{
                 return true
             }
         }
         set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue ? "YES" : "NO", forKey: "kFirstProcess")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue ? "YES" : "NO", forKey: "kFirstProcess")
+            UserDefaults.standard.synchronize()
         }
     }
 
     static var agreeMarketing:Bool{
         get{
-            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kAgreeMarketing"){
+            if let returnValue = UserDefaults.standard.string(forKey: "kAgreeMarketing"){
                 return returnValue == "NO" ? false : true
             }else{
                 return false
             }
         }
         set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue ? "YES" : "NO", forKey: "kAgreeMarketing")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue ? "YES" : "NO", forKey: "kAgreeMarketing")
+            UserDefaults.standard.synchronize()
         }
     }
     
     static var ignoreUpdateVersion:String{
         get{
-            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kIgnoreUpdateVersion"){
+            if let returnValue = UserDefaults.standard.string(forKey: "kIgnoreUpdateVersion"){
                 return returnValue;
             }else{
                 return ""
             }
         }
         set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kIgnoreUpdateVersion")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue, forKey: "kIgnoreUpdateVersion")
+            UserDefaults.standard.synchronize()
         }
     }
     
     
     static var urlParam:String{
         get{
-            if let returnValue = NSUserDefaults.standardUserDefaults().stringForKey("kUrlParam"){
+            if let returnValue = UserDefaults.standard.string(forKey: "kUrlParam"){
                 return returnValue;
             }else{
                 return ""
             }
         }
         set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "kUrlParam")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue, forKey: "kUrlParam")
+            UserDefaults.standard.synchronize()
         }
     }
 

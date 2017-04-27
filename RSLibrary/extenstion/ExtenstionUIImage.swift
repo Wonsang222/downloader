@@ -12,57 +12,56 @@ import UIKit
 extension UIImage{
     
     
-    func makeFillImage(parent:UIView) -> UIImage {
-        UIGraphicsBeginImageContext(CGSizeMake(parent.frame.width*2, parent.frame.height*2))
+    func makeFillImage(_ parent:UIView) -> UIImage {
+        UIGraphicsBeginImageContext(CGSize(width: parent.frame.width*2, height: parent.frame.height*2))
         let context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context!, UIColor.clearColor().CGColor);
-        CGContextFillRect(context!,CGRectMake(0,0,parent.bounds.width*UIScreen.mainScreen().scale,parent.bounds.height*UIScreen.mainScreen().scale));
-        self.drawInRect(CGRectMake(
-            parent.frame.width - self.size.width/2.0,
-            parent.frame.height - self.size.height/2.0,
-            self.size.width,
-            self.size.height))
+        context!.setFillColor(UIColor.clear.cgColor);
+        context!.fill(CGRect(x: 0,y: 0,width: parent.bounds.width*UIScreen.main.scale,height: parent.bounds.height*UIScreen.main.scale));
+        self.draw(in: CGRect(
+            x: parent.frame.width - self.size.width/2.0,
+            y: parent.frame.height - self.size.height/2.0,
+            width: self.size.width,
+            height: self.size.height))
         let returnVal = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return returnVal!
     }
     
-    func makeFillImageV2(parent:UIView) -> UIImage {
-        let parentSizeScale = CGSizeMake(parent.frame.width*UIScreen.mainScreen().scale, parent.frame.height*UIScreen.mainScreen().scale)
-        let scale_factor:CGFloat = 3.0/UIScreen.mainScreen().scale
+    func makeFillImageV2(_ parent:UIView) -> UIImage {
+        let parentSizeScale = CGSize(width: parent.frame.width*UIScreen.main.scale, height: parent.frame.height*UIScreen.main.scale)
+        let scale_factor:CGFloat = 3.0/UIScreen.main.scale
         UIGraphicsBeginImageContext(parentSizeScale)
         let context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context!, UIColor.clearColor().CGColor);
-        CGContextFillRect(context!,CGRectMake(0,0,parent.bounds.width*UIScreen.mainScreen().scale,parent.bounds.height*UIScreen.mainScreen().scale));
-        print(self.size.width)
+        context!.setFillColor(UIColor.clear.cgColor);
+        context!.fill(CGRect(x: 0,y: 0,width: parent.bounds.width*UIScreen.main.scale,height: parent.bounds.height*UIScreen.main.scale));
         let resize_width = self.size.width/scale_factor
         let resize_height = self.size.height/scale_factor
-        self.drawInRect(CGRectMake(
-            (parentSizeScale.width - resize_width)/2,
-            (parentSizeScale.height - resize_height)/2,
-            resize_width,
-            resize_height))
+        self.draw(in: CGRect(
+            x: (parentSizeScale.width - resize_width)/2,
+            y: (parentSizeScale.height - resize_height)/2,
+            width: resize_width,
+            height: resize_height))
         let returnVal = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return returnVal!
     }
     
-    func tintWithColor(color:UIColor)->UIImage {
+    func tintWithColor(_ color:UIColor)->UIImage {
         
         UIGraphicsBeginImageContext(self.size)
         let context = UIGraphicsGetCurrentContext()
         
         // flip the image
-        CGContextScaleCTM(context!, 1.0, -1.0)
-        CGContextTranslateCTM(context!, 0.0, -self.size.height)
+        context!.scaleBy(x: 1.0, y: -1.0)
+        context!.translateBy(x: 0.0, y: -self.size.height)
         
         // multiply blend mode
-        CGContextSetBlendMode(context!, .Multiply)
+        context!.setBlendMode(.multiply)
         
-        let rect = CGRectMake(0, 0, self.size.width, self.size.height)
-        CGContextClipToMask(context!, rect, self.CGImage!)
+        let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
+        context!.clip(to: rect, mask: self.cgImage!)
         color.setFill()
-        CGContextFillRect(context!, rect)
+        context!.fill(rect)
         
         // create uiimage
         let newImage = UIGraphicsGetImageFromCurrentImageContext()

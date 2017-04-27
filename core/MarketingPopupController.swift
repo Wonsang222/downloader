@@ -18,11 +18,11 @@ class MarketingPopupController: UIViewController,RPopupControllerDelegate,UIWebV
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        progress?.hidden = false
+        progress?.isHidden = false
         webView?.scrollView.alwaysBounceHorizontal = false
         webView?.scrollView.alwaysBounceVertical = false
      
-        webView?.loadRequest(NSURLRequest(URL: NSURL(string: url!)!))
+        webView?.loadRequest(URLRequest(url: URL(string: url!)!))
     }
     
     func autoKeyboardScroll() -> Bool {
@@ -31,29 +31,29 @@ class MarketingPopupController: UIViewController,RPopupControllerDelegate,UIWebV
     
   
     
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         var frame = webView.frame
         frame.size.height = 1
-        webView.sizeThatFits(CGSizeZero)
-        let result = webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight;");
+        webView.sizeThatFits(CGSize.zero)
+        let result = webView.stringByEvaluatingJavaScript(from: "document.body.offsetHeight;");
         let reslut_float = Float(result!)!
         heightChange(CGFloat(reslut_float))
-        progress?.hidden = true
+        progress?.isHidden = true
 
     }
     
-    func heightChange(height:CGFloat) {
-        if let popup:RPopupController = self.parentViewController as? RPopupController{
+    func heightChange(_ height:CGFloat) {
+        if let popup:RPopupController = self.parent as? RPopupController{
             popup.changeSize(height)
         }
     }
     
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        let urlString = request.URL?.absoluteString
-        if urlString!.containsString("wisamagic://marketing") {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        let urlString = request.url?.absoluteString
+        if urlString!.contains("wisamagic://marketing") {
             let dic = urlString!.replace("wisamagic://marketing?", withString: "").paramParse()
-            if let popupController = self.parentViewController as? RPopupController {
+            if let popupController = self.parent as? RPopupController {
                 if dic["click"]  == "yes" {
                     popupController.dismissPopup({
                         popupController.resp!("Y")

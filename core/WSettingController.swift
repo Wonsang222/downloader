@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class WSettingController: BaseController {
 
@@ -43,12 +67,12 @@ class WSettingController: BaseController {
             }
         )
         
-        self.orderSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
-        self.eventSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , forControlEvents: UIControlEvents.TouchUpInside)
+        self.orderSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , for: UIControlEvents.touchUpInside)
+        self.eventSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , for: UIControlEvents.touchUpInside)
 
         
         
-        let bundle_id = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
+        let bundle_id = Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String
         if bundle_id.hasSuffix(".lh") || bundle_id.hasSuffix(".adhoc"){
             let gesture = UITapGestureRecognizer(target: self, action: #selector(WSettingController.push_test))
             gesture.numberOfTapsRequired = 1;
@@ -63,7 +87,7 @@ class WSettingController: BaseController {
         tapCount = tapCount + 1
         if tapCount == 10 {
             tapCount = 0;
-            let bundle_id = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
+            let bundle_id = Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String
 
             RSHttp(controller: self).req(
                 
@@ -73,16 +97,16 @@ class WSettingController: BaseController {
                 ResourceBuilderPushTest().ap("token",WInfo.deviceToken).ap("package",bundle_id)
                 , successCb: { (resource) -> (Void) in
                     self.view.makeToast("테스트 푸쉬 발송")
-                UIApplication.sharedApplication().openURL(NSURL(string: "http://naver.com")!)
+                UIApplication.shared.openURL(URL(string: "http://naver.com")!)
             })
 
         }
     }
 
     
-    func switchChange(sender:UISwitch){
-        let event = eventSwitch.on ? "Y" : "N"
-        let order = orderSwitch.on ? "Y" : "N"
+    func switchChange(_ sender:UISwitch){
+        let event = eventSwitch.isOn ? "Y" : "N"
+        let order = orderSwitch.isOn ? "Y" : "N"
 
         RSHttp(controller:self).req(
             ApiFormApp().ap("mode","set_agree")
@@ -142,7 +166,7 @@ class WSettingController: BaseController {
     }
 
     
-    func reqSetAgree(yn:String,orderyn:String){
+    func reqSetAgree(_ yn:String,orderyn:String){
         
         RSHttp(controller:self).req(
             ApiFormApp().ap("mode","set_agree")
@@ -160,10 +184,10 @@ class WSettingController: BaseController {
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func doUpdateBtn(sender:UIButton){
+    @IBAction func doUpdateBtn(_ sender:UIButton){
         
         if Int(newVersion.text!.replace(".", withString: "")) > Int(curVersion.text!.replace(".", withString: "")) {
-            UIApplication.sharedApplication().openURL(NSURL(string:self.appUpdateUrl!)!)
+            UIApplication.shared.openURL(URL(string:self.appUpdateUrl!)!)
         }else{
             self.view.makeToast("최신버전입니다.")
         }

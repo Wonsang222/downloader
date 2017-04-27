@@ -10,7 +10,7 @@ import UIKit
 
 class ThemeFactory {
     
-    static func createTheme(contoller:UIViewController, themeInfo:[String:AnyObject]?) -> CommonMkTheme? {
+    static func createTheme(_ contoller:UIViewController, themeInfo:[String:Any]?) -> CommonMkTheme? {
         if themeInfo == nil{
             return nil
         }
@@ -38,17 +38,19 @@ class ThemeFactory {
 
 class ThemeCache {
     
+    private static var __once: () = { 
+            StaticInstrance.instance = ThemeCache()
+        }()
+    
     struct StaticInstrance {
-        static var dispatchToken: dispatch_once_t = 0
+        static var dispatchToken: Int = 0
         static var instance: ThemeCache?
     }
     
     var cache:[Int:UIImage] = [:]
     
     class func share() -> ThemeCache{
-        dispatch_once(&StaticInstrance.dispatchToken) { 
-            StaticInstrance.instance = ThemeCache()
-        }
+        _ = ThemeCache.__once
         return StaticInstrance.instance!
     }
     
@@ -59,31 +61,31 @@ class ThemeCache {
     }
     
     
-    func saveCache(url:String,image:UIImage?)  {
+    func saveCache(_ url:String,image:UIImage?)  {
         if(image == nil) {
          return
         }
-        let document = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, .UserDomainMask, true)
-        if !NSFileManager.defaultManager().fileExistsAtPath("\(document[0])/icon") {
+        let document = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, .userDomainMask, true)
+        if !FileManager.default.fileExists(atPath: "\(document[0])/icon") {
             do{
-                try NSFileManager.defaultManager().createDirectoryAtPath("\(document[0])/icon", withIntermediateDirectories: false, attributes: nil)
+                try FileManager.default.createDirectory(atPath: "\(document[0])/icon", withIntermediateDirectories: false, attributes: nil)
             }catch let error as NSError{
                 print(error)
             }
         }
         do{
-            try UIImagePNGRepresentation(image!)?.writeToFile("\(document[0])/icon/\(url.hashValue)", options: NSDataWritingOptions.AtomicWrite)
+            try UIImagePNGRepresentation(image!)?.write(to: URL(fileURLWithPath: "\(document[0])/icon/\(url.hashValue)"), options: NSData.WritingOptions.atomicWrite)
         }catch{
         }
         cache[url.hashValue] = image!
     }
     
-    func getCache(url:String) -> UIImage? {
+    func getCache(_ url:String) -> UIImage? {
         if let image = cache[url.hashValue] {
             return image
         }
-        let document = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, .UserDomainMask, true)
-        if let imageData = NSData(contentsOfFile: "\(document[0])/icon/\(url.hashValue)") {
+        let document = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, .userDomainMask, true)
+        if let imageData = try? Data(contentsOf: URL(fileURLWithPath: "\(document[0])/icon/\(url.hashValue)")) {
             if let returnVal = UIImage(data: imageData) {
                 cache[url.hash] = returnVal
                 return returnVal
@@ -96,21 +98,20 @@ class ThemeCache {
 extension UIButton{
     
     
-    func themeIconLoader(icon_url:String){
+    func themeIconLoader(_ icon_url:String){
         
         if let cacheImage = ThemeCache.share().getCache(icon_url) {
-            self.setBackgroundImage(cacheImage, forState: UIControlState.Normal)
-            self.setBackgroundImage(cacheImage, forState: UIControlState.Disabled)
+            self.setBackgroundImage(cacheImage, for: UIControlState())
+            self.setBackgroundImage(cacheImage, for: UIControlState.disabled)
             return
         }
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority,0)) {
-            if let datas = NSData(contentsOfURL: NSURL(string: icon_url)!) {
+        DispatchQueue.global(qos: .background).async {
+            if let datas = try? Data(contentsOf: URL(string: icon_url)!) {
                 let server_img = UIImage(data: datas)?.makeFillImageV2(self)
                 ThemeCache.share().saveCache(icon_url, image: server_img)
-                dispatch_async(dispatch_get_main_queue(), { 
-                    self.setBackgroundImage(server_img, forState: UIControlState.Normal)
-                    self.setBackgroundImage(server_img, forState: UIControlState.Disabled)
+                DispatchQueue.main.async(execute: { 
+                    self.setBackgroundImage(server_img, for: UIControlState())
+                    self.setBackgroundImage(server_img, for: UIControlState.disabled)
 
                 });
             }
@@ -119,21 +120,20 @@ extension UIButton{
     }
     
     
-    func themeIconLoaderN(icon_url:String){
+    func themeIconLoaderN(_ icon_url:String){
         
         if let cacheImage = ThemeCache.share().getCache(icon_url) {
-            self.setBackgroundImage(cacheImage, forState: UIControlState.Normal)
-            self.setBackgroundImage(cacheImage, forState: UIControlState.Disabled)
+            self.setBackgroundImage(cacheImage, for: UIControlState())
+            self.setBackgroundImage(cacheImage, for: UIControlState.disabled)
             return
         }
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority,0)) {
-            if let datas = NSData(contentsOfURL: NSURL(string: icon_url)!) {
+        DispatchQueue.global(qos: .background).async {
+            if let datas = try? Data(contentsOf: URL(string: icon_url)!) {
                 let server_img = UIImage(data: datas)
                 ThemeCache.share().saveCache(icon_url, image: server_img)
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.setBackgroundImage(server_img, forState: UIControlState.Normal)
-                    self.setBackgroundImage(server_img, forState: UIControlState.Disabled)
+                DispatchQueue.main.async(execute: {
+                    self.setBackgroundImage(server_img, for: UIControlState())
+                    self.setBackgroundImage(server_img, for: UIControlState.disabled)
                     
                 });
             }
@@ -147,18 +147,17 @@ extension UIButton{
 extension UIImageView{
     
     
-    func themeIconLoaderN(icon_url:String){
+    func themeIconLoaderN(_ icon_url:String){
         
         if let cacheImage = ThemeCache.share().getCache(icon_url) {
             self.image = cacheImage
             return
         }
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority,0)) {
-            if let datas = NSData(contentsOfURL: NSURL(string: icon_url)!) {
+        DispatchQueue.global(qos: .background).async {
+            if let datas = try? Data(contentsOf: URL(string: icon_url)!) {
                 let server_img = UIImage(data: datas)
                 ThemeCache.share().saveCache(icon_url, image: server_img)
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.image = server_img
                 });
             }

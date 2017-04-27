@@ -18,20 +18,23 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
             if WInfo.trackerId.isEmpty {
                 return nil
             }else{
-                return GAI.sharedInstance().trackerWithTrackingId(WInfo.trackerId)
+                let gai = GAI.sharedInstance()
+                gai?.trackUncaughtExceptions = true;
+                gai?.logger.logLevel = GAILogLevel.none
+                return GAI.sharedInstance().tracker(withTrackingId: WInfo.trackerId)
             }
             
         }
     }
     
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        let userAgent = UIWebView().stringByEvaluatingJavaScriptFromString("navigator.userAgent")
-        NSUserDefaults.standardUserDefaults().registerDefaults(
-            ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")
+        UserDefaults.standard.register(
+            defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
         )
         
-        NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = NSHTTPCookieAcceptPolicy.Always
+        HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always
         
         RSHttp().req(
             ApiFormApp().ap("mode","add_token")
@@ -39,16 +42,13 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
                 .ap("token",WInfo.deviceToken)
         )
 
-        let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
-        let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
+        let notificationTypes: UIUserNotificationType = [UIUserNotificationType.alert, UIUserNotificationType.badge, UIUserNotificationType.sound]
+        let pushNotificationSettings = UIUserNotificationSettings(types: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(pushNotificationSettings)
         application.registerForRemoteNotifications()
-        for cookie in NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies! {
-            NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+        for cookie in HTTPCookieStorage.shared.cookies! {
+            HTTPCookieStorage.shared.deleteCookie(cookie)
         }
-        let gai = GAI.sharedInstance()
-        gai.trackUncaughtExceptions = true;
-        gai.logger.logLevel = GAILogLevel.None
         
         
         #if ADBRIX
@@ -62,25 +62,27 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         #endif
         return true
     }
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
     }
     
     
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
     }
     
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
     }
     
-    func applicationDidBecomeActive( application: UIApplication) {
+    func applicationDidBecomeActive( _ application: UIApplication) {
     }
     
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
     }
     
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        let tokenString = deviceToken.description.stringByReplacingOccurrencesOfString("[ <>]", withString: "", options: .RegularExpressionSearch, range: nil)
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let tokenString = deviceToken.description.replacingOccurrences(of: "[ <>]", with: "", options: .regularExpression, range: nil)
+        #if DEBUG
         print(tokenString)
+        #endif
         WInfo.deviceToken = tokenString
         RSHttp().req(
             ApiFormApp().ap("mode","add_token")
@@ -90,10 +92,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         
         
     }
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError){
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error){
         print(error)
     }
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         application.applicationIconBadgeNumber = application.applicationIconBadgeNumber + 1
         
         let pushSeq = userInfo["push_seq"] as! String
@@ -101,7 +103,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in
                 let objectInfo = resource.body()["data"] as! [String:AnyObject]
-                if( application.applicationState == .Active){
+                if( application.applicationState == .active){
                     let link = objectInfo["link"] as? String
                     let subtitle = objectInfo["subtitle"] as? String
                     let title = objectInfo["title"] as? String
@@ -110,33 +112,33 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
                     msg = msg?.replace("<br />", withString: "\r\n")
                     msg = msg?.replace("<br/>", withString: "\r\n")
                     if img_url != nil {
-                        let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.Alert)
-                        alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.Default,handler: { action in
+                        let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.alert)
+                        alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
                             self.goNotificationLink(link!)
                         }))
-                        alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.Cancel,handler: { action in
+                        alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.cancel,handler: { action in
                             
                         }))
-                        self.window?.rootViewController!.presentViewController(alertController,animated:true, completion: nil)
+                        self.window?.rootViewController!.present(alertController,animated:true, completion: nil)
                     }else if msg != nil {
-                        let alertController = UIAlertController(title: subtitle!, message: msg!,preferredStyle: UIAlertControllerStyle.Alert)
-                        alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.Default,handler: { action in
+                        let alertController = UIAlertController(title: subtitle!, message: msg!,preferredStyle: UIAlertControllerStyle.alert)
+                        alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
                             self.goNotificationLink(link!)
                         }))
-                        alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.Cancel,handler: { action in
+                        alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.cancel,handler: { action in
                             
                         }))
-                        self.window?.rootViewController!.presentViewController(alertController,animated:true, completion: nil)
+                        self.window?.rootViewController!.present(alertController,animated:true, completion: nil)
                         
                     }else{
-                        let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.Alert)
-                        alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.Default,handler: { action in
+                        let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.alert)
+                        alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
                             self.goNotificationLink(link!)
                         }))
-                        alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.Cancel,handler: { action in
+                        alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.cancel,handler: { action in
                             
                         }))
-                        self.window?.rootViewController!.presentViewController(alertController,animated:true, completion: nil)
+                        self.window?.rootViewController!.present(alertController,animated:true, completion: nil)
                     }
                     
                 }else{
@@ -151,11 +153,11 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
     }
     
     
-    func goNotificationLink(link:String){
+    func goNotificationLink(_ link:String){
         if let rootViewController = self.window!.rootViewController as? UINavigationController {
-            rootViewController.popToRootViewControllerAnimated(true)
+            rootViewController.popToRootViewController(animated: true)
             if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                mainController.performSegueWithIdentifier("noti" ,  sender : link)
+                mainController.performSegue(withIdentifier: "noti" ,  sender : link)
             }
         }
     }

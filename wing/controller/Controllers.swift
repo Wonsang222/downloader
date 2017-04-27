@@ -27,28 +27,28 @@ class MainController:WMainController{
     
     
     
-    override func webViewDidFinishLoad(webView: UIWebView) {
+    override func webViewDidFinishLoad(_ webView: UIWebView) {
         super.webViewDidFinishLoad(webView)
         if webView.canGoBack  {
-            prevBtn?.enabled = true
+            prevBtn?.isEnabled = true
         }else{
-            prevBtn?.enabled = false
+            prevBtn?.isEnabled = false
             
         }
         if webView.canGoForward {
-            nextBtn?.enabled = true
+            nextBtn?.isEnabled = true
             
         }else{
-            nextBtn?.enabled = false
+            nextBtn?.isEnabled = false
         }
     }
   
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if UIApplication.sharedApplication().applicationIconBadgeNumber == 0 {
-            isNewBadge?.hidden = true
+        if UIApplication.shared.applicationIconBadgeNumber == 0 {
+            isNewBadge?.isHidden = true
         }else{
-            isNewBadge?.hidden = false
+            isNewBadge?.isHidden = false
         }
     }
 
@@ -69,9 +69,9 @@ class SettingController:WSettingController{
         ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
         let topView = self.view.subviews[1]
         let contentView = self.view.subviews[0]
-        contentView.frame = CGRectMake(0, CGRectGetHeight(topView.frame),
-                                               CGRectGetWidth(self.view.frame),
-                                               CGRectGetHeight(self.view.frame) - CGRectGetHeight(topView.frame))
+        contentView.frame = CGRect(x: 0, y: topView.frame.height,
+                                               width: self.view.frame.width,
+                                               height: self.view.frame.height - topView.frame.height)
         
 
     }
@@ -82,11 +82,11 @@ extension BaseController{
     
   
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+    override var preferredStatusBarStyle : UIStatusBarStyle {
         if let theme = ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo) {
             return theme.preferredStatusBarStyle()
         }
-        return .Default
+        return .default
     }
     
 

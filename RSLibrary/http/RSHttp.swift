@@ -2,17 +2,17 @@ import UIKit
 import SystemConfiguration
 
 enum RSHttpStatus{
-	case READY
-	case SUCCESS
-	case FAIL
-	case FAIL_RESEND
+	case ready
+	case success
+	case fail
+	case fail_RESEND
 }
-typealias RSHttpSuccessHandler = (resource:HttpBaseResource) -> (Void)
-typealias RSHttpErrorHandler = (errorCode:ResourceCode,resource:HttpBaseResource) -> (Void)
+typealias RSHttpSuccessHandler = (_ resource:HttpBaseResource) -> (Void)
+typealias RSHttpErrorHandler = (_ errorCode:ResourceCode,_ resource:HttpBaseResource) -> (Void)
 
 
 class RSHttp{
-	private var status:RSHttpStatus = RSHttpStatus.READY
+	fileprivate var status:RSHttpStatus = RSHttpStatus.ready
 	var viewController:UIViewController?
 	var isProgress = true
 	var isShowingError = true
@@ -37,60 +37,59 @@ class RSHttp{
 		self.isShowingError = showingPopup
 	}
 
-	func req(resources:HttpBaseResource...){
+	func req(_ resources:HttpBaseResource...){
 //            print(resources)
         self.req(resources,successCb:nil,errorCb:nil)
 	}
 
-	func req(resources:HttpBaseResource..., successCb:RSHttpSuccessHandler?){
+	func req(_ resources:HttpBaseResource..., successCb:RSHttpSuccessHandler?){
         self.req(resources,successCb:successCb,errorCb:nil)
 	}
 
-	func req(resources:[HttpBaseResource], successCb:RSHttpSuccessHandler?, errorCb:RSHttpErrorHandler?){
+	func req(_ resources:[HttpBaseResource], successCb:RSHttpSuccessHandler?, errorCb:RSHttpErrorHandler?){
 		progressShow()
-		let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-		dispatch_async(dispatch_get_global_queue(priority,0)) {
+		DispatchQueue.global(qos: .background).async {
 			for resource in resources{
 				if !self.connectedToNetwork() {
-					resource.errorCode = ResourceCode.E8000
-                    dispatch_async(dispatch_get_main_queue()){
+					resource.errorCode = ResourceCode.e8000
+                    DispatchQueue.main.async{
                         self.popup(resource,errorCb:errorCb)
                     }
                     break
 				}
-				let semaphore = dispatch_semaphore_create(0)
-				let urlConfig =	NSURLSessionConfiguration.defaultSessionConfiguration()
-                let appId = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as? String
-				let appVersion = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as! String
+				let semaphore = DispatchSemaphore(value: 0)
+				let urlConfig =	URLSessionConfiguration.default
+                let appId = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String
+				let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
 				resource.reqHeader["User-Agent"] = "\(appId)/\(appVersion)"
                 
 				urlConfig.timeoutIntervalForRequest = Double(HttpInfo.TIMEOUT) / 1000
 				urlConfig.timeoutIntervalForResource = Double(HttpInfo.TIMEOUT) / 1000
-				NSURLSession.sharedSession().dataTaskWithRequest(resource.makeRequest(), completionHandler : { data,response,error -> Void in
+                URLSession.shared.dataTask(with: resource.makeRequest(),completionHandler: { (data, response, error) in
 					if error == nil {
 						do{
 							try resource.parseHeader(response!)
 							try resource.parse(data!)
 						}catch let error as NSError{
                             print("Error: \(error)")
-                            print(NSThread.callStackSymbols())
-							resource.errorCode = ResourceCode.E9998
+                            print(Thread.callStackSymbols)
+							resource.errorCode = ResourceCode.e9998
 						}
                         
 					}else{
-                        print(error)
-						resource.errorCode = ResourceCode.E9994
+                        print(error!)
+						resource.errorCode = ResourceCode.e9994
 					}
-					dispatch_semaphore_signal(semaphore)
+					semaphore.signal()
 				}).resume()
 
-				dispatch_semaphore_wait(semaphore,DISPATCH_TIME_FOREVER)
-				dispatch_async(dispatch_get_main_queue()){
+				_ = semaphore.wait(timeout: DispatchTime.distantFuture)
+				DispatchQueue.main.async{
 
 					switch(resource.errorCode){
-						case .SUCCESS:
-							if successCb != nil { successCb!(resource:resource) }
-						case .SERVER_ERROR,.E9993:
+						case .success:
+							if successCb != nil { successCb!(resource) }
+						case .server_ERROR,.e9993:
                             self.popup(resource,errorCb:errorCb)
 						default:
                             self.popup(resource,errorCb:errorCb)
@@ -98,57 +97,53 @@ class RSHttp{
 				}
 			}
 
-			dispatch_async(dispatch_get_main_queue()){
+			DispatchQueue.main.async{
 				self.progressHide()
 			}
 		}
 	}
 
-    private func popup(resource:HttpBaseResource,errorCb:RSHttpErrorHandler?){
+    fileprivate func popup(_ resource:HttpBaseResource,errorCb:RSHttpErrorHandler?){
         #if DEBUG
         print("Resource Http Error \(resource.errorCode)")
         #endif
 		if self.isShowingError && viewController != nil {
-            let message = (resource.errorCode == ResourceCode.E9993 || resource.errorCode == ResourceCode.SERVER_ERROR) ? resource.errorMsg : resource.errorCode.message()
+            let message = (resource.errorCode == ResourceCode.e9993 || resource.errorCode == ResourceCode.server_ERROR) ? resource.errorMsg : resource.errorCode.message()
 			if viewController != nil {
-				let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.Alert)
-				alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.Default, handler:{ action in
-					if errorCb != nil {
-                        errorCb!(errorCode:resource.errorCode,resource:resource)
-					}
+				let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.alert)
+				alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.default, handler:{ action in
+                    errorCb?(resource.errorCode,resource)
 				}))
-				viewController!.presentViewController(alert,animated:true, completion: nil)
+				viewController!.present(alert,animated:true, completion: nil)
             }
 		}else{
-			if errorCb != nil {
-                errorCb!(errorCode:resource.errorCode,resource:resource)
-			}
+            errorCb?(resource.errorCode,resource)
 		}
 		
 	}
 
-	private func progressShow(){
+	fileprivate func progressShow(){
 		// ProgressBar Show
 		if(self.isProgress){
 
 		}
 	}
 
-	private func progressHide(){
+	fileprivate func progressHide(){
 		// ProgressBar Hide
 		if(self.isProgress){
 
 		}
 	}
 
-	private func connectedToNetwork() -> Bool {
-        let defaultRouteReachability: SCNetworkReachabilityRef = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, "www.google.com")!
+	fileprivate func connectedToNetwork() -> Bool {
+        let defaultRouteReachability: SCNetworkReachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, "www.google.com")!
         var flags : SCNetworkReachabilityFlags = []
         if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
             return false
         }
-        let isReachable = flags.contains(.Reachable)
-        let needsConnection = flags.contains(.ConnectionRequired)
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
         
         return (isReachable && !needsConnection)
 	}

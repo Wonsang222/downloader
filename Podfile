@@ -7,4 +7,5 @@ target 'wing' do
 pod 'Google/Analytics'
 pod 'IgaworksCore'
 pod 'AdBrix'
+pod 'SwiftyGif'
 end

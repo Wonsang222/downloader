@@ -9,7 +9,7 @@
 import UIKit
 
 @objc protocol RPopupControllerDelegate {
-    optional func dismissKeyboard()
+    @objc optional func dismissKeyboard()
     func autoKeyboardScroll() -> Bool
 }
 class RPopupController : UIViewController{
@@ -39,8 +39,8 @@ class RPopupController : UIViewController{
         super.init(coder: aDecoder)
     }
     
-    func initController(height:CGFloat){
-        self.view.frame = UIScreen.mainScreen().bounds
+    func initController(_ height:CGFloat){
+        self.view.frame = UIScreen.main.bounds
         
         
         if height == 0{
@@ -54,15 +54,15 @@ class RPopupController : UIViewController{
             
         } 
         
-        self.view.opaque = false
-        self.modalPresentationStyle = .OverCurrentContext
+        self.view.isOpaque = false
+        self.modalPresentationStyle = .overCurrentContext
         self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)
         self.contentController!.view.alpha = 0
-        self.contentController!.view.transform = CGAffineTransformMakeScale(0.5, 0.5)
+        self.contentController!.view.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
 //        self.contentController!.view.layer.cornerRadius = 5
         
         self.popupScrollView = UIScrollView(frame: self.view.bounds)
-        self.popupScrollView!.autoresizingMask = [.FlexibleWidth,.FlexibleHeight]
+        self.popupScrollView!.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         self.popupScrollView?.contentSize = self.view.frame.size
         self.popupScrollView!.addSubview(self.contentController!.view)
         self.view.addSubview(self.popupScrollView!)
@@ -77,8 +77,8 @@ class RPopupController : UIViewController{
         super.viewDidLoad()
         if let delegate = self.contentController as? RPopupControllerDelegate {
             if delegate.autoKeyboardScroll() {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RPopupController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RPopupController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(RPopupController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(RPopupController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
             }
         }
 
@@ -86,43 +86,43 @@ class RPopupController : UIViewController{
     
     
     
-    func dismissPopup(completion: (() -> Void)?) {
+    func dismissPopup(_ completion: (() -> Void)?) {
         
         if let delegate = self.contentController as? RPopupControllerDelegate {
             if delegate.autoKeyboardScroll() {
-                NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object:  nil)
-                NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object:  nil)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object:  nil)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object:  nil)
             }
         }
         
-        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
             self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)
             self.contentController!.view.alpha = 0
-            self.contentController!.view.transform = CGAffineTransformMakeScale(0.5, 0.5)
+            self.contentController!.view.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         }) { (Bool) in
-            self.dismissViewControllerAnimated(false, completion: completion)
+            self.dismiss(animated: false, completion: completion)
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+    override func viewWillAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
                 self.contentController!.view.alpha = 1
-                self.contentController!.view.transform = CGAffineTransformMakeScale(1.0, 1.0)
+                self.contentController!.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             }) { (Bool) in
         }
     }
     
     
-    func keyboardWillShow(notification:NSNotification){
+    func keyboardWillShow(_ notification:Notification){
         if self.openKeyboard {
             return
         }
-        let keyboard = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
-        self.popupScrollView?.contentSize = CGSizeMake(self.view.frame.width, self.view.frame.height + keyboard!.height)
+        let keyboard = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        self.popupScrollView?.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + keyboard!.height)
         self.openKeyboard = true
-        UIView.animateWithDuration(0.3, delay: 0.2, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.popupScrollView!.contentOffset = CGPointMake(0, keyboard!.height)
+        UIView.animate(withDuration: 0.3, delay: 0.2, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.popupScrollView!.contentOffset = CGPoint(x: 0, y: keyboard!.height)
         }) { (Bool) in
                 
         }
@@ -130,12 +130,12 @@ class RPopupController : UIViewController{
         
     }
     
-    func keyboardWillHide(notification:NSNotification){
+    func keyboardWillHide(_ notification:Notification){
         if self.openKeyboard {
             openKeyboard = false
-            UIView.animateWithDuration(0.3, delay: 0.2, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-                self.popupScrollView!.contentOffset = CGPointMake(0, 0)
-                self.popupScrollView?.contentSize = CGSizeMake(self.view.frame.width, self.view.frame.height)
+            UIView.animate(withDuration: 0.3, delay: 0.2, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                self.popupScrollView!.contentOffset = CGPoint(x: 0, y: 0)
+                self.popupScrollView?.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
                 
             }) { (Bool) in
                 
@@ -144,15 +144,15 @@ class RPopupController : UIViewController{
     }
 
     
-    func singleTapEvent(gesture:UITapGestureRecognizer){
-        let location = gesture.locationInView(self.view)
+    func singleTapEvent(_ gesture:UITapGestureRecognizer){
+        let location = gesture.location(in: self.view)
         if openKeyboard {
             if let delegate = self.contentController as? RPopupControllerDelegate {
                 delegate.dismissKeyboard?()
             }
             return
         }
-        if CGRectContainsPoint(self.contentController!.view.frame, location) {
+        if self.contentController!.view.frame.contains(location) {
         }else{
             if(self.cancelabld){
                 self.dismissPopup(nil)
@@ -161,9 +161,9 @@ class RPopupController : UIViewController{
     }
     
  
-    func changeSize(height:CGFloat) {
+    func changeSize(_ height:CGFloat) {
         self.contentController!.view.alpha = 0
-        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.contentController!.view.alpha = 1
             self.contentController!.view.frame = CRectChangeWidth(self.contentController!.view.frame, width: SCREEN_WIDTH - self.POPUP_GAP_WIDTH)
             self.contentController!.view.frame = CRectChangeHeight(self.contentController!.view.frame,height: height)

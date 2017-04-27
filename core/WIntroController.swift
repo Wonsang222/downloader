@@ -7,19 +7,24 @@
 //
 
 import UIKit
+import ImageIO
+import SwiftyGif
 
-class WIntroController: BaseController {
 
-	@IBOutlet weak var introView: UIImageView!
-    
+class WIntroController: BaseController,SwiftyGifDelegate {
+
+	@IBOutlet weak var introView: UIView!
+    var isLoaded = false
+    var oncePlayOk = false
+    var webViewLoadedOk = false
     weak var mainController:WMainController?
 
-	private var saveVersion:Int{
+	fileprivate var saveVersion:Int{
 		get{
 			if let returnValue = WInfo.introInfo["version"]{
 				let introFile = WInfo.introInfo["file"] as! String
-				let manager = NSFileManager.defaultManager()
-				if manager.fileExistsAtPath(introFile) {
+				let manager = FileManager.default
+				if manager.fileExists(atPath: introFile) {
 					return returnValue as! Int
 				}
 			}
@@ -27,17 +32,27 @@ class WIntroController: BaseController {
 		}
 	}
 
-	private var saveIntro:UIImage?{
+	fileprivate var saveIntro:UIImage?{
 		get{
-    		if let filePath = WInfo.introInfo["file"]{
-				return UIImage(contentsOfFile: filePath as! String)
+    		if let filePath = WInfo.introInfo["file"] as? String{
+                let fileType = WInfo.introInfo["fileType"] as? String
+                if fileType == "gif" {
+                    do {
+                        let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
+                        return UIImage(gifData: data)
+                    } catch  {
+                       return nil
+                    }
+                }else{
+                    return UIImage(contentsOfFile: filePath)
+                }
 			}else{
 				return nil
 			}
 		}
 	}
 
-	private var saveThemeVersion:Int{
+	fileprivate var saveThemeVersion:Int{
 		get{
 			if let returnValue = WInfo.themeInfo["version"]{
 				return Int(returnValue as! String)!
@@ -49,10 +64,7 @@ class WIntroController: BaseController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if self.saveIntro != nil {
-            self.introView.image = self.saveIntro
-        }
+        doPlaySplash()
         self.reqCheckApiKey()
 	
     }
@@ -62,7 +74,7 @@ class WIntroController: BaseController {
         // Dispose of any resources that can be recreated.
     }
     
-    private func showMarketingPopup(next:(()-> Void)){
+    fileprivate func showMarketingPopup(_ next:@escaping (()-> Void)){
         if WInfo.firstProcess {
             
             if WInfo.getMarketingPopupUrl == "" {
@@ -71,12 +83,12 @@ class WIntroController: BaseController {
                 }) { (UIAlertAction) in
                     self.reqMarketingAgree("N", next: next)
                 }
-                self.presentViewController(dialog, animated: true, completion: nil)
+                self.present(dialog, animated: true, completion: nil)
             }else{
                 let dialog = createMarketingDialog(WInfo.getMarketingPopupUrl, resp: { (value) in
                     self.reqMarketingAgree(value, next: next)
                 })
-                self.presentViewController(dialog, animated: false, completion: nil)
+                self.present(dialog, animated: false, completion: nil)
             }
         }else{
             next()
@@ -84,7 +96,7 @@ class WIntroController: BaseController {
     }
 
 
-    private func reqMarketingAgree(yn:String,next:(()->Void)){
+    fileprivate func reqMarketingAgree(_ yn:String,next:@escaping (()->Void)){
         RSHttp(controller:self).req(
             [ApiFormApp().ap("mode","set_marketing_agree").ap("pack_name",AppProp.appId).ap("marketing_agree",yn)],
             successCb: { (resource) -> Void in
@@ -99,7 +111,7 @@ class WIntroController: BaseController {
     }
     
  
-    private func reqCheckApiKey(){
+    fileprivate func reqCheckApiKey(){
 		RSHttp(controller:self).req(
 		   [ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId)],
 		   successCb: { (resource) -> Void in
@@ -132,33 +144,45 @@ class WIntroController: BaseController {
     }
 
 
- 	private func reqGetIntro(){
+ 	fileprivate func reqGetIntro(){
 		RSHttp(controller:self).req(
 		   ApiFormApp().ap("mode","get_intro").ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
 		   		let serverVersion = resource.body()["version"] as! String
-		   		let introImg = resource.body()["intro_img"] as! String
+		   		let introImg = "https://media.giphy.com/media/9fbYYzdf6BbQA/giphy.gif"//resource.body()["intro_img"] as! String
+//            let introImg = "http://118.129.243.73/giphy1.gif"
+//            let introImg = "https://davidwalsh.name/demo/herrera-wtf-once.gif"
+            
+
+            
+//            return UIImage(contentsOfFile: "https://ssl.pstatic.net/tveta/libs/1153/1153511/20170425112142-F2mY2fkp.jpg")
 		   		if Int(serverVersion)! > self.saveVersion{
-                    let documentDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-                    let filePath = documentDirectoryURL.URLByAppendingPathComponent(NSUUID().UUIDString)!.filePathURL!.path!
-                    DownLoader().loadImg(introImg,filePath:filePath,after:{ (image) -> Void in
-		   				if image != nil {
-                            var saveIntroInfo:[String:AnyObject] = [String:AnyObject]()
-                            saveIntroInfo["version"] = Int(serverVersion)!
-                            saveIntroInfo["file"] = filePath
-                            WInfo.introInfo = saveIntroInfo
-                            self.introView.image = image
-                            self.showMarketingPopup(self.reqTheme)
-		   				}
+                    let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                    let filePath = (documentDirectoryURL.appendingPathComponent(UUID().uuidString) as NSURL).filePathURL!.path
+                    DownLoader().loadImg(introImg,filePath:filePath,after:{ (options) -> Void in
+                        var saveIntroInfo = [String:Any]()
+                        saveIntroInfo["version"] = Int(serverVersion)!
+                        saveIntroInfo["file"] = filePath
+                        if introImg.hasSuffix(".gif") {
+                            saveIntroInfo["fileType"] = "gif"
+                            saveIntroInfo["loopCount"] = options["loopCount"]
+                        }else if introImg.hasSuffix(".jpg") {
+                            saveIntroInfo["fileType"] = "jpg"
+                        }else {
+                            saveIntroInfo["fileType"] = "png"
+                        }
+                        WInfo.introInfo = saveIntroInfo
+                        self.doPlaySplash()
+                        self.reqTheme()
 		   			})
 		   		}else{
-                    self.showMarketingPopup(self.reqTheme)
+                    self.reqTheme()
 		   		}
 		   }
 		)
     }
 
-	private func reqTheme(){
+	fileprivate func reqTheme(){
 		RSHttp(controller:self).req(
 		   ApiFormApp().ap("mode","get_theme").ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
@@ -172,7 +196,7 @@ class WIntroController: BaseController {
     }
     
 
-	private func reqUpdate(){
+	fileprivate func reqUpdate(){
 		RSHttp(controller:self).req(
 		   ApiFormApp().ap("mode","version_chk").ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
@@ -184,17 +208,17 @@ class WIntroController: BaseController {
                     self.dismissProcess()
                     return
                 }
-		   		if Int(serverVersion) > Int(curVersion) && WInfo.ignoreUpdateVersion != serverVersion {
-					let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.Alert)
-					alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.Default, handler:{ action in
-                        UIApplication.sharedApplication().openURL(NSURL(string:appUrl)!)
+		   		if Int(serverVersion)! > Int(curVersion)! && WInfo.ignoreUpdateVersion != serverVersion {
+					let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.alert)
+					alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.default, handler:{ action in
+                        UIApplication.shared.openURL(URL(string:appUrl)!)
                         exit(0)
 					}))
-					alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.Default, handler:{ action in
+					alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.default, handler:{ action in
                         WInfo.ignoreUpdateVersion = serverVersion
 						self.dismissProcess()
 					}))
-					self.presentViewController(alert,animated:true, completion: nil)
+					self.present(alert,animated:true, completion: nil)
 	   			}else{
 	   				self.dismissProcess()
 	   			}
@@ -202,18 +226,74 @@ class WIntroController: BaseController {
 		)
     }
 
-    private func dismissProcess(){
+    fileprivate func dismissProcess(){
         mainController?.endIntro()
     }
     
     
-    private func finishPopup(){
-        let alert = UIAlertController(title: "알림", message: "데이터가 잘못되어 앱을종료합니다.\n다시실행해주세요." ,preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "종료" , style: UIAlertActionStyle.Default, handler:{ action in
+    fileprivate func doPlaySplash(){
+        if isLoaded {
+            return
+        }
+        let splash = self.saveIntro
+        if splash == nil {
+            return
+        }
+        if WInfo.introInfo["fileType"] as? String == "gif" {
+            var loopCount = Int(WInfo.introInfo["loopCount"] as! String)!
+            loopCount = loopCount == 0 ? -1 : loopCount
+            let imagview = UIImageView(gifImage:splash!, manager: SwiftyGifManager(memoryLimit:20), loopCount : loopCount)
+            imagview.frame = self.introView.bounds
+            imagview.contentMode = .scaleAspectFill
+            imagview.clipsToBounds = true
+            imagview.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+            imagview.delegate = self
+            self.introView.addSubview(imagview)
+        
+        }else{
+            let imagview = UIImageView(frame: self.introView.bounds)
+            imagview.frame = self.introView.bounds
+            imagview.contentMode = .scaleAspectFill
+            imagview.clipsToBounds = true
+            imagview.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+            imagview.image = splash
+            self.introView.addSubview(imagview)
+        }
+  
+        
+        
+    }
+    
+    
+    fileprivate func finishPopup(){
+        let alert = UIAlertController(title: "알림", message: "데이터가 잘못되어 앱을종료합니다.\n다시실행해주세요." ,preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "종료" , style: UIAlertActionStyle.default, handler:{ action in
             exit(0)
         }))
-        self.presentViewController(alert,animated:true, completion: nil)
+        self.present(alert,animated:true, completion: nil)
 
+    }
+    
+    
+    func gifDidLoop() {
+        let loopCount = Int(WInfo.introInfo["loopCount"] as! String)!
+        if(loopCount != 1){
+            oncePlayOk = true
+            closeIntroProcess()
+        }
+    }
+    
+    
+    func closeIntroProcess(){
+        let loopCount = Int(WInfo.introInfo["loopCount"] as! String)!
+        if(loopCount != 1){
+            self.dismiss(animated: true, completion: nil)
+        }else{
+            if oncePlayOk && webViewLoadedOk {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        
     }
 }
 
@@ -221,13 +301,13 @@ class WIntroController: BaseController {
 class WIntroSegue : UIStoryboardSegue {
     
     override func perform(){
-        let source = self.sourceViewController
-        let destination = self.destinationViewController
+        let source = self.source
+        let destination = self.destination
         
-        UIView.transitionFromView(source.view,
-                                  toView: destination.view,
+        UIView.transition(from: source.view,
+                                  to: destination.view,
                                   duration: 1.0,
-                                  options: UIViewAnimationOptions.TransitionCrossDissolve,
+                                  options: UIViewAnimationOptions.transitionCrossDissolve,
                                   completion: nil)
     }
 }

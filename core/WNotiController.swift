@@ -17,29 +17,31 @@ class WNotiController: BaseWebViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.alpha = 0
-    	var url = NSURL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId);
+    	var url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId);
         if link != nil {
-        	url = NSURL (string: link!);
+        	url = URL (string: link!);
         }
-        let requestObj = NSURLRequest(URL: url!);
+        let requestObj = URLRequest(url: url!);
         let contentView = self.view.subviews[0]
         let topView = self.view.subviews[1]
-        contentView.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), UIScreen.mainScreen().bounds.size.height)
-        dispatch_async(dispatch_get_main_queue()){
+        contentView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: UIScreen.main.bounds.size.height)
+        DispatchQueue.main.async{
             self.webView.scrollView.contentInset.top = topView.frame.size.height
             self.webView.scrollView.contentInset.bottom = 0
         }
 
         webView.loadRequest(requestObj);
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
-    override func hybridEvent(value: [String : AnyObject]) {
+    override func hybridEvent(_ value: [String : AnyObject]) {
         if value["func"] as! String == "movePage"{
             let moveUrl = value["param1"] as! String
             let mainController = self.navigationController?.viewControllers[0] as! WMainController
             mainController.movePage(moveUrl)
-            self.navigationController?.popViewControllerAnimated(true)
+            if self.navigationController != nil {
+                self.navigationController!.popViewController(animated: true)
+            }
         }
     }
 
@@ -50,9 +52,9 @@ class WNotiController: BaseWebViewController{
     }
 
     
-    override func webViewDidFinishLoad(webView: UIWebView) {
+    override func webViewDidFinishLoad(_ webView: UIWebView) {
         if(self.webView.alpha == 0){
-            UIView.animateWithDuration(0.6, animations: {
+            UIView.animate(withDuration: 0.6, animations: {
                 self.webView.alpha = 1
             })
         }

@@ -768,17 +768,17 @@
 //}
 
 public enum ToastPosition {
-    case Top
-    case Center
-    case Bottom
+    case top
+    case center
+    case bottom
 }
 
 public extension UIView {
-    func makeToast(message: String) {
-        let label = UILabel(frame:CGRectZero)
+    func makeToast(_ message: String) {
+        let label = UILabel(frame:CGRect.zero)
         label.text = message
-        label.font = UIFont.boldSystemFontOfSize(14.0)
-        label.textColor = UIColor.whiteColor()
+        label.font = UIFont.boldSystemFont(ofSize: 14.0)
+        label.textColor = UIColor.white
         label.textSizeFit()
         var frame = label.frame
         frame.size.width = frame.size.width + 32
@@ -792,17 +792,17 @@ public extension UIView {
         
         let content = UIView(frame:frame)
         content.center = self.center
-        label.center = CGPointMake(content.frame.size.width/2.0, content.frame.size.height/2.0)
+        label.center = CGPoint(x: content.frame.size.width/2.0, y: content.frame.size.height/2.0)
         content.addSubview(label)
         content.layer.cornerRadius = 8
         self.addSubview(content)
         content.backgroundColor = UIColor(hexString: "#484a4f")
         
         content.alpha = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             content.alpha = 1
         }) { (Bool) in
-            UIView.animateWithDuration(0.3, delay: 3, options: .CurveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, delay: 3, options: .curveEaseOut, animations: {
                 content.alpha = 0
                 }, completion: { (Bool) in
                     content.removeFromSuperview()
@@ -811,7 +811,7 @@ public extension UIView {
         }
         
     }
-    func makeToast(message: String, duration: NSTimeInterval, position: ToastPosition) {
+    func makeToast(_ message: String, duration: TimeInterval, position: ToastPosition) {
         self.makeToast(message);
     }
 }
@@ -823,10 +823,10 @@ extension UILabel{
             return
         }
         let text:NSString = self.text! as NSString
-        let textSize = text.boundingRectWithSize(CGSizeMake(self.preferredMaxLayoutWidth, 10000000),
-                                                 options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+        let textSize = text.boundingRect(with: CGSize(width: self.preferredMaxLayoutWidth, height: 10000000),
+                                                 options: NSStringDrawingOptions.usesLineFragmentOrigin,
                                                  attributes: [NSFontAttributeName: self.font], context: nil).size
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, textSize.width, textSize.height)
+        self.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: textSize.width, height: textSize.height)
         
         
     }

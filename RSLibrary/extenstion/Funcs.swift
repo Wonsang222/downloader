@@ -11,33 +11,33 @@ import UIKit
 
 var SCREEN_WIDTH:CGFloat{
     get{
-        return UIScreen.mainScreen().bounds.width
+        return UIScreen.main.bounds.width
     }
 }
 var SCREEN_HEIGHT:CGFloat{
     get{
-        return UIScreen.mainScreen().bounds.height
+        return UIScreen.main.bounds.height
     }
 }
-func CRectChangeWidth(rect:CGRect,width:CGFloat) -> CGRect{
-    return CGRectMake(rect.origin.x, rect.origin.y, width, rect.size.height)
+func CRectChangeWidth(_ rect:CGRect,width:CGFloat) -> CGRect{
+    return CGRect(x: rect.origin.x, y: rect.origin.y, width: width, height: rect.size.height)
 }
 
-func CRectChangeHeight(rect:CGRect,height:CGFloat) -> CGRect{
-    return CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, height)
+func CRectChangeHeight(_ rect:CGRect,height:CGFloat) -> CGRect{
+    return CGRect(x: rect.origin.x, y: rect.origin.y, width: rect.size.width, height: height)
 }
 
-func CRectChangeX(rect:CGRect,x:CGFloat) -> CGRect{
-    return CGRectMake(x, rect.origin.y, rect.size.width, rect.size.height)
+func CRectChangeX(_ rect:CGRect,x:CGFloat) -> CGRect{
+    return CGRect(x: x, y: rect.origin.y, width: rect.size.width, height: rect.size.height)
 }
 
-func CRectChangeY(rect:CGRect,y:CGFloat) -> CGRect{
-    return CGRectMake(rect.origin.x, y, rect.size.width, rect.size.height)
+func CRectChangeY(_ rect:CGRect,y:CGFloat) -> CGRect{
+    return CGRect(x: rect.origin.x, y: y, width: rect.size.width, height: rect.size.height)
 }
-func toJSONString(dic:Dictionary<String,AnyObject>) -> String{
+func toJSONString(_ dic:[String:Any]) -> String{
     do{
-        let returnData = try NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions())
-        return (NSString(data:returnData,encoding:NSUTF8StringEncoding) as! String).urlEncode()!
+        let returnData = try JSONSerialization.data(withJSONObject: dic, options: JSONSerialization.WritingOptions())
+        return (NSString(data:returnData,encoding:String.Encoding.utf8.rawValue) as! String).urlEncode()!
     }catch{
         return "{}"
     }

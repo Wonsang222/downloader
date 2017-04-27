@@ -11,7 +11,7 @@ import UIKit
 class EventAdbrix {
     
     
-    static func firstTimeExperience(param:[String:AnyObject]){
+    static func firstTimeExperience(_ param:[String:AnyObject]){
         #if ADBRIX
         if let fParam = param["param"] as? String{
             AdBrix.firstTimeExperience(param["name"] as! String, param: fParam)
@@ -20,7 +20,7 @@ class EventAdbrix {
         }
         #endif
     }
-    static func retention(param:[String:AnyObject]){
+    static func retention(_ param:[String:AnyObject]){
         #if ADBRIX
         if let fParam = param["param"] as? String{
             AdBrix.retention(param["name"] as! String, param: fParam)
@@ -29,13 +29,13 @@ class EventAdbrix {
         }
         #endif
     }
-    static func setAge(param:[String:AnyObject]){
+    static func setAge(_ param:[String:AnyObject]){
         #if ADBRIX
         let age:Int = param["age"] as! Int
         IgaworksCore.setAge(Int32(age))
         #endif
     }
-    static func setGender(param:[String:AnyObject]){
+    static func setGender(_ param:[String:AnyObject]){
         #if ADBRIX
         let gender = param["gender"] as! String
         if gender == "M" {
@@ -45,7 +45,7 @@ class EventAdbrix {
         }
         #endif
     }
-    static func purchase(param:[String:AnyObject]){
+    static func purchase(_ param:[String:AnyObject]){
         #if ADBRIX
         var productModels = [AdBrixCommerceProductModel]()
         let products = param["products"] as! [[String:AnyObject]]
@@ -86,7 +86,7 @@ class EventAdbrix {
         #endif
     }
     
-    static func setCustomCohort(param:[String:AnyObject]){
+    static func setCustomCohort(_ param:[String:AnyObject]){
         #if ADBRIX
         let index = param["index"] as! Int
         if let type = AdBrixCustomCohortType(rawValue: index) {
@@ -95,7 +95,7 @@ class EventAdbrix {
         #endif
     }
     
-    static func currencyValue(value:String) -> UInt{
+    static func currencyValue(_ value:String) -> UInt{
         if value == "KRW" {
             return UInt(AdBrixCurrencyType.KRW.rawValue)
         }else if value == "USD" {

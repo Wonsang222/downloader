@@ -2,8 +2,8 @@ import UIKit
 
 extension UIColor {
     convenience init(hexString:String) {
-        let hexString:NSString = hexString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        let scanner            = NSScanner(string: hexString as String)
+        let hexString:NSString = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString
+        let scanner            = Scanner(string: hexString as String)
         
         if (hexString.hasPrefix("#")) {
             scanner.scanLocation = 1
@@ -13,7 +13,7 @@ extension UIColor {
         
         if(hexString.length == 9){
             var color:UInt64 = 0
-            scanner.scanHexLongLong(&color)
+            scanner.scanHexInt64(&color)
             let a = (color & 0xFF000000) >> 24
             let r = (color & 0x00FF0000) >> 16
             let g = (color & 0x0000FF00) >> 8
@@ -26,7 +26,7 @@ extension UIColor {
             
         }else{
             var color:UInt32 = 0
-            scanner.scanHexInt(&color)
+            scanner.scanHexInt32(&color)
             let r = (color & 0xFF0000) >> 16
             let g = (color & 0x00FF00) >> 8
             let b = (color & 0x0000FF)

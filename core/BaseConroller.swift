@@ -27,14 +27,14 @@ class BaseController: UIViewController {
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let tracker = (UIApplication.sharedApplication().delegate as! WAppDelegate).tracker {
+        if let tracker = (UIApplication.shared.delegate as! WAppDelegate).tracker {
             if let title = self.title {
                 if !title.isEmpty{
                     tracker.set(kGAIScreenName, value: self.title!)
                     let builder = GAIDictionaryBuilder.createScreenView()
-                    tracker.send(builder.build() as [NSObject : AnyObject])
+                    tracker.send(builder!.build() as [NSObject:AnyObject])
                 }
             }
         }
@@ -48,14 +48,16 @@ class BaseController: UIViewController {
     }
     
     
-    @IBAction func doBack(sender:AnyObject){
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func doBack(_ sender:AnyObject){
+        if self.navigationController != nil {
+            self.navigationController!.popViewController(animated: true)
+        }
     }
     
     
-    func createMarketingDialog(url:String ,resp:((String) -> Void)) -> RPopupController {
+    func createMarketingDialog(_ url:String ,resp:@escaping ((String) -> Void)) -> RPopupController {
         
-        let controller = self.storyboard?.instantiateViewControllerWithIdentifier("push_agree_popup") as! MarketingPopupController
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "push_agree_popup") as! MarketingPopupController
         controller.url = url
         let bizPoup = RPopupController(controlller: controller,height: 0)
         bizPoup.cancelabld = false
@@ -64,10 +66,10 @@ class BaseController: UIViewController {
     }
     
     
-    func createMarketingAlert(agree:((UIAlertAction) -> Void),disagree:((UIAlertAction) -> Void)) -> UIAlertController {
-        let alert = UIAlertController(title: "알림", message: "해당기기로 이벤트, 상품할인 등의 정보를\n전송하려고 합니다." ,preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "동의" , style: UIAlertActionStyle.Default, handler:agree))
-        alert.addAction(UIAlertAction(title: "미동의" , style: UIAlertActionStyle.Default, handler:disagree))
+    func createMarketingAlert(_ agree:@escaping ((UIAlertAction) -> Void),disagree:@escaping ((UIAlertAction) -> Void)) -> UIAlertController {
+        let alert = UIAlertController(title: "알림", message: "해당기기로 이벤트, 상품할인 등의 정보를\n전송하려고 합니다." ,preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "동의" , style: UIAlertActionStyle.default, handler:agree))
+        alert.addAction(UIAlertAction(title: "미동의" , style: UIAlertActionStyle.default, handler:disagree))
         return alert
     }
     
@@ -137,7 +139,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
         }
 
         webView.delegate = self
-        webView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight,UIViewAutoresizing.FlexibleWidth]
+        webView.autoresizingMask = [UIViewAutoresizing.flexibleHeight,UIViewAutoresizing.flexibleWidth]
         webView.scalesPageToFit = true
         webViewContainer.addSubview(webView)
     }
@@ -148,11 +150,11 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
     }
     
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         var backgroundSupported = false
-        let device = UIDevice.currentDevice()
-        if device.respondsToSelector(Selector("isMultitaskingSupported")){
-            backgroundSupported = device.multitaskingSupported;
+        let device = UIDevice.current
+        if device.responds(to: #selector(getter: UIDevice.isMultitaskingSupported)){
+            backgroundSupported = device.isMultitaskingSupported;
         }
         if !backgroundSupported {
             popup("멀티테스킹을 지원하는 기기 또한 어플만 공인인증서비스가 가능합니다.")
@@ -164,55 +166,53 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
 //        }
 
         
-        if request.URL!.absoluteString!.hasPrefix("wisamagic://event?json=") {
-            let json = request.URL?.absoluteString!.replace("wisamagic://event?json=", withString: "")
+        if request.url!.absoluteString.hasPrefix("wisamagic://event?json=") {
+            let json = request.url?.absoluteString.replace("wisamagic://event?json=", withString: "")
             do{
-                let json_decode = json!.stringByRemovingPercentEncoding
+                let json_decode = json!.removingPercentEncoding
                 let value = try
-                            NSJSONSerialization.JSONObjectWithData(
-                            json_decode!.dataUsingEncoding(NSUTF8StringEncoding)!
-                            ,options: NSJSONReadingOptions()) as! [String:AnyObject]
+                            JSONSerialization.jsonObject(
+                            with: json_decode!.data(using: String.Encoding.utf8)!
+                            ,options: JSONSerialization.ReadingOptions()) as! [String:AnyObject]
                 hybridEvent(value)
             }catch{
                 
             }
             return false
         }
-        if request.URL!.absoluteString!.hasPrefix("wisamagic://api") {
-            let api_string = request.URL!.absoluteString?.replace("wisamagic://api?", withString: "")
-            if let api_dic = api_string?.paramParse() {
-                self.baseHybridEvent(api_dic)
-            }
+        if request.url!.absoluteString.hasPrefix("wisamagic://api") {
+            let api_string = request.url!.absoluteString.replace("wisamagic://api?", withString: "")
+            self.baseHybridEvent(api_string.paramParse())
             return false
         }
-        let returval = interceptWebView(request.URL!)
+        let returval = interceptWebView(request.url!)
         return returval
     }
     
-    func webViewDidStartLoad(webView: UIWebView){
+    func webViewDidStartLoad(_ webView: UIWebView){
         
         
-        print("start " + webView.request!.URL!.absoluteString!)
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        let access_cookie_dic : [String:AnyObject] = [
-            NSHTTPCookieDomain : WInfo.appUrl.globalUrl(),
-            NSHTTPCookiePath : "/",
-            NSHTTPCookieName : "wisamall_access_device",
-            NSHTTPCookieValue : "APP",
-            NSHTTPCookieExpires : NSDate().dateByAddingTimeInterval(60*60*24*365*300)
+        print("start " + webView.request!.url!.absoluteString)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        let access_cookie_dic : [HTTPCookiePropertyKey:Any] = [
+            HTTPCookiePropertyKey.domain : WInfo.appUrl.globalUrl() as AnyObject,
+            HTTPCookiePropertyKey.path : "/" as AnyObject,
+            HTTPCookiePropertyKey.name : "wisamall_access_device" as AnyObject,
+            HTTPCookiePropertyKey.value : "APP",
+            HTTPCookiePropertyKey.expires : Date().addingTimeInterval(60*60*24*365*300)
         ];
-        let cookie:NSHTTPCookie = NSHTTPCookie(properties: access_cookie_dic)!
-        NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie)
+        let cookie:HTTPCookie = HTTPCookie(properties: access_cookie_dic)!
+        HTTPCookieStorage.shared.setCookie(cookie)
 //        progressView.setProgress(0, animated: false)
 //        progressView.setProgress(0.8, animated: true)
 //        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 1 }, completion: nil)
         
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-        if webView.request!.URL!.absoluteString!.hasSuffix("smpay.kcp.co.kr/card.do") {
-            webView.stringByEvaluatingJavaScriptFromString("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        if webView.request!.url!.absoluteString.hasSuffix("smpay.kcp.co.kr/card.do") {
+            webView.stringByEvaluatingJavaScript(from: "document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
         }
         
 //        progressView.setProgress(1, animated: true)
@@ -220,39 +220,39 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
 
     }
     
-    func hybridEvent(value: [String:AnyObject]){
+    func hybridEvent(_ value: [String:AnyObject]){
         
     }
     
-    func baseHybridEvent(value: [String:String]){
+    func baseHybridEvent(_ value: [String:String]){
         if value["func"] == "deviceId" {
-            let callback = value["callback"]!.stringByRemovingPercentEncoding!
-            let value = UIDevice.currentDevice().identifierForVendor!.UUIDString
-            webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
+            let callback = value["callback"]!.removingPercentEncoding!
+            let value = UIDevice.current.identifierForVendor!.uuidString
+            webView.stringByEvaluatingJavaScript(from: "javascript:\(callback)('\(value)')")
         }else if value["func"] == "version" {
-            let callback = value["callback"]!.stringByRemovingPercentEncoding!
+            let callback = value["callback"]!.removingPercentEncoding!
             let value = AppProp.appVersion
-            webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
+            webView.stringByEvaluatingJavaScript(from: "javascript:\(callback)('\(value)')")
         }else if value["func"] == "os_version" {
-            let callback = value["callback"]!.stringByRemovingPercentEncoding!
-            let value = UIDevice.currentDevice().systemVersion
-            webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
+            let callback = value["callback"]!.removingPercentEncoding!
+            let value = UIDevice.current.systemVersion
+            webView.stringByEvaluatingJavaScript(from: "javascript:\(callback)('\(value)')")
         }else if value["func"] == "isGpsEnabled" {
-            let callback = value["callback"]!.stringByRemovingPercentEncoding!
+            let callback = value["callback"]!.removingPercentEncoding!
             var value:String = "N"
-            if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.Denied
+            if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.denied
                 && CLLocationManager.locationServicesEnabled() {
                 value = "Y"
             }
-            webView.stringByEvaluatingJavaScriptFromString("javascript:\(callback)('\(value)')")
+            webView.stringByEvaluatingJavaScript(from: "javascript:\(callback)('\(value)')")
         }else if value["func"] == "goGPSConfig" {
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         }else if value["func"] == "contact" {
-            let callback = value["callback"]!.stringByRemovingPercentEncoding!
+            let callback = value["callback"]!.removingPercentEncoding!
             controllerCallback[CONTACT_CALLBACK] = callback
             let picker = ABPeoplePickerNavigationController()
             picker.peoplePickerDelegate = self
-            self.presentViewController(picker, animated: true, completion: { 
+            self.present(picker, animated: true, completion: { 
                 
             });
         }else if value["func"] == "shareUrl" {
@@ -264,9 +264,9 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
             if json["url"] == nil {
                 return
             }
-            let objectToShare = [ NSURL(string: json["url"] as! String)! ]
+            let objectToShare = [ URL(string: json["url"] as! String)! ]
             let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
-            presentViewController(activity, animated: true, completion: nil)
+            present(activity, animated: true, completion: nil)
         }else if value["func"] == "adbrixFirstTimeExperience" {
             let json = toJsonString(value["params"])
             EventAdbrix.firstTimeExperience(json)
@@ -288,12 +288,12 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
         }
     }
     
-    func toJsonString(json_decode:String?) -> [String:AnyObject]{
+    func toJsonString(_ json_decode:String?) -> [String:AnyObject]{
         do{
             let value = try
-                NSJSONSerialization.JSONObjectWithData(
-                    json_decode!.stringByRemovingPercentEncoding!.dataUsingEncoding(NSUTF8StringEncoding)!
-                    ,options: NSJSONReadingOptions()) as! [String:AnyObject]
+                JSONSerialization.jsonObject(
+                    with: json_decode!.removingPercentEncoding!.data(using: String.Encoding.utf8)!
+                    ,options: JSONSerialization.ReadingOptions()) as! [String:AnyObject]
             return value
         }catch{
             print(error)
@@ -392,8 +392,8 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
     
     
      
-    func interceptWebView(url:NSURL) -> Bool {
-        if url.absoluteString!.hasSuffix("exec_file=member/logout.exe.php") {
+    func interceptWebView(_ url:URL) -> Bool {
+        if url.absoluteString.hasSuffix("exec_file=member/logout.exe.php") {
             let userInfo = WInfo.userInfo
             if let member_id = userInfo["userId"] as? String{
                 let resource = ApiFormApp().ap("mode","set_login_stat").ap("pack_name",AppProp.appId).ap("login_stat","N").ap("member_id",member_id)
@@ -405,34 +405,34 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
             WInfo.userInfo = [String:AnyObject]()
             return true
         }
-        let device = UIDevice.currentDevice()
-        if !device.multitaskingSupported {
+        let device = UIDevice.current
+        if !device.isMultitaskingSupported {
             popup("멀티테스킹을 지원하는 기기 또는 어플만  공인인증서비스가 가능합니다.")
             return false;
         }
 
-        if url.absoluteString!.hasPrefix("smartxpay-transfer://"){
-            if UIApplication.sharedApplication().canOpenURL(NSURL(string:"smartxpay-transfer://")!) {
-                UIApplication.sharedApplication().openURL(url)
+        if url.absoluteString.hasPrefix("smartxpay-transfer://"){
+            if UIApplication.shared.canOpenURL(URL(string:"smartxpay-transfer://")!) {
+                UIApplication.shared.openURL(url)
             }else{
                 popup("확인버튼을 누르시면 스토어로 이동합니다.",handler: { action in
                     let itunes = "https://itunes.apple.com/kr/app/seumateu-egseupei-gyejwaiche/id393794374?mt=8"
-                    UIApplication.sharedApplication().openURL(NSURL(string:itunes)!)
+                    UIApplication.shared.openURL(URL(string:itunes)!)
                 })
             }
             return false
         }
-        if url.absoluteString!.hasPrefix("paypin://MP_2APP"){
-            if UIApplication.sharedApplication().canOpenURL(NSURL(string:"paypin://MP_2APP")!) {
-                UIApplication.sharedApplication().openURL(url)
+        if url.absoluteString.hasPrefix("paypin://MP_2APP"){
+            if UIApplication.shared.canOpenURL(URL(string:"paypin://MP_2APP")!) {
+                UIApplication.shared.openURL(url)
             }else{
                 popup("확인버튼을 누르시면 스토어로 이동합니다.")
             }
             return false
         }
-        if url.absoluteString!.hasPrefix("smartxpay-transfer://"){
-            if UIApplication.sharedApplication().canOpenURL(NSURL(string:"smartxpay-transfer://")!) {
-                UIApplication.sharedApplication().openURL(url)
+        if url.absoluteString.hasPrefix("smartxpay-transfer://"){
+            if UIApplication.shared.canOpenURL(URL(string:"smartxpay-transfer://")!) {
+                UIApplication.shared.openURL(url)
             }else{
                 popup("확인버튼을 누르시면 스토어로 이동합니다.")
             }
@@ -441,33 +441,33 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
         
         
         
-        if url.absoluteString!.hasPrefix("https://itunes.apple.com/kr/app/") {
-            UIApplication.sharedApplication().openURL(url)
+        if url.absoluteString.hasPrefix("https://itunes.apple.com/kr/app/") {
+            UIApplication.shared.openURL(url)
             return false
         }
-        if url.absoluteString!.hasPrefix("https://itunes.apple.com/us/app/") {
-            UIApplication.sharedApplication().openURL(url)
+        if url.absoluteString.hasPrefix("https://itunes.apple.com/us/app/") {
+            UIApplication.shared.openURL(url)
             return false
         }
-        if url.absoluteString!.hasPrefix("http://itunes.apple.com/us/app/") {
-            UIApplication.sharedApplication().openURL(url)
+        if url.absoluteString.hasPrefix("http://itunes.apple.com/us/app/") {
+            UIApplication.shared.openURL(url)
             return false
         }
-        if url.absoluteString!.hasPrefix("http://itunes.apple.com/kr/app/") {
-            UIApplication.sharedApplication().openURL(url)
+        if url.absoluteString.hasPrefix("http://itunes.apple.com/kr/app/") {
+            UIApplication.shared.openURL(url)
             return false
         }
-        if url.absoluteString!.hasPrefix("itms-appss://") {
-            UIApplication.sharedApplication().openURL(url)
+        if url.absoluteString.hasPrefix("itms-appss://") {
+            UIApplication.shared.openURL(url)
             return false
         }
         
         for appSchema in paySchema {
-            if url.absoluteString!.hasPrefix(appSchema["schema"]! as String) {
-                if UIApplication.sharedApplication().canOpenURL(url) {
-                    UIApplication.sharedApplication().openURL(url)
+            if url.absoluteString.hasPrefix(appSchema["schema"]! as String) {
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.openURL(url)
                 }else{
-                    UIApplication.sharedApplication().openURL(NSURL(string:appSchema["url"]! as String)!)
+                    UIApplication.shared.openURL(URL(string:appSchema["url"]! as String)!)
                 }
                 return false
             }
@@ -477,39 +477,39 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
     
     
     
-    func popup(message:String){
-        let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.Default, handler:nil))
-        self.presentViewController(alert,animated:true, completion: nil)
+    func popup(_ message:String){
+        let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.default, handler:nil))
+        self.present(alert,animated:true, completion: nil)
     }
     
-    func popup(message:String,handler:((UIAlertAction) -> Void)){
-        let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.Default, handler:handler))
-        self.presentViewController(alert,animated:true, completion: nil)
+    func popup(_ message:String,handler:@escaping ((UIAlertAction) -> Void)){
+        let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.default, handler:handler))
+        self.present(alert,animated:true, completion: nil)
     }
     
     
     
-    func peoplePickerNavigationController(peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord) {
+    func peoplePickerNavigationController(_ peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord) {
         let contactNm = ABRecordCopyCompositeName(person).takeRetainedValue()
         let unmanagePhones = ABRecordCopyValue(person, kABPersonPhoneProperty)
         var returnPhone:String?
         if unmanagePhones != nil {
-            let phones : ABMultiValueRef = unmanagePhones.takeUnretainedValue() as ABMultiValueRef
+            let phones : ABMultiValue = unmanagePhones!.takeUnretainedValue() as ABMultiValue
             let allPhones = ABMultiValueCopyArrayOfAllValues(phones).takeRetainedValue() as NSArray
             for eachPhone in allPhones {
-                if(returnPhone == nil || eachPhone.hasPrefix("+821") || eachPhone.hasPrefix("821") || eachPhone.hasPrefix("01") || eachPhone.hasPrefix("(01")){
+                if(returnPhone == nil || (eachPhone as AnyObject).hasPrefix("+821") || (eachPhone as AnyObject).hasPrefix("821") || (eachPhone as AnyObject).hasPrefix("01") || (eachPhone as AnyObject).hasPrefix("(01")){
                     returnPhone = eachPhone as? String
                 }
             }
         }
-        let returnObj = [ "name" : contactNm , "number" : returnPhone == nil ? "" : returnPhone! ]
-        self.webView.stringByEvaluatingJavaScriptFromString("javascript:\(self.controllerCallback[self.CONTACT_CALLBACK]!)('\(toJSONString(returnObj))')")
+        let returnObj = [ "name" : contactNm , "number" : returnPhone == nil ? "" : returnPhone! ] as [String : Any]
+        self.webView.stringByEvaluatingJavaScript(from: "javascript:\(self.controllerCallback[self.CONTACT_CALLBACK]!)('\(toJSONString(returnObj))')")
         
     }
 
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         print(error)
     }
 }

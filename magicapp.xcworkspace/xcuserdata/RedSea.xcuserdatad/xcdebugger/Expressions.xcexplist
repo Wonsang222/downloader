@@ -3,6 +3,17 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "WIntroController.saveIntro.getter:WIntroController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in WIntroController.reqGetIntro():WIntroController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.saveVersion">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "DownLoader.(loadImg(String, filePath : String, after : ([String : Any]) -&gt; ()) -&gt; ()).(closure #1).(closure #1):Tools.swift">
          <PersistentStrings>
             <PersistentString

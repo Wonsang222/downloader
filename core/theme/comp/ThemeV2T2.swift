@@ -84,7 +84,7 @@ class ThemeV2T2: CommonMkTheme {
         let topView = self.viewController.view.subviews[1]
         let titleView = topView.viewWithTag(labelViewTag) as! UILabel
         let back_button = topView.viewWithTag(backTag) as! UIButton
-        let height = CGFloat(naviBar["height"] as! Int)
+        let height = CGFloat( (naviBar["height"] as! NSNumber).floatValue )
         back_button.themeIconLoaderN(naviBar["icon_url"] as! String)
         topView.backgroundColor = UIColor(hexString:naviBar["bg"] as! String)
         topView.frame = CGRect(x: 0, y: 0, width: topView.frame.width, height: CGFloat(height + 20))

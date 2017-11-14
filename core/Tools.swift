@@ -42,7 +42,12 @@ class AppProp{
             return Bundle.main.infoDictionary?["WGAdbrixHashKey"] as? String
         }
     }
- 
+    static var gpsUseMessage:String?{
+        get{
+            return Bundle.main.infoDictionary?["NSLocationWhenInUseUsageDescription"] as? String
+        }
+    }
+
 }
 
 class Tools{
@@ -70,8 +75,8 @@ class DownLoader{
                                 if url.hasSuffix(".gif") {
 
                                     
-                                    let source = CGImageSourceCreateWithData( data as! CFData , nil)
-                                    let propertis = CGImageSourceCopyProperties(source!, nil) as! NSDictionary
+                                    let source = CGImageSourceCreateWithData( data! as CFData , nil)
+                                    let propertis = CGImageSourceCopyProperties(source!, nil)! as NSDictionary
                                     let metadata = propertis.object(forKey: kCGImagePropertyGIFDictionary) as! NSDictionary
                                     if metadata.object(forKey: kCGImagePropertyGIFLoopCount) == nil {
                                         options["loopCount"] = "1"

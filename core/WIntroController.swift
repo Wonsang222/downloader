@@ -17,16 +17,22 @@ class WIntroController: BaseController,SwiftyGifDelegate {
     var isLoaded = false
     var oncePlayOk = false
     var webViewLoadedOk = false
+    var introDrawable:UIImage?
+    var viewIntroInfo = [String:Any]()
     weak var mainController:WMainController?
-
+    var permissionController:PermissionController?
+    
 	fileprivate var saveVersion:Int{
 		get{
 			if let returnValue = WInfo.introInfo["version"]{
-				let introFile = WInfo.introInfo["file"] as! String
+                let introFiles = WInfo.introInfo["part"] as! [[String:Any]]
 				let manager = FileManager.default
-				if manager.fileExists(atPath: introFile) {
-					return returnValue as! Int
-				}
+                for item in introFiles{
+                    if !manager.fileExists(atPath: (item["file"] as! String)) {
+                        return 0
+                    }
+                }
+                return returnValue as! Int
 			}
 			return 0
 		}
@@ -34,16 +40,29 @@ class WIntroController: BaseController,SwiftyGifDelegate {
 
 	fileprivate var saveIntro:UIImage?{
 		get{
-    		if let filePath = WInfo.introInfo["file"] as? String{
-                let fileType = WInfo.introInfo["fileType"] as? String
+            if self.introDrawable != nil { return self.introDrawable }
+            let introInfo = WInfo.introInfo
+            if introInfo["part"] == nil { return nil }
+            let termParts = introInfo["part"] as! [[String:Any]]
+            if termParts.count == 0 { return nil }
+            var pos = 0;
+            if termParts.count > 1 {
+                let randomNum:UInt32 = arc4random_uniform(UInt32(termParts.count))
+                pos = Int(randomNum)
+            }
+            var tIntro = termParts[pos]
+            if let filePath = tIntro["file"] as? String{
+                let fileType = tIntro["fileType"] as? String
                 if fileType == "gif" {
                     do {
                         let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
+                        self.viewIntroInfo = tIntro
                         return UIImage(gifData: data)
                     } catch  {
                        return nil
                     }
                 }else{
+                    self.viewIntroInfo = tIntro
                     return UIImage(contentsOfFile: filePath)
                 }
 			}else{
@@ -66,8 +85,8 @@ class WIntroController: BaseController,SwiftyGifDelegate {
         super.viewDidLoad()
         doPlaySplash()
         self.reqCheckApiKey()
-	
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -78,12 +97,10 @@ class WIntroController: BaseController,SwiftyGifDelegate {
         if WInfo.firstProcess {
             
             if WInfo.getMarketingPopupUrl == "" {
-                let dialog = createMarketingAlert({ (UIAlertAction) in
+                let dialog = createMarketingAlertV2(resp: { (value) in
                     self.reqMarketingAgree("Y", next: next)
-                }) { (UIAlertAction) in
-                    self.reqMarketingAgree("N", next: next)
-                }
-                self.present(dialog, animated: true, completion: nil)
+                })
+                self.present(dialog, animated: false, completion: nil)
             }else{
                 let dialog = createMarketingDialog(WInfo.getMarketingPopupUrl, resp: { (value) in
                     self.reqMarketingAgree(value, next: next)
@@ -149,37 +166,65 @@ class WIntroController: BaseController,SwiftyGifDelegate {
 		   ApiFormApp().ap("mode","get_intro").ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
 		   		let serverVersion = resource.body()["version"] as! String
-		   		let introImg = "https://media.giphy.com/media/9fbYYzdf6BbQA/giphy.gif"//resource.body()["intro_img"] as! String
-//            let introImg = "http://118.129.243.73/giphy1.gif"
-//            let introImg = "https://davidwalsh.name/demo/herrera-wtf-once.gif"
-            
-
-            
-//            return UIImage(contentsOfFile: "https://ssl.pstatic.net/tveta/libs/1153/1153511/20170425112142-F2mY2fkp.jpg")
+		   		let introImg = resource.body()["intro_img"] as! NSArray
 		   		if Int(serverVersion)! > self.saveVersion{
-                    let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                    let filePath = (documentDirectoryURL.appendingPathComponent(UUID().uuidString) as NSURL).filePathURL!.path
-                    DownLoader().loadImg(introImg,filePath:filePath,after:{ (options) -> Void in
-                        var saveIntroInfo = [String:Any]()
-                        saveIntroInfo["version"] = Int(serverVersion)!
-                        saveIntroInfo["file"] = filePath
-                        if introImg.hasSuffix(".gif") {
-                            saveIntroInfo["fileType"] = "gif"
-                            saveIntroInfo["loopCount"] = options["loopCount"]
-                        }else if introImg.hasSuffix(".jpg") {
-                            saveIntroInfo["fileType"] = "jpg"
-                        }else {
-                            saveIntroInfo["fileType"] = "png"
-                        }
-                        WInfo.introInfo = saveIntroInfo
-                        self.doPlaySplash()
-                        self.reqTheme()
-		   			})
+                    var introInfo = WInfo.introInfo
+                    introInfo["version"] = Int(serverVersion)!
+                    var termJsonPart = [[String:Any]]()
+                    for (index,item) in introImg.enumerated() {
+                        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                        let filePath = (documentDirectoryURL.appendingPathComponent(UUID().uuidString) as NSURL).filePathURL!.path
+                        DownLoader().loadImg(item as! String,filePath:filePath,after:{ (options) -> Void in
+                            var termJson = [String:Any]()
+                            if introInfo["part"] == nil {
+                                introInfo["part"] = [[String:Any]]()
+                            }
+                            termJson["file"] = filePath
+                            if (item as! String).hasSuffix(".gif") {
+                                termJson["fileType"] = "gif"
+                                termJson["loopCount"] = options["loopCount"]
+                            }else if (item as! String).hasSuffix(".jpg") {
+                                termJson["fileType"] = "jpg"
+                            }else {
+                                termJson["fileType"] = "png"
+                            }
+                            termJsonPart.append(termJson)
+                            introInfo["part"] = termJsonPart
+                            WInfo.introInfo = introInfo
+                            if index == (introImg.count-1) {
+                                self.doPlaySplash()
+                                self.initIntro()
+                            }
+                        })
+                        
+                    }
+                  
 		   		}else{
-                    self.reqTheme()
+                    self.initIntro();
 		   		}
 		   }
 		)
+    }
+    
+    func initIntro(){
+        if(WInfo.confirmPermission){
+            (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
+                self.showMarketingPopup({
+                    (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
+                        self.reqTheme()
+                    })
+                })
+            })
+        }else{
+            self.permissionController = self.storyboard?.instantiateViewController(withIdentifier: "permission") as? PermissionController
+            self.permissionController?.show(parent: self, callback: {
+                self.showMarketingPopup({
+                    (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
+                        self.reqTheme()
+                    })
+                })
+            })
+        }
     }
 
 	fileprivate func reqTheme(){
@@ -236,11 +281,9 @@ class WIntroController: BaseController,SwiftyGifDelegate {
             return
         }
         let splash = self.saveIntro
-        if splash == nil {
-            return
-        }
-        if WInfo.introInfo["fileType"] as? String == "gif" {
-            var loopCount = Int(WInfo.introInfo["loopCount"] as! String)!
+        if splash == nil { return }
+        if self.viewIntroInfo["fileType"] as? String == "gif" {
+            var loopCount = Int(self.viewIntroInfo["loopCount"] as! String)!
             loopCount = loopCount == 0 ? -1 : loopCount
             let imagview = UIImageView(gifImage:splash!, manager: SwiftyGifManager(memoryLimit:20), loopCount : loopCount)
             imagview.frame = self.introView.bounds
@@ -276,7 +319,7 @@ class WIntroController: BaseController,SwiftyGifDelegate {
     
     
     func gifDidLoop() {
-        let loopCount = Int(WInfo.introInfo["loopCount"] as! String)!
+        let loopCount = Int(self.viewIntroInfo["loopCount"] as! String)!
         if(loopCount != 1){
             oncePlayOk = true
             closeIntroProcess()
@@ -285,13 +328,19 @@ class WIntroController: BaseController,SwiftyGifDelegate {
     
     
     func closeIntroProcess(){
-        let loopCount = Int(WInfo.introInfo["loopCount"] as! String)!
-        if(loopCount != 1){
-            self.dismiss(animated: true, completion: nil)
-        }else{
-            if oncePlayOk && webViewLoadedOk {
+        print(self.viewIntroInfo)
+        var loopCount:Int?
+        if self.viewIntroInfo["fileType"] as? String == "gif" {
+            loopCount = Int(self.viewIntroInfo["loopCount"] as! String)!
+            if(loopCount != 1){
                 self.dismiss(animated: true, completion: nil)
+            }else{
+                if oncePlayOk && webViewLoadedOk {
+                    self.dismiss(animated: true, completion: nil)
+                }
             }
+        }else{
+            self.dismiss(animated: true, completion: nil)
         }
         
     }

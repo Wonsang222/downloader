@@ -8,4 +8,6 @@ pod 'Google/Analytics'
 pod 'IgaworksCore'
 pod 'AdBrix'
 pod 'SwiftyGif'
+pod 'ZBarSDK'
+pod 'CryptoSwift'
 end

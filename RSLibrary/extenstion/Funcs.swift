@@ -37,7 +37,7 @@ func CRectChangeY(_ rect:CGRect,y:CGFloat) -> CGRect{
 func toJSONString(_ dic:[String:Any]) -> String{
     do{
         let returnData = try JSONSerialization.data(withJSONObject: dic, options: JSONSerialization.WritingOptions())
-        return (NSString(data:returnData,encoding:String.Encoding.utf8.rawValue) as! String).urlEncode()!
+        return (NSString(data:returnData,encoding:String.Encoding.utf8.rawValue)! as String).urlEncode()!
     }catch{
         return "{}"
     }

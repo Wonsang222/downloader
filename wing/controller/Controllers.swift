@@ -58,7 +58,6 @@ class NotiController:WNotiController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
     }
     
 }

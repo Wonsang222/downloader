@@ -11,6 +11,8 @@ import WebKit
 import CoreLocation
 import AddressBook
 import AddressBookUI
+import ZBarSDK
+
 
 
 class BaseController: UIViewController {
@@ -19,6 +21,7 @@ class BaseController: UIViewController {
     @IBOutlet var topTitle:UILabel?
 
     let CONTACT_CALLBACK = 40
+    let SCANNER_CALLBACK = 50
     
     var controllerCallback:[Int:String] = [:]
     
@@ -60,7 +63,7 @@ class BaseController: UIViewController {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "push_agree_popup") as! MarketingPopupController
         controller.url = url
         let bizPoup = RPopupController(controlller: controller,height: 0)
-        bizPoup.cancelabld = false
+        bizPoup.cancelable = false
         bizPoup.resp = resp
         return bizPoup
     }
@@ -72,7 +75,18 @@ class BaseController: UIViewController {
         alert.addAction(UIAlertAction(title: "미동의" , style: UIAlertActionStyle.default, handler:disagree))
         return alert
     }
-    
+    func createMarketingAlertV2(resp:@escaping ((String) -> Void)) -> RPopupController {
+        let popupView = self.storyboard!.instantiateViewController(withIdentifier: "popup") as! SimplePopupController
+        let popup = SimpleRPopupController(controlller: popupView)
+        popupView.pTitle.text = "알림"
+        popupView.pMessage.text = "해당기기로 이벤트, 상품할인 등의 정보를\n전송하려고 합니다."
+        popupView.confirmBtn.setTitle("동의", for: .normal)
+        popupView.cancelBtn.setTitle("미동의", for: .normal)
+        popupView.callback = resp
+        popup.cancelable = false
+        popup.delegate = self
+        return popup
+    }
     
     
    
@@ -80,7 +94,7 @@ class BaseController: UIViewController {
     
 }
 
-class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavigationControllerDelegate {
+class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavigationControllerDelegate,ZBarReaderDelegate {
     
     @IBOutlet weak var webViewContainer: UIView!
     @IBOutlet weak var progressView: UIProgressView!
@@ -190,10 +204,10 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
     }
     
     func webViewDidStartLoad(_ webView: UIWebView){
-        
-        
         print("start " + webView.request!.url!.absoluteString)
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        if !(self is NotiController) {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        }
         let access_cookie_dic : [HTTPCookiePropertyKey:Any] = [
             HTTPCookiePropertyKey.domain : WInfo.appUrl.globalUrl() as AnyObject,
             HTTPCookiePropertyKey.path : "/" as AnyObject,
@@ -219,6 +233,7 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
 //        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { self.progressView.alpha = 0 }, completion: nil)
 
     }
+    
     
     func hybridEvent(_ value: [String:AnyObject]){
         
@@ -267,6 +282,17 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
             let objectToShare = [ URL(string: json["url"] as! String)! ]
             let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
             present(activity, animated: true, completion: nil)
+        }else if value["func"] == "scanner" {
+            let callback = value["callback"]!.removingPercentEncoding!
+            controllerCallback[SCANNER_CALLBACK] = callback
+            let scanner = WMScanner()
+            scanner.readerDelegate = self
+            self.present(scanner, animated: true, completion: { 
+            });
+        }else if value["func"] == "goSetting" {
+            self.performSegue(withIdentifier: "setting" ,  sender : self)
+        }else if value["func"] == "goNotice" {
+            self.performSegue(withIdentifier: "noti" ,  sender : nil)
         }else if value["func"] == "adbrixFirstTimeExperience" {
             let json = toJsonString(value["params"])
             EventAdbrix.firstTimeExperience(json)
@@ -508,9 +534,33 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
         self.webView.stringByEvaluatingJavaScript(from: "javascript:\(self.controllerCallback[self.CONTACT_CALLBACK]!)('\(toJSONString(returnObj))')")
         
     }
+    
+    
 
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         print(error)
+    }
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        print( )
+        if let scanResults = info[ZBarReaderControllerResults] as? ZBarSymbolSet {
+            for symbol in scanResults {
+                if let symbolFound = symbol as? ZBarSymbol {
+                    let returnObj = [ "text" : symbolFound.data , "format" : symbolFound.typeName ] as [String : Any]
+                    self.webView.stringByEvaluatingJavaScript(from: "javascript:\(self.controllerCallback[self.SCANNER_CALLBACK]!)('\(toJSONString(returnObj))')")
+                    self.dismiss(animated: true, completion: nil)
+                    break
+                    
+                }
+            
+            
+            }
+        }
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

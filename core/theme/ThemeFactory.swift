@@ -22,11 +22,13 @@ class ThemeFactory {
         switch core {
             case "v1":
                 return ThemeV1( controller: contoller, object:themeInfo!)
-            case "v2":
+            case "v2","v3":
                 if theme == "t1" {
                     return ThemeV2T1( controller: contoller, object:themeInfo!)
                 }else if theme == "t2" {
                     return ThemeV2T2( controller: contoller, object:themeInfo!)
+                }else if theme == "t3" {
+                    return ThemeV2T3( controller: contoller, object:themeInfo!)
                 }else{
                     return ThemeV2T1( controller: contoller, object:themeInfo!)
                 }

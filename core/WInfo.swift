@@ -12,7 +12,8 @@ class WInfo{
     
 //    static let coreVersion:String = "wmgkcore_v2"
 //    static let coreVersion:String = "wmgkcore_v2.1.1" //공유하기 API 추가
-    static let coreVersion:String = "wmgkcore_v2.1.2" //GIF Splash 추가
+//    static let coreVersion:String = "wmgkcore_v2.1.2" //GIF Splash 추가
+    static let coreVersion:String = "wmgkcore_v3.0.0" //바코드 인식기
     
 	static var appUrl:String{
 		get{
@@ -70,14 +71,14 @@ class WInfo{
 
 	static var introInfo:[String:Any]{
 		get{
-			if let returnValue = UserDefaults.standard.dictionary(forKey: "kIntroInfo"){
+			if let returnValue = UserDefaults.standard.dictionary(forKey: "kIntroInfoR"){
 				return returnValue as [String : Any];
 			}else{
 				return [String:Any]() 		
 			}
 		}
 		set{
-			UserDefaults.standard.set(newValue, forKey: "kIntroInfo")	
+			UserDefaults.standard.set(newValue, forKey: "kIntroInfoR")	
 			UserDefaults.standard.synchronize()
 		}
 	}
@@ -268,4 +269,18 @@ class WInfo{
         }
     }
 
+    static var confirmPermission:Bool{
+        get{
+            if let returnValue = UserDefaults.standard.string(forKey: "kConfirmPermission"){
+                return returnValue == "NO" ? false : true
+            }else{
+                return false
+            }
+        }
+        set{
+            UserDefaults.standard.set(newValue ? "YES" : "NO", forKey: "kConfirmPermission")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
 }

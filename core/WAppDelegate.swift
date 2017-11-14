@@ -26,7 +26,17 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
             
         }
     }
+    private var apnsCallback:((_ error:Bool)->Void)?
     
+    
+    func regApns(callback:@escaping (_ error:Bool)->Void){
+        let notificationTypes: UIUserNotificationType = [UIUserNotificationType.alert, UIUserNotificationType.badge, UIUserNotificationType.sound]
+        let pushNotificationSettings = UIUserNotificationSettings(types: notificationTypes, categories: nil)
+        UIApplication.shared.registerUserNotificationSettings(pushNotificationSettings)
+        UIApplication.shared.registerForRemoteNotifications()
+        self.apnsCallback = callback
+
+    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")
@@ -42,10 +52,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
                 .ap("token",WInfo.deviceToken)
         )
 
-        let notificationTypes: UIUserNotificationType = [UIUserNotificationType.alert, UIUserNotificationType.badge, UIUserNotificationType.sound]
-        let pushNotificationSettings = UIUserNotificationSettings(types: notificationTypes, categories: nil)
-        application.registerUserNotificationSettings(pushNotificationSettings)
-        application.registerForRemoteNotifications()
         for cookie in HTTPCookieStorage.shared.cookies! {
             HTTPCookieStorage.shared.deleteCookie(cookie)
         }
@@ -84,15 +90,18 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         print(tokenString)
         #endif
         WInfo.deviceToken = tokenString
-        RSHttp().req(
-            ApiFormApp().ap("mode","add_token")
-                .ap("pack_name",AppProp.appId)
-                .ap("token",WInfo.deviceToken)
-        )
-        
-        
+        let api = ApiFormApp().ap("mode","add_token")
+            .ap("pack_name",AppProp.appId)
+            .ap("token",WInfo.deviceToken)
+
+        RSHttp().req([api],successCb: { (resource) -> Void in
+            self.apnsCallback?(true)
+        },errorCb : { (errorCode,resource) -> Void in
+            self.apnsCallback?(false)
+        })
     }
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error){
+        self.apnsCallback?(false)
         print(error)
     }
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {

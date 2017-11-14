@@ -23,7 +23,7 @@ class RPopupController : UIViewController{
     var openKeyboard = false
     var delegate:UIViewController?
     var resp:((String)->Void)?
-    var cancelabld:Bool = true;
+    var cancelable:Bool = true;
     init(controlller:UIViewController){
         super.init(nibName: nil, bundle: nil)
         self.contentController = controlller
@@ -67,7 +67,7 @@ class RPopupController : UIViewController{
         self.popupScrollView!.addSubview(self.contentController!.view)
         self.view.addSubview(self.popupScrollView!)
         
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(RPopupController.singleTapEvent(_:)))
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(RPopupController.singleTapEvent(gesture:)))
         self.popupScrollView?.addGestureRecognizer(gesture)
         
         self.addChildViewController(self.contentController!)
@@ -144,7 +144,7 @@ class RPopupController : UIViewController{
     }
 
     
-    func singleTapEvent(_ gesture:UITapGestureRecognizer){
+    func singleTapEvent(gesture:UITapGestureRecognizer){
         let location = gesture.location(in: self.view)
         if openKeyboard {
             if let delegate = self.contentController as? RPopupControllerDelegate {
@@ -154,7 +154,7 @@ class RPopupController : UIViewController{
         }
         if self.contentController!.view.frame.contains(location) {
         }else{
-            if(self.cancelabld){
+            if(self.cancelable){
                 self.dismissPopup(nil)
             }
         }
@@ -179,3 +179,80 @@ class RPopupController : UIViewController{
         return SCREEN_WIDTH - POPUP_GAP_WIDTH
     }
 }
+
+
+class SimpleRPopupController : RPopupController{
+    
+    
+    override func initController(_ height: CGFloat) {
+        self.view.frame = UIScreen.main.bounds
+        self.contentController?.view.rsWidth = SCREEN_WIDTH - POPUP_GAP_WIDTH
+        (self.contentController as! SimplePopupController).resizeView()
+        self.contentController!.view.center = self.view.center
+        
+        self.view.isOpaque = true
+        self.modalPresentationStyle = .overCurrentContext
+        self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)
+        self.contentController!.view.alpha = 0
+        self.contentController!.view.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        self.contentController!.view.layer.cornerRadius = 5
+
+        self.popupScrollView = UIScrollView(frame: self.view.bounds)
+        self.popupScrollView!.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+        self.popupScrollView?.contentSize = self.view.frame.size
+        self.popupScrollView!.addSubview(self.contentController!.view)
+        self.view.addSubview(self.popupScrollView!)
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(RPopupController.singleTapEvent(gesture:)))
+        self.popupScrollView?.addGestureRecognizer(gesture)
+        
+        self.addChildViewController(self.contentController!)
+    }
+}
+
+class SimplePopupController : UIViewController{
+    
+    @IBOutlet var pTitle:UILabel!
+    @IBOutlet var pMessage:UILabel!
+    @IBOutlet var confirmBtn:UIButton!
+    @IBOutlet var cancelBtn:UIButton!
+    @IBOutlet var bottom:UIView!
+    var datas:[String:Any] = [String:Any]()
+    var callback:((String) -> Void)?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.resizeView()
+    }
+    
+    @IBAction func cancelClick(_ sender:UIButton){
+        (self.parent as! SimpleRPopupController).dismissPopup {
+            if self.callback != nil {
+                self.callback!("N")
+            }
+        }
+    }
+    @IBAction func okClick(_ sender:UIButton){
+        (self.parent as! SimpleRPopupController).dismissPopup {
+            if self.callback != nil {
+                self.callback!("Y")
+            }
+        }
+    }
+    
+    func resizeView() {
+        pMessage.adJustWrapHeightSize()
+        print(pMessage.frame)
+        bottom.rsY = pMessage.rsEndY + 30
+        bottom.superview?.rsHeight = bottom.rsEndY
+        self.view.rsHeight = bottom.rsEndY
+    }
+    
+    
+}
+

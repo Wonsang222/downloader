@@ -250,6 +250,7 @@ class WMainController: BaseWebViewController {
         } else if segue.identifier == "intro"{
             self.introContrller = segue.destination as? WIntroController
             self.introContrller!.mainController = self
+        } else if segue.identifier == "permission"{
         }
     }
     
@@ -259,11 +260,19 @@ class WMainController: BaseWebViewController {
         if self.presentedViewController != nil {
             self.introContrller?.webViewLoadedOk = true
             self.introContrller?.closeIntroProcess()
-//            self.dismiss(animated: true, completion: nil)
         }
+        
+//        #if DEBUG
+//            
+//            webView.stringByEvaluatingJavaScript(from: "if($.wsmk == undefined) $.getScript('http://admin.magicapp.co.kr/ws_magic_v2.js');");
+//            webView.stringByEvaluatingJavaScript(from: "if($('#menu-barcode').length == 0) $('.list.mypage ul').append( $('<li/>').html('<a href=\"javascript:$.wsmk.scanner(function(resp){ alert(JSON.stringify(resp) ); } )\">바코드 인식</a>') )");
+//            
+//        #endif
 
     }
     
 
+    override func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+    }
 }
 

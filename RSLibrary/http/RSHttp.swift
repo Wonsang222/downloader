@@ -61,7 +61,7 @@ class RSHttp{
 				let urlConfig =	URLSessionConfiguration.default
                 let appId = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String
 				let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-				resource.reqHeader["User-Agent"] = "\(appId)/\(appVersion)"
+				resource.reqHeader["User-Agent"] = "\(String(describing: appId))/\(appVersion)"
                 
 				urlConfig.timeoutIntervalForRequest = Double(HttpInfo.TIMEOUT) / 1000
 				urlConfig.timeoutIntervalForResource = Double(HttpInfo.TIMEOUT) / 1000

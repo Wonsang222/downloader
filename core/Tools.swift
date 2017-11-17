@@ -47,6 +47,11 @@ class AppProp{
             return Bundle.main.infoDictionary?["NSLocationWhenInUseUsageDescription"] as? String
         }
     }
+    static var appName:String?{
+        get{
+            return Bundle.main.infoDictionary?["CFBundleName"] as? String
+        }
+    }
 
 }
 

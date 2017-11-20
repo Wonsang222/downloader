@@ -86,7 +86,7 @@ class ThemeV1: CommonMkTheme {
     
     override func applyNavi() {
     
-        let labelViewTag = 100
+        let labelViewTag = 100 
         let backTag = 101
         let ui_data = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
         let naviBar = ui_data["navibar"] as! [String:AnyObject]

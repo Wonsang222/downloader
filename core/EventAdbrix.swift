@@ -75,7 +75,7 @@ class EventAdbrix {
                                                                  currencyString:AdBrix.currencyName(currencyValue(product["currency"] as! String)),
                                                                  category: categoryModel!,
                                                                  extraAttrsMap: nil)
-            productModels.append(productModel)
+            productModels.append(productModel!)
         }
         if productModels.count == 1 {
             AdBrix.purchase(param["orderId"] as! String, product: productModels[0], paymentMethod: AdBrix.paymentMethod(UInt(AdbrixPaymentMethod.AdBrixPaymentMobilePayment.rawValue)))

@@ -59,11 +59,11 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         
         #if ADBRIX
         if NSClassFromString("ASIdentifierManager") != nil {
-            let ifa = ASIdentifierManager.sharedManager().advertisingIdentifier
-            let isAppleAdvertisingTrackingEnabled = ASIdentifierManager.sharedManager().advertisingTrackingEnabled
-            IgaworksCore.setAppleAdvertisingIdentifier(ifa.UUIDString, isAppleAdvertisingTrackingEnabled: isAppleAdvertisingTrackingEnabled)
+            let ifa = ASIdentifierManager.shared().advertisingIdentifier
+            let isAppleAdvertisingTrackingEnabled = ASIdentifierManager.shared().isAdvertisingTrackingEnabled
+            IgaworksCore.setAppleAdvertisingIdentifier(ifa!.uuidString, isAppleAdvertisingTrackingEnabled: isAppleAdvertisingTrackingEnabled)
         }
-        IgaworksCore.igaworksCoreWithAppKey(AppProp.adbrixAppKey, andHashKey: AppProp.adbrixHashKey)
+        IgaworksCore.igaworksCore(withAppKey: AppProp.adbrixAppKey, andHashKey: AppProp.adbrixHashKey)
             //            IgaworksCore.setLogLevel(IgaworksCoreLogTrace)
         #endif
         return true

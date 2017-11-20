@@ -22,7 +22,7 @@ class WNotiController: BaseWebViewController,UIScrollViewDelegate{
         super.viewDidLoad()
         ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
         webView.alpha = 0
-        var url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + "WInfo.accountId");
+        var url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId);
 //        var url = URL (string: "http://admin.magicapp.co.kr/notice/user_list_v2.php" + "?account_id=" + WInfo.accountId);
         if link != nil {
         	url = URL (string: link!);

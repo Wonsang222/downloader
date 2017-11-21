@@ -42,7 +42,7 @@ class PermissionController: BaseController{
         
         gpsGuide.sizeToFit()
         print("쥐피에스 여부 ", AppProp.gpsUseMessage!)
-        if(!AppProp.gpsUseMessage!.isEmpty || AppProp.gpsUseMessage != nil) {
+        if(AppProp.gpsUseMessage != "" || AppProp.gpsUseMessage != nil) {
             location_view.isHidden = false
             gpsGuide.text = AppProp.gpsUseMessage
             

@@ -41,8 +41,8 @@ class PermissionController: BaseController{
         bottom_app_name.text = "'필수접근 권한'은 "+AppProp.appName!+" 앱 실행을 위해 반드시 필요합니다."
         
         gpsGuide.sizeToFit()
-        
-        if(AppProp.gpsUseMessage != nil) {
+        print("쥐피에스 여부 ", AppProp.gpsUseMessage!)
+        if(!AppProp.gpsUseMessage!.isEmpty || AppProp.gpsUseMessage != nil) {
             location_view.isHidden = false
             gpsGuide.text = AppProp.gpsUseMessage
             

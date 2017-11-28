@@ -85,7 +85,11 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let tokenString = deviceToken.description.replacingOccurrences(of: "[ <>]", with: "", options: .regularExpression, range: nil)
+//        let tokenString = deviceToken.description.replacingOccurrences(of: "[ <>]", with: "", options: .regularExpression, range: nil)
+        var tokenString = ""
+        for i in 0..<deviceToken.count {
+            tokenString = tokenString + String(format:"%02.2hhx" , arguments: [deviceToken[i]])
+        }
         #if DEBUG
         print(tokenString)
         #endif

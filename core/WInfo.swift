@@ -13,8 +13,9 @@ class WInfo{
 //    static let coreVersion:String = "wmgkcore_v2"
 //    static let coreVersion:String = "wmgkcore_v2.1.1" //공유하기 API 추가
 //    static let coreVersion:String = "wmgkcore_v2.1.2" //GIF Splash 추가
-    static let coreVersion:String = "wmgkcore_v3.0.0" //바코드 인식기
-    
+//    static let coreVersion:String = "wmgkcore_v3.0.0" //바코드 인식기
+    static let coreVersion:String = "wmgkcore_v3.0.1" //IPhone X 대응
+
 	static var appUrl:String{
 		get{
 			if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{

@@ -12,6 +12,17 @@ class ThemeV2T3: CommonMkTheme {
     
     
     override func applayMain() {
+        let mainController = self.viewController as? MainController
+        if mainController == nil {
+            return
+        }
+        if let webBackground = uiData["webBackground"] as? String {
+            mainController!.webView.backgroundColor = UIColor(hexString:webBackground)
+            mainController!.webView.isOpaque = false
+        }else {
+            mainController!.webView.backgroundColor = UIColor.white
+            mainController!.webView.isOpaque = false
+        }
     }
     
     override func applyNavi() {
@@ -27,7 +38,10 @@ class ThemeV2T3: CommonMkTheme {
         let height = CGFloat( (naviBar["height"] as! NSNumber).floatValue )
         back_button.themeIconLoaderN(naviBar["icon_url"] as! String)
         topView.backgroundColor = UIColor(hexString:naviBar["bg"] as! String)
-        topView.frame = CGRect(x: 0, y: 0, width: topView.frame.width, height: CGFloat(height + 20))
+
+        topView.frame = CGRect(x: 0, y: 0, width: topView.frame.width, height: CGFloat(height + UIApplication.shared.statusBarFrame.height))
+        topView.subviews[0].frame = CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height , width: topView.frame.width, height : height)
+
         let borderLayer = CALayer()
         borderLayer.backgroundColor = UIColor(hexString: "#cbcbcb").cgColor
         borderLayer.frame = CGRect(x: 0, y: topView.frame.height - 1.0 , width: topView.frame.width, height: Tools.toOriginPixel(1.0))

@@ -12,8 +12,7 @@ import ImageIO
 class AppProp{
 	static var appId:String{
 		get{
-            
-			let bundle_id = Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String
+            let bundle_id = Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String
             if bundle_id.hasSuffix(".lh"){
                 return bundle_id.replace(".lh", withString: "")
             }
@@ -21,9 +20,6 @@ class AppProp{
                 return bundle_id.replace(".adhoc", withString: "")
             }
             return bundle_id
-//            return "kr.co.sroom.magicapp"
-            
-
 		}
 	}
 	static var appVersion:String{
@@ -60,6 +56,18 @@ class Tools{
     
     static func toOriginPixel(_ pixel:CGFloat) -> CGFloat{
         return (pixel / UIScreen.main.scale)
+    }
+    
+    static func safeArea() -> CGFloat{
+        if #available(iOS 11.0, *){
+            if let returnVal = UIApplication.shared.keyWindow?.safeAreaInsets.bottom{
+                return returnVal
+            }else{
+                return 0
+            }
+        }else{
+            return 0
+        }
     }
 }
 

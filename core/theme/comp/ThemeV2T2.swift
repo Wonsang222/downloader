@@ -13,14 +13,13 @@ class ThemeV2T2: CommonMkTheme {
     
     override func applayMain() {
         let view = self.viewController.view
-        
         let mainController = self.viewController as? MainController
         if mainController == nil {
             return
         }
         
         let menus = uiData["menus"] as! [[String:AnyObject]]
-        let wisaMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - 50,width: UIScreen.main.bounds.width, height: 50) )
+        let wisaMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - 50 - Tools.safeArea(),width: UIScreen.main.bounds.width, height: 50) )
         let menuWidth = UIScreen.main.bounds.width / CGFloat(menus.count)
         let bgColor = UIColor(hexString:uiData["menusBg"] as! String)
         wisaMenu.isUserInteractionEnabled = true
@@ -71,7 +70,20 @@ class ThemeV2T2: CommonMkTheme {
         borderLayer.frame = CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: Tools.toOriginPixel(1.0))
         wisaMenu.layer.addSublayer(borderLayer)
         view?.addSubview(wisaMenu)
-        mainController!.webView.scrollView.contentInset.bottom = 50
+        mainController!.webView.scrollView.contentInset.bottom = wisaMenu.frame.height
+        if Tools.safeArea() != 0 {
+            let safeView = UIView(frame: CGRect(x: 0, y: view!.frame.height - Tools.safeArea(), width: UIScreen.main.bounds.width, height: Tools.safeArea()))
+            safeView.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)
+            view?.addSubview(safeView)
+        }
+        if let webBackground = uiData["webBackground"] as? String {
+            mainController!.webView.backgroundColor = UIColor(hexString:webBackground)
+            mainController!.webView.isOpaque = false
+        }else {
+            mainController!.webView.backgroundColor = UIColor.white
+            mainController!.webView.isOpaque = false
+        }
+    
     }
     
     override func applyNavi() {
@@ -87,7 +99,10 @@ class ThemeV2T2: CommonMkTheme {
         let height = CGFloat( (naviBar["height"] as! NSNumber).floatValue )
         back_button.themeIconLoaderN(naviBar["icon_url"] as! String)
         topView.backgroundColor = UIColor(hexString:naviBar["bg"] as! String)
-        topView.frame = CGRect(x: 0, y: 0, width: topView.frame.width, height: CGFloat(height + 20))
+        topView.frame = CGRect(x: 0, y: 0, width: topView.frame.width, height: CGFloat(height + UIApplication.shared.statusBarFrame.height))
+        topView.subviews[0].frame = CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height , width: topView.frame.width, height : height)
+        
+
         let borderLayer = CALayer()
         borderLayer.backgroundColor = UIColor(hexString: "#cbcbcb").cgColor
         borderLayer.frame = CGRect(x: 0, y: topView.frame.height - 1.0 , width: topView.frame.width, height: Tools.toOriginPixel(1.0))

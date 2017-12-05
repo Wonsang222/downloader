@@ -45,6 +45,7 @@ class WSettingController: BaseController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
         curVersion.text = AppProp.appVersion
         RSHttp(controller:self).req(
                 ApiFormApp().ap("mode","get_agree").ap("pack_name", AppProp.appId),

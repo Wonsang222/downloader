@@ -123,11 +123,19 @@ class WMainController: BaseWebViewController {
     func loadPage(_ url:String){
         
         let ui_data = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
-        let topFix = ui_data["isTopFix"] as? Bool
-        if topFix != nil && topFix!{
+        let objTopFix = ui_data["isTopFix"] as? Bool
+        let topFix = objTopFix == nil ? true : objTopFix!
+        if topFix && statusOverlay != nil{
+            self.statusOverlay!.frame = CGRect(x:0 ,y:0,width:self.webViewContainer.frame.width ,height:
+                UIApplication.shared.statusBarFrame.height)
+        }else{
+            self.statusOverlay?.isHidden = true
             DispatchQueue.main.async{
-                self.webViewContainer.frame = CGRect(x: 0,y: 20,width: self.webViewContainer.frame.width,height: self.webViewContainer.frame.height - 20)
                 self.webView.scrollView.contentInset.top = 0
+                //                if self.statusOverlay != nil {
+                //                    self.statusOverlay!.frame = CGRect(x:0 ,y:0,width:self.webViewContainer.frame.width ,height:
+                //                        UIApplication.shared.statusBarFrame.height)
+                //                }
             }
         }
         var url_obj = URL (string: url);

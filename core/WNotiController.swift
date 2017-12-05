@@ -36,7 +36,7 @@ class WNotiController: BaseWebViewController,UIScrollViewDelegate{
         let topView = self.view.subviews[1]
         contentView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: UIScreen.main.bounds.size.height)
         DispatchQueue.main.async{
-            self.webView.scrollView.contentInset.top = topView.frame.size.height - 20
+            self.webView.scrollView.contentInset.top = topView.frame.size.height - UIApplication.shared.statusBarFrame.height
             self.webView.scrollView.contentInset.bottom = 0
             self.scrollBefore = self.webView.scrollView.contentOffset.y
         }
@@ -75,7 +75,6 @@ class WNotiController: BaseWebViewController,UIScrollViewDelegate{
  
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let moveY = scrollView.contentOffset.y < -self.topView!.frame.height ? -self.topView!.frame.height : scrollView.contentOffset.y
-        print("\(scrollView.contentOffset.y) \(moveY)")
         let dy = moveY - self.scrollBefore
         self.scrollBefore = moveY
         if scrollDistance > HIDE_THRESHOLD && controlToggle {

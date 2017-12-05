@@ -32,7 +32,8 @@ class ThemeV1: CommonMkTheme {
         
         let menus = uiData["menus"] as! [[String:AnyObject]]
         let menuSize = CGFloat((uiData["menusSize"] as! NSString).floatValue)
-        let wisaMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - menuSize,width: UIScreen.main.bounds.width, height: menuSize) )
+        let wisaMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - menuSize - Tools.safeArea(),width: UIScreen.main.bounds.width, height: menuSize) )
+
         let menuWidth = UIScreen.main.bounds.width / CGFloat(menus.count)
         let bgColor = UIColor(hexString:uiData["menusBg"] as! String)
         let iconColor = UIColor(hexString:uiData["menuIcon"] as! String)
@@ -80,16 +81,28 @@ class ThemeV1: CommonMkTheme {
         borderLayer.frame = CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: Tools.toOriginPixel(1.0))
         wisaMenu.layer.addSublayer(borderLayer)
         view?.addSubview(wisaMenu)
-        mainController!.webView.scrollView.contentInset.bottom = menuSize
+        mainController!.webView.scrollView.contentInset.bottom = wisaMenu.frame.height
+        if Tools.safeArea() != 0 {
+            let safeView = UIView(frame: CGRect(x: 0, y: view!.frame.height - Tools.safeArea(), width: UIScreen.main.bounds.width, height: Tools.safeArea()))
+            safeView.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)
+            view?.addSubview(safeView)
+        }
+        if let webBackground = uiData["webBackground"] as? String {
+            mainController!.webView.backgroundColor = UIColor(hexString:webBackground)
+            mainController!.webView.isOpaque = false
+        }else {
+            mainController!.webView.backgroundColor = UIColor.white
+            mainController!.webView.isOpaque = false
+        }
         
+
     }
     
     override func applyNavi() {
     
         let labelViewTag = 100 
         let backTag = 101
-        let ui_data = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
-        let naviBar = ui_data["navibar"] as! [String:AnyObject]
+        let naviBar = uiData["navibar"] as! [String:AnyObject]
         
         let topView = self.viewController.view.subviews[1]
         let titleView = topView.viewWithTag(labelViewTag) as! UILabel
@@ -97,7 +110,11 @@ class ThemeV1: CommonMkTheme {
         let height = CGFloat( (naviBar["height"] as! NSNumber).floatValue )
         topView.backgroundColor = UIColor(hexString:naviBar["bg"] as! String)
 
-        topView.frame = CGRect(x: 0, y: 0, width: topView.frame.width, height: CGFloat(height + 20))
+        
+        
+        topView.frame = CGRect(x: 0, y: 0, width: topView.frame.width, height: CGFloat(height + UIApplication.shared.statusBarFrame.height))
+        topView.subviews[0].frame = CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height , width: topView.frame.width, height : height)
+        
         let borderLayer = CALayer()
         borderLayer.backgroundColor = UIColor(hexString: "#cbcbcb").cgColor
         borderLayer.frame = CGRect(x: 0, y: topView.frame.height - 1.0 , width: topView.frame.width, height: Tools.toOriginPixel(1.0))
@@ -105,12 +122,9 @@ class ThemeV1: CommonMkTheme {
         titleView.font = UIFont.boldSystemFont(ofSize: CGFloat(naviBar["title_size"] as! Int ))
         titleView.textColor = UIColor(hexString: naviBar["title_color"] as! String )
         back_button.frame = CGRect(x: 0, y: 0, width: height,height: height)
-
-        
-        
-        
         
     }
+    
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         if let ui_data = WInfo.themeInfo["ui_data"] {

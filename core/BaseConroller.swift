@@ -98,8 +98,9 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
     
     @IBOutlet weak var webViewContainer: UIView!
     @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var statusOverlay: UIView?
     var webView:UIWebView!
-    
+
     
     let paySchema = [
         ["schema" : "hdcardappcardansimclick", "url" : "http://itunes.apple.com/kr/app/id702653088?mt=8"],  //현대카드

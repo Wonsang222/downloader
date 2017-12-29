@@ -66,6 +66,8 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
         IgaworksCore.igaworksCore(withAppKey: AppProp.adbrixAppKey, andHashKey: AppProp.adbrixHashKey)
             //            IgaworksCore.setLogLevel(IgaworksCoreLogTrace)
         #endif
+        
+        setenv("JSC_useJIT", "false", 0)
         return true
     }
     func applicationWillResignActive(_ application: UIApplication) {

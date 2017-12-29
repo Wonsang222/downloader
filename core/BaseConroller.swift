@@ -205,6 +205,9 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
     }
     
     func webViewDidStartLoad(_ webView: UIWebView){
+        if webView.request == nil {
+            return;
+        }
         print("start " + webView.request!.url!.absoluteString)
         if !(self is NotiController) {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true

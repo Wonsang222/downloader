@@ -4,6 +4,11 @@
 <dict>
 	<key>teamID</key>
 	<string>E3GB4PB99C</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>kr.co.wisaweb.sw.wisa.lh</key>
+		<string>WISA TEST</string>
+	</dict>
 	<key>method</key>
 	<string>enterprise</string>
 </dict>

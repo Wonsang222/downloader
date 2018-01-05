@@ -21,6 +21,7 @@ extension String {
         let index = temp.range(of: ":",options: NSString.CompareOptions.literal)
         if index != nil {
             temp = temp.substring(to: index!.lowerBound)
+//            temp = temp[..<index]
         }
         return temp
     }

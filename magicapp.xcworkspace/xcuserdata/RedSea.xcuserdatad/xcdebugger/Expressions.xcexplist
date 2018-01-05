@@ -3,13 +3,48 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "WIntroController.saveIntro.getter:WIntroController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in WIntroController.reqGetIntro():WIntroController.swift">
+         contextName = "WNotiController.viewDidLoad():WNotiController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "self.saveVersion">
+               value = "self.webView.scrollView.contentOffset">
+            </PersistentString>
+            <PersistentString
+               value = "self.webView.scrollView.contentInset">
+            </PersistentString>
+            <PersistentString
+               value = "self.webView.scrollView.safeAreaInsets">
+            </PersistentString>
+            <PersistentString
+               value = "topView.frame.size.height">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WIntroController.(saveVersion in _815D9AE7BF3442704604C870B9B826C5).getter:WIntroController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in WNotiController.viewDidLoad():WNotiController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.view.frame">
+            </PersistentString>
+            <PersistentString
+               value = "sefl.webView.frame">
+            </PersistentString>
+            <PersistentString
+               value = "self.webView.frame">
+            </PersistentString>
+            <PersistentString
+               value = "self.webView.subviews">
+            </PersistentString>
+            <PersistentString
+               value = "self.webView.scrollView.contentInset">
+            </PersistentString>
+            <PersistentString
+               value = "topView.frame.size.height">
+            </PersistentString>
+            <PersistentString
+               value = "self.webViewContainer.frame">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -22,9 +57,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "WIntroController.(saveVersion in _815D9AE7BF3442704604C870B9B826C5).getter:WIntroController.swift">
-      </ContextState>
-      <ContextState
          contextName = "static EventAdbrix.purchase([String : AnyObject]) -&gt; ():EventAdbrix.swift">
          <PersistentStrings>
             <PersistentString
@@ -35,6 +67,17 @@
             </PersistentString>
             <PersistentString
                value = "AdBrix.currencyName(currencyValue(product[&quot;currency&quot;] as! String))">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WIntroController.saveIntro.getter:WIntroController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in WIntroController.reqGetIntro():WIntroController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.saveVersion">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

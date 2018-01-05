@@ -114,7 +114,7 @@ class RPopupController : UIViewController{
     }
     
     
-    func keyboardWillShow(_ notification:Notification){
+    @objc func keyboardWillShow(_ notification:Notification){
         if self.openKeyboard {
             return
         }
@@ -130,7 +130,7 @@ class RPopupController : UIViewController{
         
     }
     
-    func keyboardWillHide(_ notification:Notification){
+    @objc func keyboardWillHide(_ notification:Notification){
         if self.openKeyboard {
             openKeyboard = false
             UIView.animate(withDuration: 0.3, delay: 0.2, options: UIViewAnimationOptions.curveEaseIn, animations: {
@@ -144,7 +144,7 @@ class RPopupController : UIViewController{
     }
 
     
-    func singleTapEvent(gesture:UITapGestureRecognizer){
+    @objc func singleTapEvent(gesture:UITapGestureRecognizer){
         let location = gesture.location(in: self.view)
         if openKeyboard {
             if let delegate = self.contentController as? RPopupControllerDelegate {

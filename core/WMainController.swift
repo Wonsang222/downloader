@@ -214,7 +214,7 @@ class WMainController: BaseWebViewController {
     }    
 
 
-    func onPrevClick(_ sender:UIButton!){
+    @objc func onPrevClick(_ sender:UIButton!){
 
         if webView.canGoBack {
             webView.goBack()
@@ -222,31 +222,31 @@ class WMainController: BaseWebViewController {
            self.view.makeToast("이동할 페이지가 없습니다.", duration: 3.0, position: .bottom) 
         }
     }
-    func onNextClick(_ sender:UIButton!){
+    @objc func onNextClick(_ sender:UIButton!){
         if webView.canGoForward {
             webView.goForward()            
         }else{
            self.view.makeToast("이동할 페이지가 없습니다.", duration: 3.0, position: .bottom) 
        }
     }
-    func onReloadClick(_ sender:UIButton!){
+    @objc func onReloadClick(_ sender:UIButton!){
         webView.reload()
     }
-    func onHomeClick(_ sender:UIButton!){
+    @objc func onHomeClick(_ sender:UIButton!){
         let url = URL (string: WInfo.appUrl);
         let requestObj = NSMutableURLRequest(url: url!);
 //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
         webView.loadRequest(requestObj as URLRequest);
     }
-    func onShareClick(_ sender:UIButton!){
+    @objc func onShareClick(_ sender:UIButton!){
         let objectToShare = [webView.request!.url!]
         let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
         present(activity, animated: true, completion: nil)
     }
-    func onPushClick(_ sender:UIButton!){
+    @objc func onPushClick(_ sender:UIButton!){
         self.performSegue(withIdentifier: "noti" ,  sender : nil)
     }
-    func onSettingClick(_ sender:UIButton!){
+    @objc func onSettingClick(_ sender:UIButton!){
         self.performSegue(withIdentifier: "setting" ,  sender : self)
     }
     

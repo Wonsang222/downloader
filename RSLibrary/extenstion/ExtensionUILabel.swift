@@ -15,7 +15,7 @@ extension UILabel {
         let source = text! as NSString
         let size = source.boundingRect(with: CGSize(width: self.rsWidth, height: CGFloat.greatestFiniteMagnitude),
                                        options: [.usesLineFragmentOrigin,.usesFontLeading],
-                                       attributes: [NSFontAttributeName: self.font], context: nil)
+                                       attributes: [NSAttributedStringKey.font: self.font], context: nil)
         return size
     }
     
@@ -23,7 +23,7 @@ extension UILabel {
         let source = text! as NSString
         let size = source.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 100),
                                        options: [.usesLineFragmentOrigin,.usesFontLeading],
-                                       attributes: [NSFontAttributeName: self.font], context: nil)
+                                       attributes: [NSAttributedStringKey.font: self.font], context: nil)
         return size
     }
     

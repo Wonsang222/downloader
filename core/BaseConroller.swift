@@ -149,13 +149,14 @@ class BaseWebViewController: BaseController,UIWebViewDelegate,ABPeoplePickerNavi
         webView.allowsInlineMediaPlayback = true
         
         if #available(iOS 9, *) {
-            webView.allowsLinkPreview = true
+            webView.allowsLinkPreview = false
             webView.allowsPictureInPictureMediaPlayback = true
         }
-
+        webView.keyboardDisplayRequiresUserAction = false
         webView.delegate = self
         webView.autoresizingMask = [UIViewAutoresizing.flexibleHeight,UIViewAutoresizing.flexibleWidth]
         webView.scalesPageToFit = true
+        webView.scrollView.delaysContentTouches = true
         webViewContainer.addSubview(webView)
     }
     

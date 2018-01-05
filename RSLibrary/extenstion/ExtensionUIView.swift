@@ -20,7 +20,7 @@ class EventCarrier : NSObject {
         super.init()
     }
     
-    func clickObject(gesture:UITapGestureRecognizer){
+    @objc func clickObject(gesture:UITapGestureRecognizer){
         callback_object(gesture.view!)
     }
     

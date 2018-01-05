@@ -84,7 +84,7 @@ class WSettingController: BaseController {
         
     }
     
-    func push_test(){
+    @objc func push_test(){
         tapCount = tapCount + 1
         if tapCount == 10 {
             tapCount = 0;
@@ -105,7 +105,7 @@ class WSettingController: BaseController {
     }
 
     
-    func switchChange(_ sender:UISwitch){
+    @objc func switchChange(_ sender:UISwitch){
         let event = eventSwitch.isOn ? "Y" : "N"
         let order = orderSwitch.isOn ? "Y" : "N"
 

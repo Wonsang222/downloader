@@ -825,7 +825,7 @@ extension UILabel{
         let text:NSString = self.text! as NSString
         let textSize = text.boundingRect(with: CGSize(width: self.preferredMaxLayoutWidth, height: 10000000),
                                                  options: NSStringDrawingOptions.usesLineFragmentOrigin,
-                                                 attributes: [NSFontAttributeName: self.font], context: nil).size
+                                                 attributes: [NSAttributedStringKey.font: self.font], context: nil).size
         self.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: textSize.width, height: textSize.height)
         
         

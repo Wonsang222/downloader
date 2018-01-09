@@ -9,11 +9,11 @@
 import UIKit
 import WebKit
 
-class WMainController: BaseWebViewController {
+class WMainController: MGWebController {
     
     
     weak var introContrller:WIntroController?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async(execute: {
@@ -157,8 +157,8 @@ class WMainController: BaseWebViewController {
 //
 //            requestObj.addValue(cookieString,forHTTPHeaderField:"Cookie")
 //        }
-        webView.loadRequest(requestObj as URLRequest)
         view.isHidden = false
+        self.loadRequest(requestObj as URLRequest)
     }
     
     
@@ -179,16 +179,17 @@ class WMainController: BaseWebViewController {
         }
         let requestObj = NSMutableURLRequest(url: url_obj!);
 //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
-        webView.loadRequest(requestObj as URLRequest);
+        self.loadRequest(requestObj as URLRequest)
     }
     
+    
+
     override func hybridEvent(_ value: [String : AnyObject]) {
         if value["func"] as! String == "saveMinfo"{
             WInfo.userInfo = [ "userId" : value["param1"] as! String as AnyObject , "password" : value["param2"] as! String as AnyObject ]
             self.reqSetLoginStat("Y")
             self.reqMatching()
             movePage(value["param3"] as! String)
-
         }
     }
     
@@ -236,12 +237,14 @@ class WMainController: BaseWebViewController {
         let url = URL (string: WInfo.appUrl);
         let requestObj = NSMutableURLRequest(url: url!);
 //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
-        webView.loadRequest(requestObj as URLRequest);
+        self.loadRequest(requestObj as URLRequest)
     }
     @objc func onShareClick(_ sender:UIButton!){
-        let objectToShare = [webView.request!.url!]
-        let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
-        present(activity, animated: true, completion: nil)
+        if let currentUrl = self.currentURL {
+            let objectToShare = [currentUrl]
+            let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
+            present(activity, animated: true, completion: nil)
+        }
     }
     @objc func onPushClick(_ sender:UIButton!){
         self.performSegue(withIdentifier: "noti" ,  sender : nil)
@@ -263,24 +266,21 @@ class WMainController: BaseWebViewController {
     }
     
     
-    override func webViewDidFinishLoad(_ webView: UIWebView) {
-        super.webViewDidFinishLoad(webView)
+    override func webLoadedCommit(_ urlString: String?) {
         if self.presentedViewController != nil {
             self.introContrller?.webViewLoadedOk = true
             self.introContrller?.closeIntroProcess()
         }
         
-//        #if DEBUG
-//            
-//            webView.stringByEvaluatingJavaScript(from: "if($.wsmk == undefined) $.getScript('http://admin.magicapp.co.kr/ws_magic_v2.js');");
-//            webView.stringByEvaluatingJavaScript(from: "if($('#menu-barcode').length == 0) $('.list.mypage ul').append( $('<li/>').html('<a href=\"javascript:$.wsmk.scanner(function(resp){ alert(JSON.stringify(resp) ); } )\">바코드 인식</a>') )");
-//            
-//        #endif
+        //        #if DEBUG
+        //
+        //            webView.stringByEvaluatingJavaScript(from: "if($.wsmk == undefined) $.getScript('http://admin.magicapp.co.kr/ws_magic_v2.js');");
+        //            webView.stringByEvaluatingJavaScript(from: "if($('#menu-barcode').length == 0) $('.list.mypage ul').append( $('<li/>').html('<a href=\"javascript:$.wsmk.scanner(function(resp){ alert(JSON.stringify(resp) ); } )\">바코드 인식</a>') )");
+        //
+        //        #endif
+        
 
     }
-    
 
-    override func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-    }
 }
 

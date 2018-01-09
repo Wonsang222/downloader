@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class WNotiController: BaseWebViewController,UIScrollViewDelegate{
+class WNotiController: MGWebController,UIScrollViewDelegate{
 
 	var link:String?
     
@@ -43,9 +43,9 @@ class WNotiController: BaseWebViewController,UIScrollViewDelegate{
         if #available(iOS 11.0, *) {
             self.webView.scrollView.contentInsetAdjustmentBehavior = .never
         }
-        webView.loadRequest(requestObj);
         webView.scrollView.delegate = self
         UIApplication.shared.applicationIconBadgeNumber = 0
+        self.loadRequest(requestObj)
     }
     
     override func hybridEvent(_ value: [String : AnyObject]) {
@@ -67,13 +67,14 @@ class WNotiController: BaseWebViewController,UIScrollViewDelegate{
     }
 
     
-    override func webViewDidFinishLoad(_ webView: UIWebView) {
+    override func webLoadedFinish(_ urlString: String?) {
         if(self.webView.alpha == 0){
             UIView.animate(withDuration: 0.6, animations: {
                 self.webView.alpha = 1
             })
         }
     }
+    
  
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let moveY = scrollView.contentOffset.y < -self.topView!.frame.height ? -self.topView!.frame.height : scrollView.contentOffset.y

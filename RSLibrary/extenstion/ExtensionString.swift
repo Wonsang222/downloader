@@ -27,6 +27,20 @@ extension String {
     }
     
     
+    func jsonObject() -> [String:AnyObject]{
+        do{
+            let value = try
+                JSONSerialization.jsonObject(
+                    with: self.removingPercentEncoding!.data(using: String.Encoding.utf8)!
+                    ,options: JSONSerialization.ReadingOptions()) as! [String:AnyObject]
+            return value
+        }catch{
+            print(error)
+            return [String:AnyObject]()
+        }
+        
+    }
+    
     func paramParse() -> [String:String] {
         var ret_val = [String:String]()
         let params = self.components(separatedBy: "&")

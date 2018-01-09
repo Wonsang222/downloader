@@ -56,13 +56,13 @@ class BaseController: UIViewController {
         return bizPoup
     }
     
-    
     func createMarketingAlert(_ agree:@escaping ((UIAlertAction) -> Void),disagree:@escaping ((UIAlertAction) -> Void)) -> UIAlertController {
         let alert = UIAlertController(title: "알림", message: "해당기기로 이벤트, 상품할인 등의 정보를\n전송하려고 합니다." ,preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "동의" , style: UIAlertActionStyle.default, handler:agree))
         alert.addAction(UIAlertAction(title: "미동의" , style: UIAlertActionStyle.default, handler:disagree))
         return alert
     }
+    
     func createMarketingAlertV2(resp:@escaping ((String) -> Void)) -> RPopupController {
         let popupView = self.storyboard!.instantiateViewController(withIdentifier: "popup") as! SimplePopupController
         let popup = SimpleRPopupController(controlller: popupView)

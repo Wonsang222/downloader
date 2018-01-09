@@ -14,7 +14,6 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     var webView:WKWebView!
     
     
-    
     override var webViewCanGoBack: Bool {
         get{
             return self.webView.canGoBack
@@ -37,10 +36,8 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let config = WKWebViewConfiguration()
         let jsctrl = WKUserContentController()
-        
         
         webView = WKWebView(frame: webViewContainer.bounds, configuration: config)
         if #available(iOS 9.0, *) {
@@ -53,11 +50,7 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     
     func reloadPage(){
         self.webView.reload()
-        
     }
-//    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-
-//    }
     
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
         let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.alert)
@@ -79,6 +72,27 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
         }))
         self.present(alert,animated:true, completion: nil)
     }
+
+    func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
+
+        let alert = UIAlertController(title: "알림", message: nil,
+                                      preferredStyle: .alert);
+        alert.addTextField { (textField) in
+            textField.placeholder = "내용을 입력해주십시오."
+            print("\(String(describing: textField.text))")
+        }
+        
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
+            completionHandler(alert.textFields![0].text!)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: { (action) in
+            // MARK: 취소할땐, nil 이나 빈 String을 넣어줘야할까? 아니면 그대로 넘겨줄까?
+            // 일단은 nil 넘김 => javascript 와 똑같은 상황을 만들어주면 된다.
+            completionHandler(nil)
+        }))
+        self.present(alert, animated:true, completion: nil)
+    }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         if webView.url == nil {
@@ -88,24 +102,46 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
         }
         self.createAccessCookie()
+        print("gdgd didStartProvisionalNavigation \(String(describing: webView.url?.absoluteString))")
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        
         self.webLoadedCommit(webView.url?.absoluteString)
+        print("gdgd didComit:  \(webView.estimatedProgress))")
+        self.progressView.alpha = 1.0
+        self.progressView.setProgress(0.0, animated: true)
+        UIView.animate(withDuration: 1, delay: 1.3, options: .curveEaseIn, animations: { }, completion: { (bool) in
+            self.progressView.setProgress(Float(self.webView.estimatedProgress)+0.3, animated: true)
+        })
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        
+        self.progressView.setProgress(1.0, animated: true)
+        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseIn, animations: { self.progressView.alpha = 0 }, completion: { (bool: Bool) in
+            self.progressView.setProgress(0.0, animated: false)
+        })
+        
         if webView.url!.absoluteString.hasSuffix("smpay.kcp.co.kr/card.do") {
             self.runScript("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
         }
+        
         self.webLoadedFinish(webView.url?.absoluteString)
-        print("FINISH")
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+
+        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseIn, animations: { self.progressView.alpha = 0 }, completion: { (bool: Bool) in
+            self.progressView.setProgress(0.0, animated: false)
+        })
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         decisionHandler(.allow)
     }
+    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         print(navigationAction.request.url?.absoluteString)
         if let urlString = navigationAction.request.url?.absoluteString {
@@ -131,6 +167,10 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
+    
+//    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
+    
+    
 //    func webViewDidStartLoad(_ webView: UIWebView){
 //        if webView.request == nil {
 //            return

@@ -81,6 +81,8 @@
 	<string>해당기능 사용을 위해 현재위치를 가져옵니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>[필수 접근권한]게시물 파일첨부 용도로 사용합니다</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>해당기능 사용을 위해 Photo 권한을 요청합니다.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

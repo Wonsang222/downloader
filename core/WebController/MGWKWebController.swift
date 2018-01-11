@@ -157,7 +157,7 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
             if urlString.hasPrefix("tel:") || urlString.hasPrefix("mailto:") {
                 UIApplication.shared.openURL(navigationAction.request.url!)
                 decisionHandler(.cancel)
-            }else if !self.handleWing(urlString, navigationAction.navigationType) {
+            }else if !self.handleWing(urlString) {
                 decisionHandler(.cancel)
             }else if !self.handleEvent(urlString) {
                 decisionHandler(.cancel)
@@ -176,32 +176,16 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     }
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         print("webview create!")
-        let viewCtrl = UIViewController()
-
-        let frame = UIScreen.main.bounds
-        
-        viewCtrl.view.bounds = frame
-
-        createWebView = WKWebView(frame: frame, configuration: configuration)
-        createWebView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        createWebView?.navigationDelegate = self
-        createWebView?.uiDelegate = self
-        
-//        view.addSubview(createWebView!)
-//        viewCtrl.view.add
-//        self.navigationController?.pushViewController(viewCtrl, animated: true)
-//
-        
-        self.webView.load(navigationAction.request)
-        return nil
+        let controller = MGWKSubWebController()
+        controller.loadedView(url: (navigationAction.request.url?.absoluteString)!)
+        self.present(controller, animated: true, completion: nil)
+        return controller.webView
     }
     
     func webViewDidClose(_ webView: WKWebView) {
         print("cancel gogo")
-        if webView == createWebView {
-            createWebView?.removeFromSuperview()
-            createWebView = nil
-        }
+
+        self.presentedViewController?.dismiss(animated: true, completion: nil)
     }
 //    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
     

@@ -92,7 +92,7 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
         let cookie:HTTPCookie = HTTPCookie(properties: access_cookie_dic)!
         HTTPCookieStorage.shared.setCookie(cookie)
     }
-    func handleWing(_ url:String?)->Bool {
+    func handleWing(_ url:String? )->Bool {
         if url == nil && url!.hasSuffix("exec_file=member/logout.exe.php") {
             let userInfo = WInfo.userInfo
             if let member_id = userInfo["userId"] as? String{

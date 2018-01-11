@@ -11,7 +11,8 @@ import CoreLocation
 import AddressBook
 import AddressBookUI
 import ZBarSDK
-
+import AVKit
+import AVFoundation
 
 class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,ZBarReaderDelegate {
     
@@ -101,7 +102,25 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
             }
             WInfo.clearSessionCookie()
             WInfo.userInfo = [String:AnyObject]()
+            
             return true
+        }
+        // video tag
+        if url!.hasSuffix(".mp4") {
+            let playerController = AVPlayerViewController()
+            
+            playerController.player =  AVPlayer(url: URL(string: url!)!)
+
+            self.present(playerController, animated: true, completion: {
+                    playerController.player?.play();
+            })
+            return false
+        }
+        
+        if url!.hasPrefix("https://kauth.kakao.com/oauth/authorize?") {
+            
+            print("kakao oauth pass")
+            
         }
         return true
     }

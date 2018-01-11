@@ -12,7 +12,7 @@ import WebKit
 
 class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     var webView:WKWebView!
-    
+    var createWebView: WKWebView?
     
     override var webViewCanGoBack: Bool {
         get{
@@ -31,11 +31,13 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
         }
     }
     override func loadRequest(_ request: URLRequest) {
+        print("진입1")
         self.webView.load(request)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("진입2")
         let config = WKWebViewConfiguration()
         let jsctrl = WKUserContentController()
         
@@ -49,6 +51,7 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     }
     
     func reloadPage(){
+        print("진입3")
         self.webView.reload()
     }
     
@@ -103,6 +106,7 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
         }
         self.createAccessCookie()
         print("gdgd didStartProvisionalNavigation \(String(describing: webView.url?.absoluteString))")
+        
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
@@ -140,17 +144,20 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         decisionHandler(.allow)
+        print("dongdong")
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        print(navigationAction.request.url?.absoluteString)
+        print("frame1 \(navigationAction.sourceFrame)")
+        print("frame2 \(String(describing: navigationAction.targetFrame))")
+        print("gdgd 1 \(navigationAction.navigationType.rawValue)")
+        print("gdgd 2 \(String(describing: navigationAction.request.url))")
+//        print(navigationAction.request.url?.absoluteString)
         if let urlString = navigationAction.request.url?.absoluteString {
             if urlString.hasPrefix("tel:") || urlString.hasPrefix("mailto:") {
                 UIApplication.shared.openURL(navigationAction.request.url!)
                 decisionHandler(.cancel)
-            }else if !self.handleWing(urlString) {
-                decisionHandler(.cancel)
-            }else if !self.handleWing(urlString) {
+            }else if !self.handleWing(urlString, navigationAction.navigationType) {
                 decisionHandler(.cancel)
             }else if !self.handleEvent(urlString) {
                 decisionHandler(.cancel)
@@ -167,7 +174,35 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        print("webview create!")
+        let viewCtrl = UIViewController()
+
+        let frame = UIScreen.main.bounds
+        
+        viewCtrl.view.bounds = frame
+
+        createWebView = WKWebView(frame: frame, configuration: configuration)
+        createWebView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        createWebView?.navigationDelegate = self
+        createWebView?.uiDelegate = self
+        
+//        view.addSubview(createWebView!)
+//        viewCtrl.view.add
+//        self.navigationController?.pushViewController(viewCtrl, animated: true)
+//
+        
+        self.webView.load(navigationAction.request)
+        return nil
+    }
     
+    func webViewDidClose(_ webView: WKWebView) {
+        print("cancel gogo")
+        if webView == createWebView {
+            createWebView?.removeFromSuperview()
+            createWebView = nil
+        }
+    }
 //    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
     
     

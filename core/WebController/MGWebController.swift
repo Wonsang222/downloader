@@ -12,5 +12,4 @@ import Foundation
 //
 //}
 class MGWebController : MGWKWebController {
-    
 }

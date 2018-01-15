@@ -122,6 +122,13 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
             print("kakao oauth pass")
             
         }
+        
+//        if url!.hasSuffix("/member/login.php") {
+//            let deadlineTime = DispatchTime.now() + .milliseconds(500)
+//            DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: {
+//
+//            })
+//        }
         return true
     }
     func handleItunes(_ url:String?)->Bool{
@@ -183,19 +190,27 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
     }
     
     func handleSchema(_ url:String?)->Bool{
+        print("gdgd schema 1: \(url)")
         if url == nil {
             return true
         }
+        print("gdgd schema 22: \("https://static-bill.nhnent.com/payco/app/iosLoader/payment.html?inflowKey=S0FSJE&reserveOrderNo=201801122004661269".hasPrefix("payco"))")
         for appSchema in paySchema {
+            print("gdgd schch 00 : \(url!.hasPrefix(appSchema["schema"]!))")
             if url!.hasPrefix(appSchema["schema"]! as String) {
+                print("gdgd schema 2-0: \(appSchema)")
                 if UIApplication.shared.canOpenURL(URL(string:url!)!) {
+                    print("gdgd schema 2-1: \(url)")
                     UIApplication.shared.openURL(URL(string:url!)!)
                 }else{
+                    print("gdgd schema 2-2: \(url)")
                     UIApplication.shared.openURL(URL(string:appSchema["url"]! as String)!)
                 }
+                print("gdgd schema 3: \(url)")
                 return false
             }
         }
+        print("gdgd schema 2-3: \(url)")
         return true
     }
     func hybridEvent(_ value: [String:AnyObject]){

@@ -56,12 +56,18 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+        print("gdgd message : \(message)")
         let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
             completionHandler()
         }))
-        self.present(alert,animated:true, completion: nil)
-
+        
+        // 허용 접속시간 popup issue
+        // 딜레이를 주는건 위험함! 다른방법있을까
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(500)) {
+            self.present(alert,animated:true, completion: nil)
+        }
+    
     }
     
     func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
@@ -154,6 +160,7 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
         print("gdgd 2 \(String(describing: navigationAction.request.url))")
 //        print(navigationAction.request.url?.absoluteString)
         if let urlString = navigationAction.request.url?.absoluteString {
+            print("gdgd urlString : \(urlString)")
             if urlString.hasPrefix("tel:") || urlString.hasPrefix("mailto:") {
                 UIApplication.shared.openURL(navigationAction.request.url!)
                 decisionHandler(.cancel)
@@ -168,24 +175,33 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
             }else if !self.handleSchema(urlString) {
                 decisionHandler(.cancel)
             }else{
+                print("gdgd 3")
                 decisionHandler(.allow)
+                return ;
             }
         }else{
+            print("gdgd 4")
             decisionHandler(.allow)
+            return ;
         }
+        
     }
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         print("webview create!")
         let controller = MGWKSubWebController()
-        controller.loadedView(url: (navigationAction.request.url?.absoluteString)!)
+        let re_webView = controller.loadedView(url: (navigationAction.request), config: configuration)
+        
         self.present(controller, animated: true, completion: nil)
-        return controller.webView
+        
+        return re_webView
     }
     
     func webViewDidClose(_ webView: WKWebView) {
         print("cancel gogo")
-
         self.presentedViewController?.dismiss(animated: true, completion: nil)
+    }
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        print("cancel gogo2")
     }
 //    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
     

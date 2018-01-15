@@ -21,8 +21,8 @@ class WInfo{
 		get{
 			if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{
 //              return "http://118.129.243.73/sendbege.html"
-                return "http://m.sandbeige.co.kr"
-//              return returnValue
+//                return "http://m.sandbeige.co.kr"
+              return returnValue
 			}else{
 				return ""
 			}

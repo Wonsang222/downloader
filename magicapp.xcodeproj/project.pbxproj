@@ -87,7 +87,6 @@
 		F58B1D541FBD618500543A2B /* ic_a_location.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D511FBD618500543A2B /* ic_a_location.png */; };
 		F58B1D551FBD618500543A2B /* ic_a_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D521FBD618500543A2B /* ic_a_camera.png */; };
 		F5AEA262200D89E500CDC27D /* MGWKSubWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AEA261200D89E500CDC27D /* MGWKSubWebController.swift */; };
-		F5AEA264200D904A00CDC27D /* ic_a_top_close.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AEA263200D904A00CDC27D /* ic_a_top_close.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,7 +180,6 @@
 		F58B1D511FBD618500543A2B /* ic_a_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_location.png; sourceTree = "<group>"; };
 		F58B1D521FBD618500543A2B /* ic_a_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_camera.png; sourceTree = "<group>"; };
 		F5AEA261200D89E500CDC27D /* MGWKSubWebController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGWKSubWebController.swift; sourceTree = "<group>"; };
-		F5AEA263200D904A00CDC27D /* ic_a_top_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_top_close.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,7 +332,6 @@
 		D45D647C1CB29B5D004976A2 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				F5AEA263200D904A00CDC27D /* ic_a_top_close.png */,
 				F58B1D521FBD618500543A2B /* ic_a_camera.png */,
 				F58B1D511FBD618500543A2B /* ic_a_location.png */,
 				F58B1D501FBD618400543A2B /* ic_a_notification.png */,
@@ -519,7 +516,6 @@
 				D4154F561CBF569C00ED25CE /* ic_a_share_disable.png in Resources */,
 				F58B1D551FBD618500543A2B /* ic_a_camera.png in Resources */,
 				D4DC5E261FAAB2C8008772AD /* search_bg_focus_box_l.png in Resources */,
-				F5AEA264200D904A00CDC27D /* ic_a_top_close.png in Resources */,
 				D4154F591CBF569C00ED25CE /* ic_a_tab.png in Resources */,
 				D42321C31CC5CDB3007C2F3C /* ic_a_isnew.png in Resources */,
 				D4DC5E2C1FAAB6D7008772AD /* ic_navi_back_white.png in Resources */,

@@ -26,8 +26,6 @@ class MGWKSubWebController: BaseController, WKUIDelegate  {
         topNavigationView = UIView()
         webTitle = UILabel()
         webUrl = UILabel()
-
-        let jsctrl = WKUserContentController()
         let dismissBtn = UIButton()
         
         webView = WKWebView(frame: UIScreen.main.bounds, configuration: config)
@@ -52,7 +50,6 @@ class MGWKSubWebController: BaseController, WKUIDelegate  {
             self.dismiss(animated: true, completion: nil)
         }
         webTitle.frame = CGRect(x: 0.0, y: 30.0, width: topNavigationView.bounds.width, height: 20.0)
-        print("dididic \(webView.title)")
         webUrl.frame = CGRect(x: 0.0, y: 50.0, width: topNavigationView.bounds.width, height: 20.0)
         webTitle.font.withSize(12.0)
         webUrl.font.withSize(10.0)
@@ -81,7 +78,7 @@ class MGWKSubWebController: BaseController, WKUIDelegate  {
         webView.bounds = CGRect(x: 0.0, y: 0.0, width: webViewSubContainer.bounds.width, height: webViewSubContainer.bounds.height)
         print("webView bounds: \(webView.bounds.origin.x) \(webView.bounds.origin.y)")
         
-        webView.uiDelegate = self as? WKUIDelegate
+        webView.uiDelegate = self
         webView.navigationDelegate = self as? WKNavigationDelegate
         webView.load(url)
         webViewSubContainer?.addSubview(webView)

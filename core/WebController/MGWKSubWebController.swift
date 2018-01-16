@@ -16,22 +16,21 @@ class MGWKSubWebController: BaseController, WKUIDelegate  {
     
     // top navi
     var topNavigationView: UIView!
-    
+    // title label
+    var webTitle: UILabel!
+    // title url
+    var webUrl: UILabel!
     
     func loadedView(url: URLRequest, config: WKWebViewConfiguration) -> WKWebView {
         webViewSubContainer = UIView()
         topNavigationView = UIView()
-//        let config = WKWebViewConfiguration()
+        webTitle = UILabel()
+        webUrl = UILabel()
+
         let jsctrl = WKUserContentController()
         let dismissBtn = UIButton()
-//        if webViewSubContainer == nil {
-//            webViewSubContainer = UIView()
-//
-//        }
         
         webView = WKWebView(frame: UIScreen.main.bounds, configuration: config)
-        
-        //        let Cont
         
         if #available(iOS 9.0, *) {
             //            webView.allowsLinkPreview = true
@@ -40,28 +39,48 @@ class MGWKSubWebController: BaseController, WKUIDelegate  {
         webViewSubContainer.bounds = self.view.bounds
         self.view.addSubview(webViewSubContainer)
         
-        
         webViewSubContainer.center = self.view.center
-//        topNavigationView.center = webViewSubContainer.center
         
-        
-        topNavigationView.contentMode = .topLeft
-        topNavigationView.frame = CGRect(x: 0, y: 0, width: webViewSubContainer.bounds.width, height: 50.0)
+        topNavigationView.frame = CGRect(x: 0.0, y: UIApplication.shared.statusBarFrame.height - 20, width: webViewSubContainer.bounds.width, height: 80)
         topNavigationView.backgroundColor = UIColor.white
-        webViewSubContainer.addSubview(topNavigationView)
+
         topNavigationView.addSubview(dismissBtn)
-        dismissBtn.bounds = CGRect(x: 20.0, y: topNavigationView.center.y, width: webViewSubContainer.bounds.width, height: topNavigationView.bounds.height)
-        dismissBtn.setTitle("backbutn", for: .normal)
+        dismissBtn.frame = CGRect(x: 0.0, y: 5.0, width: 80.0, height: 80.0)
+        dismissBtn.contentEdgeInsets.top = 10.0
+        dismissBtn.setImage(UIImage(named: "ic_navi_back.png"), for: .normal)
         dismissBtn.onClick { (view) in
             self.dismiss(animated: true, completion: nil)
         }
+        webTitle.frame = CGRect(x: 0.0, y: 30.0, width: topNavigationView.bounds.width, height: 20.0)
+        print("dididic \(webView.title)")
+        webUrl.frame = CGRect(x: 0.0, y: 50.0, width: topNavigationView.bounds.width, height: 20.0)
+        webTitle.font.withSize(12.0)
+        webUrl.font.withSize(10.0)
+        webTitle.textColor = UIColor(hexString: "#333333")
+
+        webUrl.textColor = UIColor(hexString: "#888888")
+        webTitle.textAlignment = .center
+        webUrl.textAlignment = .center
         
+        if url.url?.host == "kauth.kakao.com" {
+            webTitle.text = "로그인"
+        } else if webView.title!.isEmpty {
+            webTitle.text = "이름없음"
+        } else {
+            webTitle.text = webView.title!
+        }
+        
+        webUrl.text = url.url?.host// 예시
+        
+        topNavigationView.addSubview(webTitle)
+        topNavigationView.addSubview(webUrl)
+        
+        webView.addSubview(topNavigationView)
+        webView.scrollView.contentInset = UIEdgeInsetsMake(topNavigationView.bounds.height - 20, 0.0, 0.0, 0.0)
         webView.bounds = webViewSubContainer.bounds
-//        webView.center = webViewSubContainer.center
-//        webView.bounds.changeY(webViewSubContainer.bounds.midY - 50.0)
-//
-//        print("webview dd : \(webView.bounds.midX)")
-//        print("webview dd : \(webView.bounds.midY)")
+        webView.bounds = CGRect(x: 0.0, y: 0.0, width: webViewSubContainer.bounds.width, height: webViewSubContainer.bounds.height)
+        print("webView bounds: \(webView.bounds.origin.x) \(webView.bounds.origin.y)")
+        
         webView.uiDelegate = self as? WKUIDelegate
         webView.navigationDelegate = self as? WKNavigationDelegate
         webView.load(url)

@@ -86,6 +86,8 @@
 		F58B1D531FBD618500543A2B /* ic_a_notification.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D501FBD618400543A2B /* ic_a_notification.png */; };
 		F58B1D541FBD618500543A2B /* ic_a_location.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D511FBD618500543A2B /* ic_a_location.png */; };
 		F58B1D551FBD618500543A2B /* ic_a_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D521FBD618500543A2B /* ic_a_camera.png */; };
+		F5AEA262200D89E500CDC27D /* MGWKSubWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AEA261200D89E500CDC27D /* MGWKSubWebController.swift */; };
+		F5AEA264200D904A00CDC27D /* ic_a_top_close.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AEA263200D904A00CDC27D /* ic_a_top_close.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -178,6 +180,8 @@
 		F58B1D501FBD618400543A2B /* ic_a_notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_notification.png; sourceTree = "<group>"; };
 		F58B1D511FBD618500543A2B /* ic_a_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_location.png; sourceTree = "<group>"; };
 		F58B1D521FBD618500543A2B /* ic_a_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_camera.png; sourceTree = "<group>"; };
+		F5AEA261200D89E500CDC27D /* MGWKSubWebController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGWKSubWebController.swift; sourceTree = "<group>"; };
+		F5AEA263200D904A00CDC27D /* ic_a_top_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_top_close.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,6 +324,7 @@
 			children = (
 				D428DDF92002F47800E799F6 /* WebController.swift */,
 				D4BBE1832002F5A000CD7717 /* MGUIWebController.swift */,
+				F5AEA261200D89E500CDC27D /* MGWKSubWebController.swift */,
 				D4BBE1852002F64F00CD7717 /* MGWebController.swift */,
 				D4BBE1872003085800CD7717 /* MGWKWebController.swift */,
 			);
@@ -329,6 +334,7 @@
 		D45D647C1CB29B5D004976A2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				F5AEA263200D904A00CDC27D /* ic_a_top_close.png */,
 				F58B1D521FBD618500543A2B /* ic_a_camera.png */,
 				F58B1D511FBD618500543A2B /* ic_a_location.png */,
 				F58B1D501FBD618400543A2B /* ic_a_notification.png */,
@@ -513,6 +519,7 @@
 				D4154F561CBF569C00ED25CE /* ic_a_share_disable.png in Resources */,
 				F58B1D551FBD618500543A2B /* ic_a_camera.png in Resources */,
 				D4DC5E261FAAB2C8008772AD /* search_bg_focus_box_l.png in Resources */,
+				F5AEA264200D904A00CDC27D /* ic_a_top_close.png in Resources */,
 				D4154F591CBF569C00ED25CE /* ic_a_tab.png in Resources */,
 				D42321C31CC5CDB3007C2F3C /* ic_a_isnew.png in Resources */,
 				D4DC5E2C1FAAB6D7008772AD /* ic_navi_back_white.png in Resources */,
@@ -607,6 +614,7 @@
 				D408A9D21CA2B50400E0DCB5 /* ResourceCode.swift in Sources */,
 				D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */,
 				D416227C1C9C44A300A818DA /* magicapp.xcdatamodeld in Sources */,
+				F5AEA262200D89E500CDC27D /* MGWKSubWebController.swift in Sources */,
 				CAAAC7CC1CB6245E00031667 /* ExtenstionUIImage.swift in Sources */,
 				D4D9FCB61FBAA04600B088B1 /* ExtensionUIView.swift in Sources */,
 				D48808531E975D70009D3DB1 /* EventAdbrix.swift in Sources */,

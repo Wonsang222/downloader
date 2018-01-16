@@ -21,7 +21,8 @@ class WInfo{
 		get{
 			if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{
 //              return "http://118.129.243.73/sendbege.html"
-//                return "http://m.sandbeige.co.kr"
+//                return "http://m.sw.wisaweb.co.kr"
+//                return "http://m.nain.co.kr"
               return returnValue
 			}else{
 				return ""
@@ -30,6 +31,7 @@ class WInfo{
 		set{
 			UserDefaults.standard.set(newValue, forKey: "kAppUrl")	
 			UserDefaults.standard.synchronize()
+            
 		}
 	}
 

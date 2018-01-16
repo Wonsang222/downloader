@@ -20,6 +20,7 @@ class RPopupController : UIViewController{
     var popupScrollView : UIScrollView?
     let POPUP_GAP_WIDTH:CGFloat = 32
     let POPUP_GAP:CGFloat = 100
+    let POPUP_ADJUST:CGFloat = 42.5
     var openKeyboard = false
     var delegate:UIViewController?
     var resp:((String)->Void)?
@@ -41,7 +42,6 @@ class RPopupController : UIViewController{
     
     func initController(_ height:CGFloat){
         self.view.frame = UIScreen.main.bounds
-        
         
         if height == 0{
             self.contentController!.view.frame = CRectChangeWidth(self.contentController!.view.frame, width: SCREEN_WIDTH - POPUP_GAP_WIDTH)
@@ -113,7 +113,6 @@ class RPopupController : UIViewController{
         }
     }
     
-    
     @objc func keyboardWillShow(_ notification:Notification){
         if self.openKeyboard {
             return
@@ -124,10 +123,7 @@ class RPopupController : UIViewController{
         UIView.animate(withDuration: 0.3, delay: 0.2, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.popupScrollView!.contentOffset = CGPoint(x: 0, y: keyboard!.height)
         }) { (Bool) in
-                
         }
- 
-        
     }
     
     @objc func keyboardWillHide(_ notification:Notification){
@@ -188,8 +184,7 @@ class SimpleRPopupController : RPopupController{
         self.view.frame = UIScreen.main.bounds
         self.contentController?.view.rsWidth = SCREEN_WIDTH - POPUP_GAP_WIDTH
         (self.contentController as! SimplePopupController).resizeView()
-        self.contentController!.view.center = self.view.center
-        
+        self.contentController!.view.center = CGPoint(x: self.view.center.x, y: self.view.center.y - POPUP_ADJUST)
         self.view.isOpaque = true
         self.modalPresentationStyle = .overCurrentContext
         self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)

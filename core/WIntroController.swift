@@ -271,7 +271,8 @@ class WIntroController: BaseController,SwiftyGifDelegate {
 		)
     }
 
-    fileprivate func dismissProcess(){
+    fileprivate func dismissProcess() {
+        print("dismissProcess")
         mainController?.endIntro()
     }
     
@@ -333,16 +334,22 @@ class WIntroController: BaseController,SwiftyGifDelegate {
         if self.viewIntroInfo["fileType"] as? String == "gif" {
             loopCount = Int(self.viewIntroInfo["loopCount"] as! String)!
             if(loopCount != 1){
-                self.dismiss(animated: true, completion: nil)
+                self.delayDismissFunc()
             }else{
                 if oncePlayOk && webViewLoadedOk {
-                    self.dismiss(animated: true, completion: nil)
+                    self.delayDismissFunc()
                 }
             }
         }else{
-            self.dismiss(animated: true, completion: nil)
+            self.delayDismissFunc()
         }
-        
+    }
+    
+    func delayDismissFunc() {
+        let deadlineTime = DispatchTime.now() + .milliseconds(500)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: {
+            self.dismiss(animated: true, completion: nil)
+        })
     }
 }
 

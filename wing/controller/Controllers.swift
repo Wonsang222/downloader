@@ -26,18 +26,15 @@ class MainController:WMainController{
     }
     
     
-    
-    override func webViewDidFinishLoad(_ webView: UIWebView) {
-        super.webViewDidFinishLoad(webView)
-        if webView.canGoBack  {
+    override func webLoadedFinish(_ urlString: String?) {
+        super.webLoadedFinish(urlString)
+        if webViewCanGoBack {
             prevBtn?.isEnabled = true
         }else{
             prevBtn?.isEnabled = false
-            
         }
-        if webView.canGoForward {
+        if webViewCanGoForward {
             nextBtn?.isEnabled = true
-            
         }else{
             nextBtn?.isEnabled = false
         }

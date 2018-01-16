@@ -27,7 +27,6 @@ class MGWKSubWebController: BaseController, WKUIDelegate  {
         webTitle = UILabel()
         webUrl = UILabel()
 
-        let jsctrl = WKUserContentController()
         let dismissBtn = UIButton()
         
         webView = WKWebView(frame: UIScreen.main.bounds, configuration: config)
@@ -45,14 +44,14 @@ class MGWKSubWebController: BaseController, WKUIDelegate  {
         topNavigationView.backgroundColor = UIColor.white
 
         topNavigationView.addSubview(dismissBtn)
-        dismissBtn.frame = CGRect(x: 0.0, y: 5.0, width: 80.0, height: 80.0)
+        dismissBtn.frame = CGRect(x: 5.0, y: 12.5, width: 65.0, height: 65.0)
         dismissBtn.contentEdgeInsets.top = 10.0
         dismissBtn.setImage(UIImage(named: "ic_navi_back.png"), for: .normal)
         dismissBtn.onClick { (view) in
             self.dismiss(animated: true, completion: nil)
         }
         webTitle.frame = CGRect(x: 0.0, y: 30.0, width: topNavigationView.bounds.width, height: 20.0)
-        print("dididic \(webView.title)")
+
         webUrl.frame = CGRect(x: 0.0, y: 50.0, width: topNavigationView.bounds.width, height: 20.0)
         webTitle.font.withSize(12.0)
         webUrl.font.withSize(10.0)
@@ -79,9 +78,8 @@ class MGWKSubWebController: BaseController, WKUIDelegate  {
         webView.scrollView.contentInset = UIEdgeInsetsMake(topNavigationView.bounds.height - 20, 0.0, 0.0, 0.0)
         webView.bounds = webViewSubContainer.bounds
         webView.bounds = CGRect(x: 0.0, y: 0.0, width: webViewSubContainer.bounds.width, height: webViewSubContainer.bounds.height)
-        print("webView bounds: \(webView.bounds.origin.x) \(webView.bounds.origin.y)")
         
-        webView.uiDelegate = self as? WKUIDelegate
+        webView.uiDelegate = self 
         webView.navigationDelegate = self as? WKNavigationDelegate
         webView.load(url)
         webViewSubContainer?.addSubview(webView)

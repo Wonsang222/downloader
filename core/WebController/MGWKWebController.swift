@@ -56,7 +56,7 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
-        print("gdgd message : \(message)")
+
         let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
             completionHandler()
@@ -104,6 +104,7 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        print("gdgd: \(webView.url)")
         if webView.url == nil {
             return
         }
@@ -111,14 +112,12 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
         }
         self.createAccessCookie()
-        print("gdgd didStartProvisionalNavigation \(String(describing: webView.url?.absoluteString))")
         
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         
         self.webLoadedCommit(webView.url?.absoluteString)
-        print("gdgd didComit:  \(webView.estimatedProgress))")
         self.progressView.alpha = 1.0
         self.progressView.setProgress(0.0, animated: true)
         UIView.animate(withDuration: 1, delay: 1.3, options: .curveEaseIn, animations: { }, completion: { (bool) in
@@ -150,17 +149,12 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         decisionHandler(.allow)
-        print("dongdong")
+        
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        print("frame1 \(navigationAction.sourceFrame)")
-        print("frame2 \(String(describing: navigationAction.targetFrame))")
-        print("gdgd 1 \(navigationAction.navigationType.rawValue)")
-        print("gdgd 2 \(String(describing: navigationAction.request.url))")
-//        print(navigationAction.request.url?.absoluteString)
+
         if let urlString = navigationAction.request.url?.absoluteString {
-            print("gdgd urlString : \(urlString)")
             if urlString.hasPrefix("tel:") || urlString.hasPrefix("mailto:") {
                 UIApplication.shared.openURL(navigationAction.request.url!)
                 decisionHandler(.cancel)
@@ -175,19 +169,16 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
             }else if !self.handleSchema(urlString) {
                 decisionHandler(.cancel)
             }else{
-                print("gdgd 3")
                 decisionHandler(.allow)
                 return ;
             }
         }else{
-            print("gdgd 4")
             decisionHandler(.allow)
             return ;
         }
         
     }
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        print("webview create!")
         let controller = MGWKSubWebController()
         let re_webView = controller.loadedView(url: (navigationAction.request), config: configuration)
         
@@ -200,6 +191,7 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
         print("cancel gogo")
         self.presentedViewController?.dismiss(animated: true, completion: nil)
     }
+    
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         print("cancel gogo2")
     }

@@ -63,12 +63,13 @@ class MGWKSubWebController: BaseController, WKUIDelegate  {
         if url.url?.host == "kauth.kakao.com" {
             webTitle.text = "로그인"
         } else if webView.title!.isEmpty {
-            webTitle.text = "이름없음"
+            webTitle.text = ""
+            webUrl.frame.origin.y = topNavigationView.center.y
         } else {
             webTitle.text = webView.title!
         }
         
-        webUrl.text = url.url?.host// 예시
+        webUrl.text = url.url?.host
         
         topNavigationView.addSubview(webTitle)
         topNavigationView.addSubview(webUrl)

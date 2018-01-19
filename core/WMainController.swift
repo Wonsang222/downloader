@@ -170,7 +170,7 @@ class WMainController: MGWebController {
                 appDelegate.remotePushSeq = nil
             }
         }
-    }
+    } 
     
     
     func wn_javascriptString(_ cookie:HTTPCookie) -> String{

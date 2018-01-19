@@ -159,6 +159,17 @@ class WMainController: MGWebController {
 //        }
         view.isHidden = false
         self.loadRequest(requestObj as URLRequest)
+        
+        if let appDelegate = UIApplication.shared.delegate as? WAppDelegate {
+            if appDelegate.remotePushSeq != nil {
+                RSHttp().req( ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(appDelegate.remotePushSeq!)),successCb : { (resource) -> Void in
+                    let objectInfo = resource.body()["data"] as! [String:AnyObject]
+                    let link = objectInfo["link"] as? String
+                    appDelegate.goNotificationLink(link!)
+                })
+                appDelegate.remotePushSeq = nil
+            }
+        }
     }
     
     

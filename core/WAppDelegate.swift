@@ -27,6 +27,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             
         }
     }
+    var remotePushSeq:String?
     private var apnsCallback:((_ error:Bool)->Void)?
     
     
@@ -61,6 +62,11 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         UserDefaults.standard.register(
             defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
         )
+        if launchOptions != nil {
+            if let userInfo = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification] as? [String : AnyObject] {
+                self.remotePushSeq = userInfo["push_seq"] as? String
+            }
+        }
         
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always
         

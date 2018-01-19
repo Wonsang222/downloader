@@ -8,8 +8,9 @@
 
 import UIKit
 import AdSupport
+import UserNotifications
 
-class WAppDelegate: UIResponder, UIApplicationDelegate  {
+class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
     
     
     var window: UIWindow?
@@ -30,12 +31,29 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
     
     
     func regApns(callback:@escaping (_ error:Bool)->Void){
-        let notificationTypes: UIUserNotificationType = [UIUserNotificationType.alert, UIUserNotificationType.badge, UIUserNotificationType.sound]
-        let pushNotificationSettings = UIUserNotificationSettings(types: notificationTypes, categories: nil)
-        UIApplication.shared.registerUserNotificationSettings(pushNotificationSettings)
+        
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
+            UNUserNotificationCenter.current().requestAuthorization(options: [.badge,.sound,.alert], completionHandler: { (granted, error) in
+                if granted {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }else{
+                    
+                }
+            })
+
+        }else{
+            let notificationTypes: UIUserNotificationType = [UIUserNotificationType.alert, UIUserNotificationType.badge, UIUserNotificationType.sound]
+            let pushNotificationSettings = UIUserNotificationSettings(types: notificationTypes, categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(pushNotificationSettings)
+        }
+        
+        
+
+        
         UIApplication.shared.registerForRemoteNotifications()
         self.apnsCallback = callback
-
+        
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -106,14 +124,39 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
             self.apnsCallback?(false)
         })
     }
+
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        if let userInfo = notification.request.content.userInfo as? [String : AnyObject] {
+            if let push_seq = userInfo["push_seq"] as? String {
+                self.handlePush(push_seq)
+            }
+        }
+        completionHandler(.badge)
+    }
+    
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
+        if let userInfo = response.notification.request.content.userInfo as? [String : AnyObject] {
+            if let push_seq = userInfo["push_seq"] as? String {
+                self.handlePush(push_seq)
+            }
+        }
+        completionHandler()
+    }
+    
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error){
         self.apnsCallback?(false)
         print(error)
     }
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         application.applicationIconBadgeNumber = application.applicationIconBadgeNumber + 1
-        
         let pushSeq = userInfo["push_seq"] as! String
+        self.handlePush(pushSeq)
+    }
+    
+    func handlePush(_ push_seq:String){
         RSHttp().req(
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in
@@ -160,13 +203,11 @@ class WAppDelegate: UIResponder, UIApplicationDelegate  {
                     let link = objectInfo["link"] as? String
                     self.goNotificationLink(link!)
                 }
-
                 
-            }
+                
+        }
         )
-        
     }
-    
     
     func goNotificationLink(_ link:String){
         if let rootViewController = self.window!.rootViewController as? UINavigationController {

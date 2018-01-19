@@ -156,12 +156,12 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         self.handlePush(pushSeq)
     }
     
-    func handlePush(_ push_seq:String){
+    func handlePush(_ pushSeq:String){
         RSHttp().req(
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in
                 let objectInfo = resource.body()["data"] as! [String:AnyObject]
-                if( application.applicationState == .active){
+                if( UIApplication.shared.applicationState == .active){
                     let link = objectInfo["link"] as? String
                     let subtitle = objectInfo["subtitle"] as? String
                     let title = objectInfo["title"] as? String

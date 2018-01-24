@@ -152,7 +152,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if let userInfo = notification.request.content.userInfo as? [String : AnyObject] {
             if let push_seq = userInfo["push_seq"] as? String {
-                self.handlePush(push_seq)
+                self.handlePush(push_seq,isBackground: false)
             }
         }
         completionHandler(.badge)
@@ -163,7 +163,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
         if let userInfo = response.notification.request.content.userInfo as? [String : AnyObject] {
             if let push_seq = userInfo["push_seq"] as? String {
-                self.handlePush(push_seq)
+                self.handlePush(push_seq,isBackground: true)
             }
         }
         completionHandler()
@@ -176,10 +176,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         application.applicationIconBadgeNumber = application.applicationIconBadgeNumber + 1
         let pushSeq = userInfo["push_seq"] as! String
-        self.handlePush(pushSeq)
+        self.handlePush(pushSeq,isBackground: UIApplication.shared.applicationState != .active )
     }
     
-    func handlePush(_ pushSeq:String){
+    func handlePush(_ pushSeq:String,isBackground:Bool){
         RSHttp().req(
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in

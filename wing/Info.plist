@@ -40,6 +40,8 @@
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>storylink</string>
+		<string>kakaotalk</string>
 		<string>lguthepay-xpay</string>
 		<string>smartxpay-transfer</string>
 		<string>nhallonepayansimclick</string>

@@ -120,6 +120,7 @@ class WMainController: MGWebController {
         }
     }
 
+
     func loadPage(_ url:String){
         
         let ui_data = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
@@ -148,15 +149,6 @@ class WMainController: MGWebController {
         
         let requestObj = NSMutableURLRequest(url: url_obj!);
         requestObj.httpShouldHandleCookies = true
-        
-//        if let sessionCookie = WInfo.defaultCookieForName("PHPSESSID") {
-//            let cookieString = self.wn_javascriptString(sessionCookie);
-//            let script = "document.cookie = '\(cookieString)'"
-//            let wkUserScript = WKUserScript(source: script, injectionTime: WKUserScriptInjectionTime.AtDocumentStart, forMainFrameOnly: false)
-//            webView.configuration.userContentController.addUserScript(wkUserScript)
-//
-//            requestObj.addValue(cookieString,forHTTPHeaderField:"Cookie")
-//        }
         view.isHidden = false
         self.loadRequest(requestObj as URLRequest)
         
@@ -169,17 +161,19 @@ class WMainController: MGWebController {
                 })
                 appDelegate.remotePushSeq = nil
             }
+            if appDelegate.commmandUrl != nil {
+                if appDelegate.commmandUrl!.hasPrefix("http") || appDelegate.commmandUrl!.hasPrefix("https") {
+                    appDelegate.commmandUrl = nil
+                    let requestObj = NSMutableURLRequest(url: URL(string: appDelegate.commmandUrl!)!);
+                    requestObj.httpShouldHandleCookies = true
+                    self.loadRequest(requestObj as URLRequest)
+                }
+            }
         }
+    
+      
+
     } 
-    
-    
-    func wn_javascriptString(_ cookie:HTTPCookie) -> String{
-     var string = "\(cookie.name)=\(cookie.value);domain=\(cookie.domain);path=\(cookie.path)"
-        if(cookie.isSecure){
-            string += ";secure=true"
-        }
-    return string;
-    }
     
     
     func movePage(_ page:String){

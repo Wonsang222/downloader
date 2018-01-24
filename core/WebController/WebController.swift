@@ -212,7 +212,7 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
     func apiEvent(_ value: [String:String]){
         if value["func"] == "deviceId" {
             let callback = value["callback"]!.removingPercentEncoding!
-            let value = UIDevice.current.identifierForVendor!.uuidString
+            let value = WInfo.deviceId
             self.runScript("javascript:\(callback)('\(value)')")
         }else if value["func"] == "version" {
             let callback = value["callback"]!.removingPercentEncoding!
@@ -263,6 +263,10 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
             self.performSegue(withIdentifier: "setting" ,  sender : self)
         }else if value["func"] == "goNotice" {
             self.performSegue(withIdentifier: "noti" ,  sender : nil)
+        }else if value["func"] == "browserUrl" {
+            if let url = URL(string:value["params"]!.removingPercentEncoding! ) {
+                UIApplication.shared.openURL(url)
+            }
         }else if value["func"] == "adbrixFirstTimeExperience" {
             if let json = value["params"]?.jsonObject() {
                 EventAdbrix.firstTimeExperience(json)

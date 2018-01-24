@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "WAppDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:):WAppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.apnsCallback">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "WNotiController.viewDidLoad():WNotiController.swift">
          <PersistentStrings>
             <PersistentString
@@ -29,22 +37,22 @@
                value = "self.view.frame">
             </PersistentString>
             <PersistentString
-               value = "sefl.webView.frame">
+               value = "topView.frame.size.height">
             </PersistentString>
             <PersistentString
-               value = "self.webView.frame">
-            </PersistentString>
-            <PersistentString
-               value = "self.webView.subviews">
+               value = "self.webViewContainer.frame">
             </PersistentString>
             <PersistentString
                value = "self.webView.scrollView.contentInset">
             </PersistentString>
             <PersistentString
-               value = "topView.frame.size.height">
+               value = "self.webView.frame">
             </PersistentString>
             <PersistentString
-               value = "self.webViewContainer.frame">
+               value = "sefl.webView.frame">
+            </PersistentString>
+            <PersistentString
+               value = "self.webView.subviews">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -67,6 +75,14 @@
             </PersistentString>
             <PersistentString
                value = "AdBrix.currencyName(currencyValue(product[&quot;currency&quot;] as! String))">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WAppDelegate.regApns(callback:):WAppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "granted">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

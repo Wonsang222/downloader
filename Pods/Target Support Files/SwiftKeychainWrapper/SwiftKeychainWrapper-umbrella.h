@@ -10,8 +10,8 @@
 #endif
 #endif
 
-#import "SwiftyGif.h"
+#import "SwiftKeychainWrapper.h"
 
-FOUNDATION_EXPORT double SwiftyGifVersionNumber;
-FOUNDATION_EXPORT const unsigned char SwiftyGifVersionString[];
+FOUNDATION_EXPORT double SwiftKeychainWrapperVersionNumber;
+FOUNDATION_EXPORT const unsigned char SwiftKeychainWrapperVersionString[];
 

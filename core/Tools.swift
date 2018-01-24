@@ -81,22 +81,11 @@ class DownLoader{
                 if error == nil && response != nil{
                     let statusCode = (response as! HTTPURLResponse).statusCode
                     if statusCode == 200{
-                        var options = [String:Any]()
+                        let options = [String:Any]()
                         DispatchQueue.main.async(execute: {
                             do{
                                 
                                 if url.hasSuffix(".gif") {
-
-                                    
-                                    let source = CGImageSourceCreateWithData( data! as CFData , nil)
-                                    let propertis = CGImageSourceCopyProperties(source!, nil)! as NSDictionary
-                                    let metadata = propertis.object(forKey: kCGImagePropertyGIFDictionary) as! NSDictionary
-                                    if metadata.object(forKey: kCGImagePropertyGIFLoopCount) == nil {
-                                        options["loopCount"] = "1"
-                                    }else{
-                                        let loop = metadata.object(forKey: kCGImagePropertyGIFLoopCount) as! Int
-                                        options["loopCount"] = String(loop)
-                                    }
                                     try data?.write(to: Foundation.URL(fileURLWithPath: filePath), options: NSData.WritingOptions.atomic)
                                 } else {
                                     if let imageOut = UIImage(data:data!) {

@@ -28,6 +28,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         }
     }
     var remotePushSeq:String?
+    var commmandUrl:String?
     private var apnsCallback:((_ error:Bool)->Void)?
     
     
@@ -37,9 +38,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             UNUserNotificationCenter.current().delegate = self
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge,.sound,.alert], completionHandler: { (granted, error) in
                 if granted {
+                    self.apnsCallback = callback
                     UIApplication.shared.registerForRemoteNotifications()
                 }else{
-                    
+                    callback(false);
                 }
             })
 
@@ -47,13 +49,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             let notificationTypes: UIUserNotificationType = [UIUserNotificationType.alert, UIUserNotificationType.badge, UIUserNotificationType.sound]
             let pushNotificationSettings = UIUserNotificationSettings(types: notificationTypes, categories: nil)
             UIApplication.shared.registerUserNotificationSettings(pushNotificationSettings)
+            UIApplication.shared.registerForRemoteNotifications()
+            self.apnsCallback = callback
         }
-        
-        
-
-        
-        UIApplication.shared.registerForRemoteNotifications()
-        self.apnsCallback = callback
         
     }
     
@@ -67,6 +65,12 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 self.remotePushSeq = userInfo["push_seq"] as? String
             }
         }
+        if let launchUrl = launchOptions?[.url] as? URL {
+            if launchUrl.host == "page" {
+                self.commmandUrl = launchUrl.query
+            }
+        }
+
         
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always
         
@@ -76,10 +80,17 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 .ap("token",WInfo.deviceToken)
         )
 
-        for cookie in HTTPCookieStorage.shared.cookies! {
-            HTTPCookieStorage.shared.deleteCookie(cookie)
+        if let cookiesData = UserDefaults.standard.object(forKey: "Cookies") as? Data{
+            if cookiesData.count != 0 {
+                if let cookies = NSKeyedUnarchiver.unarchiveObject(with: cookiesData) as? [HTTPCookie] {
+                    for cookie in cookies {
+                        HTTPCookieStorage.shared.setCookie(cookie)
+                    }
+                }
+            }
         }
-        
+        WInfo.clearSessionCookie()
+
         
         #if ADBRIX
         if NSClassFromString("ASIdentifierManager") != nil {
@@ -108,6 +119,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
+        if let cookies = HTTPCookieStorage.shared.cookies {
+            let cookieData = NSKeyedArchiver.archivedData(withRootObject: cookies)
+            UserDefaults.standard.setValue(cookieData, forKey: "Cookies")
+        }
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -129,6 +144,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         },errorCb : { (errorCode,resource) -> Void in
             self.apnsCallback?(false)
         })
+        self.apnsCallback = nil
     }
 
     @available(iOS 10.0, *)
@@ -154,7 +170,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error){
         self.apnsCallback?(false)
-        print(error)
+        self.apnsCallback = nil
     }
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         application.applicationIconBadgeNumber = application.applicationIconBadgeNumber + 1
@@ -227,5 +243,31 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     
 //    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
 //    }
+    
+    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
+        self.proc_open_url(url: url)
+        return true
+    }
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        self.proc_open_url(url: url)
+        return true
+    }
+    
+    func proc_open_url(url:URL){
+        if url.host == "page" {
+            if let rootViewController = self.window!.rootViewController as? UINavigationController {
+                if let mainController = rootViewController.viewControllers[0] as? WMainController{
+                    if commmandUrl == nil {
+                        mainController.loadPage("\(WInfo.appUrl)/" + url.query!)
+                    }
+                }
+            }
+        }
+        #if ADBRIX
+            IgaworksCore.passOpen(url)
+        #endif
+        
+    }
+
 }
 

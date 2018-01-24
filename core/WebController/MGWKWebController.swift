@@ -31,16 +31,13 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
         }
     }
     override func loadRequest(_ request: URLRequest) {
-        print("진입1")
         self.webView.load(request)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("진입2")
         let config = WKWebViewConfiguration()
-        let jsctrl = WKUserContentController()
-        
+//        let jsctrl = WKUserContentController()
         webView = WKWebView(frame: webViewContainer.bounds, configuration: config)
         if #available(iOS 9.0, *) {
 //            webView.allowsLinkPreview = true
@@ -51,7 +48,6 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     }
     
     func reloadPage(){
-        print("진입3")
         self.webView.reload()
     }
     
@@ -104,7 +100,6 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        print("gdgd: \(webView.url)")
         if webView.url == nil {
             return
         }
@@ -116,7 +111,6 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        
         self.webLoadedCommit(webView.url?.absoluteString)
         self.progressView.alpha = 1.0
         self.progressView.setProgress(0.0, animated: true)
@@ -188,12 +182,10 @@ class MGWKWebController: WebController,WKUIDelegate,WKNavigationDelegate {
     }
     
     func webViewDidClose(_ webView: WKWebView) {
-        print("cancel gogo")
         self.presentedViewController?.dismiss(animated: true, completion: nil)
     }
     
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-        print("cancel gogo2")
     }
 //    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
     

@@ -7,7 +7,7 @@ target 'wing' do
 pod 'Google/Analytics'
 pod 'IgaworksCore'
 pod 'AdBrix'
-pod 'SwiftyGif'
 pod 'ZBarSDK'
 pod 'CryptoSwift'
+pod 'SwiftKeychainWrapper'
 end

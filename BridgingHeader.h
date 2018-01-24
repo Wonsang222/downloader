@@ -10,3 +10,7 @@
 #import <IgaworksCore/IgaworksCore.h>
 #import <AdBrix/AdBrix.h>
 #import <ZBarSDK/ZBarSDK.h>
+#import "objc/OLImageView.h"
+#import "objc/OLImage.h"
+#import "objc/OLImageViewDelegate.h"
+

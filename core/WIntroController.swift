@@ -8,12 +8,12 @@
 
 import UIKit
 import ImageIO
-import SwiftyGif
 
 
-class WIntroController: BaseController,SwiftyGifDelegate {
+class WIntroController: BaseController,OLImageViewDelegate {
 
 	@IBOutlet weak var introView: UIView!
+    var loopCount:UInt = 1
     var isLoaded = false
     var oncePlayOk = false
     var webViewLoadedOk = false
@@ -57,7 +57,7 @@ class WIntroController: BaseController,SwiftyGifDelegate {
                     do {
                         let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
                         self.viewIntroInfo = tIntro
-                        return UIImage(gifData: data)
+                        return OLImage(data: data)
                     } catch  {
                        return nil
                     }
@@ -182,7 +182,6 @@ class WIntroController: BaseController,SwiftyGifDelegate {
                             termJson["file"] = filePath
                             if (item as! String).hasSuffix(".gif") {
                                 termJson["fileType"] = "gif"
-                                termJson["loopCount"] = options["loopCount"]
                             }else if (item as! String).hasSuffix(".jpg") {
                                 termJson["fileType"] = "jpg"
                             }else {
@@ -210,16 +209,14 @@ class WIntroController: BaseController,SwiftyGifDelegate {
         if(WInfo.confirmPermission){
             (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
                 self.showMarketingPopup({
-                    (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
-                        self.reqTheme()
-                    })
+                    self.reqTheme()
                 })
             })
         }else{
             self.permissionController = self.storyboard?.instantiateViewController(withIdentifier: "permission") as? PermissionController
             self.permissionController?.show(parent: self, callback: {
-                self.showMarketingPopup({
-                    (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
+                (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
+                    self.showMarketingPopup({
                         self.reqTheme()
                     })
                 })
@@ -272,7 +269,6 @@ class WIntroController: BaseController,SwiftyGifDelegate {
     }
 
     fileprivate func dismissProcess() {
-        print("dismissProcess")
         mainController?.endIntro()
     }
     
@@ -284,16 +280,15 @@ class WIntroController: BaseController,SwiftyGifDelegate {
         let splash = self.saveIntro
         if splash == nil { return }
         if self.viewIntroInfo["fileType"] as? String == "gif" {
-            var loopCount = Int(self.viewIntroInfo["loopCount"] as! String)!
-            loopCount = loopCount == 0 ? -1 : loopCount
-            let imagview = UIImageView(gifImage:splash!, manager: SwiftyGifManager(memoryLimit:20), loopCount : loopCount)
-            imagview.frame = self.introView.bounds
-            imagview.contentMode = .scaleAspectFill
-            imagview.clipsToBounds = true
-            imagview.autoresizingMask = [.flexibleWidth,.flexibleHeight]
-            imagview.delegate = self
-            self.introView.addSubview(imagview)
-        
+            self.loopCount = (splash as! OLImage).loopCount
+            let imageview = OLImageView(frame: self.introView.bounds)
+            imageview.frame = self.introView.bounds
+            imageview.contentMode = .scaleAspectFill
+            imageview.clipsToBounds = true
+            imageview.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+            imageview.delegate = self
+            imageview.image = splash
+            self.introView.addSubview(imageview)
         }else{
             let imagview = UIImageView(frame: self.introView.bounds)
             imagview.frame = self.introView.bounds
@@ -319,21 +314,15 @@ class WIntroController: BaseController,SwiftyGifDelegate {
     }
     
     
-    func gifDidLoop() {
-        let loopCount = Int(self.viewIntroInfo["loopCount"] as! String)!
-        if(loopCount != 1){
-            oncePlayOk = true
-            closeIntroProcess()
-        }
+    func imageViewDidLoop(_ imageView: OLImageView!) {
+        oncePlayOk = true
+        closeIntroProcess()
     }
     
     
     func closeIntroProcess(){
-        print(self.viewIntroInfo)
-        var loopCount:Int?
         if self.viewIntroInfo["fileType"] as? String == "gif" {
-            loopCount = Int(self.viewIntroInfo["loopCount"] as! String)!
-            if(loopCount != 1){
+            if(self.loopCount != 1){
                 self.delayDismissFunc()
             }else{
                 if oncePlayOk && webViewLoadedOk {

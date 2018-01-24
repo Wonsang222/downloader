@@ -68,6 +68,8 @@
 		D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EE91CAC06A200BF545E /* ResourceBase.swift */; };
 		D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEA1CAC06A200BF545E /* Tools.swift */; };
 		D4C64EEE1CAC06A200BF545E /* WInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEB1CAC06A200BF545E /* WInfo.swift */; };
+		D4CC07D22015B26F0033A011 /* OLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CC07CD2015B26C0033A011 /* OLImageView.m */; };
+		D4CC07D32015B26F0033A011 /* OLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CC07CF2015B26C0033A011 /* OLImage.m */; };
 		D4D9FCB01FBA6EBA00B088B1 /* ThemeV2T3.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9FCAF1FBA6EBA00B088B1 /* ThemeV2T3.swift */; };
 		D4D9FCB21FBA754A00B088B1 /* PermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9FCB11FBA754A00B088B1 /* PermissionController.swift */; };
 		D4D9FCB41FBA92EF00B088B1 /* pop_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4D9FCB31FBA92EF00B088B1 /* pop_icon.png */; };
@@ -160,6 +162,11 @@
 		D4C64EE91CAC06A200BF545E /* ResourceBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceBase.swift; sourceTree = "<group>"; };
 		D4C64EEA1CAC06A200BF545E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		D4C64EEB1CAC06A200BF545E /* WInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WInfo.swift; sourceTree = "<group>"; };
+		D4CC07CD2015B26C0033A011 /* OLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLImageView.m; sourceTree = "<group>"; };
+		D4CC07CE2015B26C0033A011 /* OLImageViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLImageViewDelegate.h; sourceTree = "<group>"; };
+		D4CC07CF2015B26C0033A011 /* OLImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLImage.m; sourceTree = "<group>"; };
+		D4CC07D02015B26E0033A011 /* OLImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLImage.h; sourceTree = "<group>"; };
+		D4CC07D12015B26F0033A011 /* OLImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLImageView.h; sourceTree = "<group>"; };
 		D4D9FCAF1FBA6EBA00B088B1 /* ThemeV2T3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeV2T3.swift; sourceTree = "<group>"; };
 		D4D9FCB11FBA754A00B088B1 /* PermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionController.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		D4D9FCB31FBA92EF00B088B1 /* pop_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_icon.png; sourceTree = "<group>"; };
@@ -258,6 +265,7 @@
 		D41622671C9C44A300A818DA = {
 			isa = PBXGroup;
 			children = (
+				D4CC07CC2015B1E50033A011 /* objc */,
 				D4FD0F131CBB5DC000018CDF /* WebKit.framework */,
 				D47A8D5A1CE0448900E655F1 /* BridgingHeader.h */,
 				D416228B1C9EA6C000A818DA /* core */,
@@ -420,6 +428,18 @@
 			path = http;
 			sourceTree = "<group>";
 		};
+		D4CC07CC2015B1E50033A011 /* objc */ = {
+			isa = PBXGroup;
+			children = (
+				D4CC07D02015B26E0033A011 /* OLImage.h */,
+				D4CC07CF2015B26C0033A011 /* OLImage.m */,
+				D4CC07D12015B26F0033A011 /* OLImageView.h */,
+				D4CC07CD2015B26C0033A011 /* OLImageView.m */,
+				D4CC07CE2015B26C0033A011 /* OLImageViewDelegate.h */,
+			);
+			path = objc;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -548,9 +568,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-wing/Pods-wing-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework",
+				"${BUILT_PRODUCTS_DIR}/ZBarSDK/ZBarSDK.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftKeychainWrapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZBarSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -563,13 +592,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-wing-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -586,6 +618,7 @@
 				D4932E821CA432710014B769 /* WIntroController.swift in Sources */,
 				D4932E831CA432710014B769 /* WMainController.swift in Sources */,
 				D405296E1DFE7CFA00E09FAD /* RPopupController.swift in Sources */,
+				D4CC07D22015B26F0033A011 /* OLImageView.m in Sources */,
 				D4D9FCB81FBAA0F300B088B1 /* ExtenstionCGRect.swift in Sources */,
 				D45D64771CB29370004976A2 /* ExtensionUIColor.swift in Sources */,
 				D4DC5E1E1FA6BEA4008772AD /* WMScanner.swift in Sources */,
@@ -594,6 +627,7 @@
 				D4932E931CA433E10014B769 /* Controllers.swift in Sources */,
 				D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */,
 				D4BBE1842002F5A000CD7717 /* MGUIWebController.swift in Sources */,
+				D4CC07D32015B26F0033A011 /* OLImage.m in Sources */,
 				D4ABD0FE1E6562DC00EC0649 /* ThemeV2T2.swift in Sources */,
 				D408A9D11CA2B50400E0DCB5 /* HttpInfo.swift in Sources */,
 				D4D9FCB21FBA754A00B088B1 /* PermissionController.swift in Sources */,

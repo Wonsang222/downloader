@@ -7,13 +7,13 @@ class ApiFormApp : HttpBaseResource{
     override init() {
         super.init()
         _ = ap("device","ios")
-        _ = ap("device_id",UIDevice.current.identifierForVendor!.uuidString)
+        _ = ap("device_id",WInfo.deviceId)
         _ = ap("country_code",WInfo.countryCode)
         if !WInfo.accountId.isEmpty{
             _ = ap("account_id",WInfo.accountId)
         }
-        _ = ap("version_app" ,AppProp.appVersion)
-        
+        _ = ap("app_version" ,AppProp.appVersion)
+
         reqHeader["core_version"] = WInfo.coreVersion
 
     }

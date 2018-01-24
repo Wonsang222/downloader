@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
+
 
 class WInfo{
     
@@ -15,13 +17,24 @@ class WInfo{
 //    static let coreVersion:String = "wmgkcore_v2.1.2" //GIF Splash 추가
 //    static let coreVersion:String = "wmgkcore_v3.0.0" //바코드 인식기
 //    static let coreVersion:String = "wmgkcore_v3.0.1" //IPhone X 대응
-    static let coreVersion:String = "wmgkcore_v3.0.2" //Out of Memory 대응
+//    static let coreVersion:String = "wmgkcore_v3.0.3" //Out of Memory 대응
+    static let coreVersion:String = "wmgkcore_v3.1.4"  // WKWebView Brwoser 적용
+
+    static var deviceId:String {
+        get {
+            var deviceId = KeychainWrapper.standard.string(forKey: "magicappDeviceId")
+            if deviceId == nil {
+                deviceId = UIDevice.current.identifierForVendor?.uuidString
+                KeychainWrapper.standard.set(deviceId!, forKey: "magicappDeviceId")
+            }
+            return deviceId!
+        }
+    }
 
 	static var appUrl:String{
 		get{
 			if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{
 //              return "http://118.129.243.73/sendbege.html"
-//                return "http://m.sw.wisaweb.co.kr"
 //                return "http://m.nain.co.kr"
               return returnValue
 			}else{
@@ -159,31 +172,6 @@ class WInfo{
 		}
 	}
     
-    
-    static func defaultCookies() -> [String]{
-        var arrayValues: [String] = []
-        if let cookies = HTTPCookieStorage.shared.cookies {
-            for cookie in cookies {
-                arrayValues.append(cookie.name+"=" + cookie.value)
-                if cookie.domain.contains( WInfo.appUrl.replace("http://m.", withString: "")){
-                    
-                }
-            }
-        }
-        return arrayValues;
-    }
-    
-    static func defaultCookieForName(_ name:String) -> HTTPCookie?{
-        if let cookies = HTTPCookieStorage.shared.cookies {
-            for cookie in cookies {
-                if(cookie.name == "PHPSESSID"){
-                    return cookie
-                }
-            }
-        }
-        return nil
-    }
-    
     static func defaultCookie() -> String{
         var arrayValues: [String] = []
         if let cookies = HTTPCookieStorage.shared.cookies {
@@ -196,27 +184,19 @@ class WInfo{
         }
         return arrayValues.joined(separator: "; ")
     }
-    
-    static func clearCookie() {
-        if let cookies = HTTPCookieStorage.shared.cookies(for: URL(string:WInfo.appUrl)!){
-            for cookie in cookies {
-                HTTPCookieStorage.shared.deleteCookie(cookie)
-            }
-        }
-        
-    }
-    
     static func clearSessionCookie() {
-        if let cookies = HTTPCookieStorage.shared.cookies(for: URL(string:WInfo.appUrl)!){
-            for cookie in cookies {
-                if cookie.isSessionOnly {
-                    HTTPCookieStorage.shared.deleteCookie(cookie)
+        if WInfo.appUrl != "" {
+            if let cookies = HTTPCookieStorage.shared.cookies(for: URL(string:WInfo.appUrl)!){
+                for cookie in cookies {
+                    if cookie.isSessionOnly {
+                        HTTPCookieStorage.shared.deleteCookie(cookie)
+                    }
                 }
             }
         }
         
     }
-    
+  
     static var firstProcess:Bool{
         get{
             if let returnValue = UserDefaults.standard.string(forKey: "kFirstProcess"){

@@ -141,10 +141,11 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
 
         RSHttp().req([api],successCb: { (resource) -> Void in
             self.apnsCallback?(true)
+            self.apnsCallback = nil
         },errorCb : { (errorCode,resource) -> Void in
             self.apnsCallback?(false)
+            self.apnsCallback = nil
         })
-        self.apnsCallback = nil
     }
 
     @available(iOS 10.0, *)

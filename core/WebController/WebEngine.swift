@@ -73,7 +73,9 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReader
         ["schema" : "citimobileapp", "url" : ""], // 삼성카드
         ["schema" : "uppay", "url" : ""], // 삼성카드
         ["schema" : "shinsegaeeasypayment", "url" : ""], // 삼성카드
-        ["schema" : "paypin", "url" : ""] // 페이핀
+        ["schema" : "paypin", "url" : ""], // 페이핀
+        ["schema" : "storylink", "url" : "https://itunes.apple.com/us/app/kakaostory/id486244601?mt=8"], // 카카오스토리
+        ["schema" : "kakaotalk", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"] // 카카오톡
     ]
     
     func createAccessCookie() {
@@ -193,7 +195,9 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReader
                 if UIApplication.shared.canOpenURL(URL(string:url!)!) {
                     UIApplication.shared.openURL(URL(string:url!)!)
                 }else{
-                    UIApplication.shared.openURL(URL(string:appSchema["url"]! as String)!)
+                    if appSchema["url"] != "" {
+                        UIApplication.shared.openURL(URL(string:appSchema["url"]! as String)!)
+                    }
                 }
                 return false
             }

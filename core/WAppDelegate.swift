@@ -9,6 +9,7 @@
 import UIKit
 import AdSupport
 import UserNotifications
+import WebKit
 
 class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
     
@@ -39,7 +40,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge,.sound,.alert], completionHandler: { (granted, error) in
                 if granted {
                     self.apnsCallback = callback
-                    UIApplication.shared.registerForRemoteNotifications()
+                    DispatchQueue.main.async { UIApplication.shared.registerForRemoteNotifications() }
                 }else{
                     callback(false);
                 }
@@ -79,18 +80,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 .ap("pack_name",AppProp.appId)
                 .ap("token",WInfo.deviceToken)
         )
-
-        if let cookiesData = UserDefaults.standard.object(forKey: "Cookies") as? Data{
-            if cookiesData.count != 0 {
-                if let cookies = NSKeyedUnarchiver.unarchiveObject(with: cookiesData) as? [HTTPCookie] {
-                    for cookie in cookies {
-                        HTTPCookieStorage.shared.setCookie(cookie)
-                    }
-                }
-            }
-        }
+        
+        WInfo.restoreAllCookie()
         WInfo.clearSessionCookie()
-
         
         #if ADBRIX
         if NSClassFromString("ASIdentifierManager") != nil {
@@ -119,10 +111,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        if let cookies = HTTPCookieStorage.shared.cookies {
-            let cookieData = NSKeyedArchiver.archivedData(withRootObject: cookies)
-            UserDefaults.standard.setValue(cookieData, forKey: "Cookies")
-        }
+       WInfo.saveAllCookie()
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

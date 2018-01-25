@@ -9,19 +9,20 @@
 import UIKit
 import WebKit
 
-class WNotiController: MGWebController,UIScrollViewDelegate{
+class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate{
 
 	var link:String?
-    
     var scrollBefore:CGFloat = 0.0
     var scrollDistance:CGFloat = 0.0
     var controlToggle = true
     let HIDE_THRESHOLD:CGFloat = 20.0
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.engine.webDelegate = self
         ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
-        webView.alpha = 0
+        self.engine.webView.alpha = 0
         var url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId);
         if link != nil {
         	url = URL (string: link!);
@@ -35,44 +36,24 @@ class WNotiController: MGWebController,UIScrollViewDelegate{
         let topView = self.view.subviews[1]
         contentView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: UIScreen.main.bounds.size.height)
         DispatchQueue.main.async{
-            self.webView.scrollView.contentInset.top = topView.frame.size.height
-            self.webView.scrollView.contentInset.bottom = 0
-            self.scrollBefore = self.webView.scrollView.contentOffset.y
+            self.engine.scrollView.contentInset.top = topView.frame.size.height
+            self.engine.scrollView.contentInset.bottom = 0
+            self.scrollBefore = self.engine.scrollView.contentOffset.y
         }
         if #available(iOS 11.0, *) {
-            self.webView.scrollView.contentInsetAdjustmentBehavior = .never
+            self.engine.scrollView.contentInsetAdjustmentBehavior = .never
         }
-        webView.scrollView.delegate = self
+        self.engine.scrollView.delegate = self
         UIApplication.shared.applicationIconBadgeNumber = 0
-        self.loadRequest(requestObj)
+        self.engine.loadRequest(requestObj)
     }
     
-    override func hybridEvent(_ value: [String : AnyObject]) {
-        if value["func"] as! String == "movePage"{
-            
-            let moveUrl = value["param1"] as! String
-            let mainController = self.navigationController?.viewControllers[0] as! WMainController
-            mainController.movePage(moveUrl)
-            if self.navigationController != nil {
-                self.navigationController!.popViewController(animated: true)
-            }
-        }
-    }
-
     
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    
-    override func webLoadedFinish(_ urlString: String?) {
-        if(self.webView.alpha == 0){
-            UIView.animate(withDuration: 0.6, animations: {
-                self.webView.alpha = 1
-            })
-        }
-    }
     
  
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -98,5 +79,29 @@ class WNotiController: MGWebController,UIScrollViewDelegate{
         }
     }
     
+    /* WebControl Delegate */
+    func webLoadedFinish(_ urlString:String?){
+        if(self.engine.webView.alpha == 0){
+            UIView.animate(withDuration: 0.6, animations: {
+                self.engine.webView.alpha = 1
+            })
+        }
+
+    }
+    func webLoadedCommit(_ urlString:String?){
+        
+    }
+    func hybridEvent(_ value: [String:AnyObject]){
+        if value["func"] as! String == "movePage"{
+            
+            let moveUrl = value["param1"] as! String
+            let mainController = self.navigationController?.viewControllers[0] as! WMainController
+            mainController.movePage(moveUrl)
+            if self.navigationController != nil {
+                self.navigationController!.popViewController(animated: true)
+            }
+        }
+    }
+
 }
 

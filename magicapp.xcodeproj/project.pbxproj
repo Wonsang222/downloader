@@ -42,7 +42,7 @@
 		D416227E1C9C44A300A818DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D416227D1C9C44A300A818DA /* Assets.xcassets */; };
 		D42321C31CC5CDB3007C2F3C /* ic_a_isnew.png in Resources */ = {isa = PBXBuildFile; fileRef = D42321C21CC5CDB3007C2F3C /* ic_a_isnew.png */; };
 		D42673141D1A30A800F73865 /* WisaTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42673131D1A30A800F73865 /* WisaTracker.swift */; };
-		D428DDFA2002F47800E799F6 /* WebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D428DDF92002F47800E799F6 /* WebController.swift */; };
+		D428DDFA2002F47800E799F6 /* WebEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D428DDF92002F47800E799F6 /* WebEngine.swift */; };
 		D4326BD01CB561E8007A07C6 /* WAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */; };
 		D45D64751CB28B64004976A2 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D64731CB28B64004976A2 /* Toast.swift */; };
 		D45D64771CB29370004976A2 /* ExtensionUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D64761CB29370004976A2 /* ExtensionUIColor.swift */; };
@@ -62,9 +62,8 @@
 		D4ABD0FA1E6562BD00EC0649 /* ThemeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ABD0F71E6562BD00EC0649 /* ThemeFactory.swift */; };
 		D4ABD0FC1E6562D100EC0649 /* ThemeV2T1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ABD0FB1E6562D100EC0649 /* ThemeV2T1.swift */; };
 		D4ABD0FE1E6562DC00EC0649 /* ThemeV2T2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ABD0FD1E6562DC00EC0649 /* ThemeV2T2.swift */; };
-		D4BBE1842002F5A000CD7717 /* MGUIWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE1832002F5A000CD7717 /* MGUIWebController.swift */; };
-		D4BBE1862002F64F00CD7717 /* MGWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE1852002F64F00CD7717 /* MGWebController.swift */; };
-		D4BBE1882003085800CD7717 /* MGWKWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE1872003085800CD7717 /* MGWKWebController.swift */; };
+		D4BBE1842002F5A000CD7717 /* EngineUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE1832002F5A000CD7717 /* EngineUI.swift */; };
+		D4BBE1882003085800CD7717 /* EngineWK.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE1872003085800CD7717 /* EngineWK.swift */; };
 		D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EE91CAC06A200BF545E /* ResourceBase.swift */; };
 		D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEA1CAC06A200BF545E /* Tools.swift */; };
 		D4C64EEE1CAC06A200BF545E /* WInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEB1CAC06A200BF545E /* WInfo.swift */; };
@@ -130,7 +129,7 @@
 		D41622821C9C44A300A818DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D42321C21CC5CDB3007C2F3C /* ic_a_isnew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_isnew.png; sourceTree = "<group>"; };
 		D42673131D1A30A800F73865 /* WisaTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WisaTracker.swift; sourceTree = "<group>"; };
-		D428DDF92002F47800E799F6 /* WebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebController.swift; sourceTree = "<group>"; };
+		D428DDF92002F47800E799F6 /* WebEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebEngine.swift; sourceTree = "<group>"; };
 		D4326BCF1CB561E8007A07C6 /* WAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WAppDelegate.swift; sourceTree = "<group>"; };
 		D442391F1E07A8120009E862 /* wing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wing.entitlements; sourceTree = "<group>"; };
 		D45369EA1E63E34B0026E571 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -156,9 +155,8 @@
 		D4ABD0F71E6562BD00EC0649 /* ThemeFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeFactory.swift; sourceTree = "<group>"; };
 		D4ABD0FB1E6562D100EC0649 /* ThemeV2T1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeV2T1.swift; sourceTree = "<group>"; };
 		D4ABD0FD1E6562DC00EC0649 /* ThemeV2T2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeV2T2.swift; sourceTree = "<group>"; };
-		D4BBE1832002F5A000CD7717 /* MGUIWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGUIWebController.swift; sourceTree = "<group>"; };
-		D4BBE1852002F64F00CD7717 /* MGWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGWebController.swift; sourceTree = "<group>"; };
-		D4BBE1872003085800CD7717 /* MGWKWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGWKWebController.swift; sourceTree = "<group>"; };
+		D4BBE1832002F5A000CD7717 /* EngineUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineUI.swift; sourceTree = "<group>"; };
+		D4BBE1872003085800CD7717 /* EngineWK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineWK.swift; sourceTree = "<group>"; };
 		D4C64EE91CAC06A200BF545E /* ResourceBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceBase.swift; sourceTree = "<group>"; };
 		D4C64EEA1CAC06A200BF545E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		D4C64EEB1CAC06A200BF545E /* WInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WInfo.swift; sourceTree = "<group>"; };
@@ -328,11 +326,10 @@
 		D428DDF82002F43D00E799F6 /* WebController */ = {
 			isa = PBXGroup;
 			children = (
-				D428DDF92002F47800E799F6 /* WebController.swift */,
-				D4BBE1832002F5A000CD7717 /* MGUIWebController.swift */,
+				D428DDF92002F47800E799F6 /* WebEngine.swift */,
+				D4BBE1832002F5A000CD7717 /* EngineUI.swift */,
+				D4BBE1872003085800CD7717 /* EngineWK.swift */,
 				F5AEA261200D89E500CDC27D /* MGWKSubWebController.swift */,
-				D4BBE1852002F64F00CD7717 /* MGWebController.swift */,
-				D4BBE1872003085800CD7717 /* MGWKWebController.swift */,
 			);
 			path = WebController;
 			sourceTree = "<group>";
@@ -614,7 +611,6 @@
 				D40529701DFE7D1B00E09FAD /* Funcs.swift in Sources */,
 				D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */,
 				D4ABD0F81E6562BD00EC0649 /* CommonMkTheme.swift in Sources */,
-				D4BBE1862002F64F00CD7717 /* MGWebController.swift in Sources */,
 				D4932E821CA432710014B769 /* WIntroController.swift in Sources */,
 				D4932E831CA432710014B769 /* WMainController.swift in Sources */,
 				D405296E1DFE7CFA00E09FAD /* RPopupController.swift in Sources */,
@@ -626,7 +622,7 @@
 				D408A9CE1CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift in Sources */,
 				D4932E931CA433E10014B769 /* Controllers.swift in Sources */,
 				D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */,
-				D4BBE1842002F5A000CD7717 /* MGUIWebController.swift in Sources */,
+				D4BBE1842002F5A000CD7717 /* EngineUI.swift in Sources */,
 				D4CC07D32015B26F0033A011 /* OLImage.m in Sources */,
 				D4ABD0FE1E6562DC00EC0649 /* ThemeV2T2.swift in Sources */,
 				D408A9D11CA2B50400E0DCB5 /* HttpInfo.swift in Sources */,
@@ -648,12 +644,12 @@
 				CAAAC7CC1CB6245E00031667 /* ExtenstionUIImage.swift in Sources */,
 				D4D9FCB61FBAA04600B088B1 /* ExtensionUIView.swift in Sources */,
 				D48808531E975D70009D3DB1 /* EventAdbrix.swift in Sources */,
-				D428DDFA2002F47800E799F6 /* WebController.swift in Sources */,
+				D428DDFA2002F47800E799F6 /* WebEngine.swift in Sources */,
 				D45D64751CB28B64004976A2 /* Toast.swift in Sources */,
 				D4ABD0FA1E6562BD00EC0649 /* ThemeFactory.swift in Sources */,
 				D4D9FCB01FBA6EBA00B088B1 /* ThemeV2T3.swift in Sources */,
 				D405296C1DFE7CD600E09FAD /* MarketingPopupController.swift in Sources */,
-				D4BBE1882003085800CD7717 /* MGWKWebController.swift in Sources */,
+				D4BBE1882003085800CD7717 /* EngineWK.swift in Sources */,
 				D4ABD0FC1E6562D100EC0649 /* ThemeV2T1.swift in Sources */,
 				D4C64EEE1CAC06A200BF545E /* WInfo.swift in Sources */,
 				D4932E841CA432710014B769 /* WNotiController.swift in Sources */,

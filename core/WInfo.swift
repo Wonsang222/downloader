@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
-
+import WebKit
 
 class WInfo{
     
@@ -19,7 +19,6 @@ class WInfo{
 //    static let coreVersion:String = "wmgkcore_v3.0.1" //IPhone X 대응
 //    static let coreVersion:String = "wmgkcore_v3.0.3" //Out of Memory 대응
     static let coreVersion:String = "wmgkcore_v3.1.4"  // WKWebView Brwoser 적용
-
     static var deviceId:String {
         get {
             var deviceId = KeychainWrapper.standard.string(forKey: "magicappDeviceId")
@@ -189,7 +188,7 @@ class WInfo{
             if let cookies = HTTPCookieStorage.shared.cookies(for: URL(string:WInfo.appUrl)!){
                 for cookie in cookies {
                     if cookie.isSessionOnly {
-                        HTTPCookieStorage.shared.deleteCookie(cookie)
+                        removeCookie(cookie: cookie)
                     }
                 }
             }
@@ -268,4 +267,69 @@ class WInfo{
         }
     }
     
+   
+    
+    
+    static func setCookie(cookie:HTTPCookie){
+        if #available(iOS 11.0, *) {
+            WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie, completionHandler: nil)
+            HTTPCookieStorage.shared.setCookie(cookie)
+        }else{
+            HTTPCookieStorage.shared.setCookie(cookie)
+        }
+    }
+    static func removeCookie(cookie:HTTPCookie){
+        if #available(iOS 11.0, *) {
+            WKWebsiteDataStore.default().httpCookieStore.delete(cookie, completionHandler: nil)
+            HTTPCookieStorage.shared.deleteCookie(cookie)
+        }else{
+            HTTPCookieStorage.shared.deleteCookie(cookie)
+        }
+    }
+    static func getCookieValue(key:String,block:@escaping (_ value:String?)->Void){
+//        if #available(iOS 11.0, *) {
+//            WKWebsiteDataStore.default().httpCookieStore.getAllCookies({ (cookies) in
+//                var returnVal:String?
+//                for cookie in cookies{
+//                    if cookie.name == key {
+//                        returnVal = cookie.value
+//                    }
+//                }
+//                block(returnVal)
+//            })
+//        }else{
+            if let cookies = HTTPCookieStorage.shared.cookies {
+                var returnVal:String?
+                for cookie in cookies{
+                    if cookie.name == key {
+                        returnVal = cookie.value
+                    }
+                }
+                block(returnVal)
+            }else{
+                block("")
+            }
+//        }
+    }
+    
+    
+    static func saveAllCookie() {
+        if #available(iOS 11.0, *) {
+            WKWebsiteDataStore.default().httpCookieStore.getAllCookies { (cookies) in
+                let cookieData = NSKeyedArchiver.archivedData(withRootObject: cookies)
+                UserDefaults.standard.setValue(cookieData, forKey: "Cookies")
+            }
+        }
+    }
+    
+    
+    static func restoreAllCookie() {
+        if let cookiesData = UserDefaults.standard.object(forKey: "Cookies") as? Data{
+            if let cookies = NSKeyedUnarchiver.unarchiveObject(with: cookiesData) as? [HTTPCookie] {
+                for cookie in cookies {
+                    WInfo.setCookie(cookie: cookie)
+                }
+            }
+        }
+    }
 }

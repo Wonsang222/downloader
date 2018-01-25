@@ -814,6 +814,7 @@ public extension UIView {
     func makeToast(_ message: String, duration: TimeInterval, position: ToastPosition) {
         self.makeToast(message);
     }
+    
 }
 
 extension UILabel{

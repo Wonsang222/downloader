@@ -78,5 +78,24 @@ class BaseController: UIViewController {
     
 }
 
+class BaseWebController: BaseController {
+
+    @IBOutlet weak var webViewContainer: UIView!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var statusOverlay: UIView!
+    private var _engine:WebEngine?
+    
+    var engine:WebEngine {
+        get{
+            return _engine!
+        }
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        _engine = WebEngineFactory.create(self)
+        _engine?.loadEngine()
+    }
+    
+}
 
 

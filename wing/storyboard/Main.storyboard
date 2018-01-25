@@ -746,7 +746,7 @@
         <!--AV Player View Controller-->
         <scene sceneID="Pfl-6y-BkC">
             <objects>
-                <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="Wyv-nY-OIk" sceneMemberID="viewController"/>
+                <avPlayerViewController storyboardIdentifier="avController" videoGravity="AVLayerVideoGravityResizeAspect" id="Wyv-nY-OIk" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gPf-k5-UeC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-427" y="-1806"/>

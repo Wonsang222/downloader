@@ -67,14 +67,30 @@ class WingLogin : HttpBaseResource{
 
     override func parseHeader(_ _response: URLResponse) throws{
         
-//        let httpResponse: NSHTTPURLResponse = _response as! NSHTTPURLResponse
+        let httpResponse: HTTPURLResponse = _response as! HTTPURLResponse
         
-//        if let value = httpResponse.allHeaderFields["Set-Cookie"]{
-//            print("Set Cookie  \(value)")
-//        }
+        if let value = httpResponse.allHeaderFields["Set-Cookie"]{
+            print("Set Cookie  \(value)")
+        }
         
+//        let access_cookie_dic : [HTTPCookiePropertyKey:Any] = [
+//            HTTPCookiePropertyKey.domain : WInfo.appUrl.globalUrl() as AnyObject,
+//            HTTPCookiePropertyKey.path : "/" as AnyObject,
+//            HTTPCookiePropertyKey.name : "PHPSESSID",
+//            HTTPCookiePropertyKey.value : "PHPSESSID",
+//            HTTPCookiePropertyKey.expires : Date().addingTimeInterval(60*60*24*365*300),
+//            HTTPCookiePropertyKey.is
+//        ];
         
-    
+        if let cookies = HTTPCookieStorage.shared.cookies {
+            for cookie in cookies {
+                if cookie.name == "PHPSESSID" {
+                    DispatchQueue.main.sync {
+                        WInfo.setCookie(cookie: cookie)
+                    }
+                }
+            }
+        }
         
         
     }

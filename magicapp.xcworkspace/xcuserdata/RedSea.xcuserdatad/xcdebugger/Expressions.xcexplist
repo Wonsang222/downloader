@@ -3,14 +3,6 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "WAppDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:):WAppDelegate.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.apnsCallback">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "WNotiController.viewDidLoad():WNotiController.swift">
          <PersistentStrings>
             <PersistentString
@@ -24,6 +16,14 @@
             </PersistentString>
             <PersistentString
                value = "topView.frame.size.height">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in WAppDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:):WAppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.apnsCallback">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -75,14 +75,6 @@
             </PersistentString>
             <PersistentString
                value = "AdBrix.currencyName(currencyValue(product[&quot;currency&quot;] as! String))">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "WAppDelegate.regApns(callback:):WAppDelegate.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "granted">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

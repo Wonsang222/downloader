@@ -13,27 +13,22 @@ import AddressBookUI
 import ZBarSDK
 import AVKit
 import AVFoundation
+import WebKit
 
-class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,ZBarReaderDelegate {
-    
+class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReaderDelegate {
+    static let gPool:WKProcessPool = WKProcessPool()
     let CONTACT_CALLBACK = 40
     let SCANNER_CALLBACK = 50
     var controllerCallback:[Int:String] = [:]
-    @IBOutlet weak var webViewContainer: UIView!
-    @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var statusOverlay: UIView!
+    var controller:BaseWebController
+    var webDelegate:WebControlDelegate?
+    
+    init(_ controller:BaseWebController) {
+        self.controller = controller
+        super.init()
+    }
     
     
-    var webViewCanGoForward:Bool{
-        get{
-            return false
-        }
-    }
-    var webViewCanGoBack:Bool{
-        get{
-            return false
-        }
-    }
     var currentURL:URL? {
         get {
             return nil
@@ -93,7 +88,7 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
         HTTPCookieStorage.shared.setCookie(cookie)
     }
     func handleWing(_ url:String? )->Bool {
-        if url == nil && url!.hasSuffix("exec_file=member/logout.exe.php") {
+        if url != nil && url!.hasSuffix("exec_file=member/logout.exe.php") {
             let userInfo = WInfo.userInfo
             if let member_id = userInfo["userId"] as? String{
                 let resource = ApiFormApp().ap("mode","set_login_stat").ap("pack_name",AppProp.appId).ap("login_stat","N").ap("member_id",member_id)
@@ -111,7 +106,7 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
             
             playerController.player =  AVPlayer(url: URL(string: url!)!)
 
-            self.present(playerController, animated: true, completion: {
+            self.controller.present(playerController, animated: true, completion: {
                     playerController.player?.play();
             })
             return false
@@ -181,7 +176,7 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
                     JSONSerialization.jsonObject(
                         with: json_decode!.data(using: String.Encoding.utf8)!
                         ,options: JSONSerialization.ReadingOptions()) as! [String:AnyObject]
-                hybridEvent(value)
+                self.webDelegate?.hybridEvent(value)
             }catch{
             }
             return false
@@ -205,10 +200,6 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
         }
         return true
     }
-    func hybridEvent(_ value: [String:AnyObject]){
-        
-    }
-    
     func apiEvent(_ value: [String:String]){
         if value["func"] == "deviceId" {
             let callback = value["callback"]!.removingPercentEncoding!
@@ -237,11 +228,11 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
             controllerCallback[CONTACT_CALLBACK] = callback
             let picker = ABPeoplePickerNavigationController()
             picker.peoplePickerDelegate = self
-            self.present(picker, animated: true, completion: {
+            self.controller.present(picker, animated: true, completion: {
             });
         }else if value["func"] == "shareUrl" {
             if value["params"] == nil {
-                self.view.makeToast("파라미터가 없습니다.")
+                self.controller.view.makeToast("파라미터가 없습니다.")
                 return
             }
             if let json = value["params"]?.jsonObject() {
@@ -250,19 +241,19 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
                 }
                 let objectToShare = [ URL(string: json["url"] as! String)! ]
                 let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
-                present(activity, animated: true, completion: nil)
+                self.controller.present(activity, animated: true, completion: nil)
             }
         }else if value["func"] == "scanner" {
             let callback = value["callback"]!.removingPercentEncoding!
             controllerCallback[SCANNER_CALLBACK] = callback
             let scanner = WMScanner()
             scanner.readerDelegate = self
-            self.present(scanner, animated: true, completion: {
+            self.controller.present(scanner, animated: true, completion: {
             });
         }else if value["func"] == "goSetting" {
-            self.performSegue(withIdentifier: "setting" ,  sender : self)
+            self.controller.performSegue(withIdentifier: "setting" ,  sender : self)
         }else if value["func"] == "goNotice" {
-            self.performSegue(withIdentifier: "noti" ,  sender : nil)
+            self.controller.performSegue(withIdentifier: "noti" ,  sender : nil)
         }else if value["func"] == "browserUrl" {
             if let url = URL(string:value["params"]!.removingPercentEncoding! ) {
                 UIApplication.shared.openURL(url)
@@ -297,13 +288,13 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
     func popup(_ message:String){
         let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.default, handler:nil))
-        self.present(alert,animated:true, completion: nil)
+        self.controller.present(alert,animated:true, completion: nil)
     }
     
     func popup(_ message:String,handler:@escaping ((UIAlertAction) -> Void)){
         let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.default, handler:handler))
-        self.present(alert,animated:true, completion: nil)
+        self.controller.present(alert,animated:true, completion: nil)
     }
     
     func peoplePickerNavigationController(_ peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord) {
@@ -330,7 +321,7 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
                 if let symbolFound = symbol as? ZBarSymbol {
                     let returnObj = [ "text" : symbolFound.data , "format" : symbolFound.typeName ] as [String : Any]
                     self.callbackZBar(returnObj)
-                    self.dismiss(animated: true, completion: nil)
+                    self.controller.dismiss(animated: true, completion: nil)
                     break
                     
                 }
@@ -340,7 +331,7 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
         }
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: true, completion: nil)
+        self.controller.dismiss(animated: true, completion: nil)
     }
     
     func runScript(_ script:String){}
@@ -353,11 +344,48 @@ class WebController : BaseController,ABPeoplePickerNavigationControllerDelegate,
         self.runScript("javascript:\(self.controllerCallback[self.CONTACT_CALLBACK]!)('\(toJSONString(returnObj))')")
     }
     
-    func webLoadedFinish(_ urlString:String?){
+    func sharedUrl() {
+        if let currentUrl = self.currentURL {
+            let objectToShare = [currentUrl]
+            let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
+            self.controller.present(activity, animated: true, completion: nil)
+        }
     }
-    func webLoadedCommit(_ urlString:String?) {
+    
+   
+    var canGoForward:Bool{
+        get{ return false }
     }
-    func loadRequest(_ request:URLRequest){
+    var canGoBack:Bool{
+        get{ return false }
     }
+    var webView:UIView{
+        get{ return UIView() }
+    }
+    var scrollView:UIScrollView{
+        get{ return UIScrollView() }
+    }
+    func loadEngine(){}
+    func loadRequest(_ request:URLRequest){}
+    func goBack(){}
+    func goForward(){}
+    func reload(){}
+    func clearHistory(){}
+}
 
+
+protocol WebControlDelegate {
+    func webLoadedFinish(_ urlString:String?)
+    func webLoadedCommit(_ urlString:String?)
+    func hybridEvent(_ value: [String:AnyObject])
+}
+
+class WebEngineFactory{
+    static func create(_ controller:BaseWebController) -> WebEngine {
+        if #available(iOS 11.0, *){
+            return EngineWK(controller)
+        }else{
+            return EngineUI(controller)
+        }
+    }
 }

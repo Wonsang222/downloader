@@ -70,18 +70,18 @@ class ThemeV2T2: CommonMkTheme {
         borderLayer.frame = CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: Tools.toOriginPixel(1.0))
         wisaMenu.layer.addSublayer(borderLayer)
         view?.addSubview(wisaMenu)
-        mainController!.webView.scrollView.contentInset.bottom = wisaMenu.frame.height
+        mainController!.engine.scrollView.contentInset.bottom = wisaMenu.frame.height
         if Tools.safeArea() != 0 {
             let safeView = UIView(frame: CGRect(x: 0, y: view!.frame.height - Tools.safeArea(), width: UIScreen.main.bounds.width, height: Tools.safeArea()))
             safeView.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)
             view?.addSubview(safeView)
         }
         if let webBackground = uiData["webBackground"] as? String {
-            mainController!.webView.backgroundColor = UIColor(hexString:webBackground)
-            mainController!.webView.isOpaque = false
+            mainController!.engine.webView.backgroundColor = UIColor(hexString:webBackground)
+            mainController!.engine.webView.isOpaque = false
         }else {
-            mainController!.webView.backgroundColor = UIColor.white
-            mainController!.webView.isOpaque = false
+            mainController!.engine.webView.backgroundColor = UIColor.white
+            mainController!.engine.webView.isOpaque = false
         }
     
     }

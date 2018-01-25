@@ -10,50 +10,29 @@ import UIKit
 import WebKit
 
 
-class MGUIWebController: WebController,UIWebViewDelegate {
-    var webView:UIWebView!
+class EngineUI: WebEngine,UIWebViewDelegate {
+    private var _webView:UIWebView!
     
-    override var webViewCanGoBack: Bool {
-        get{
-            return self.webView.canGoBack
-        }
-    }
-    
-    override var webViewCanGoForward: Bool{
-        get {
-            return self.webView.canGoForward
-        }
-    }
-    override var currentURL: URL?{
-        get{
-            return self.webView.request?.url
-        }
-    }
     override func loadRequest(_ request: URLRequest) {
-        webView.loadRequest(request)
+        _webView.loadRequest(request)
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        webView = UIWebView(frame: webViewContainer.bounds)
-        webView.allowsInlineMediaPlayback = true
+    
+    override func loadEngine() {
+        super.loadEngine()
+        _webView = UIWebView(frame: self.controller.webViewContainer.bounds)
+        _webView.allowsInlineMediaPlayback = true
         
         if #available(iOS 9, *) {
-            webView.allowsLinkPreview = false
-            webView.allowsPictureInPictureMediaPlayback = true
+            _webView.allowsLinkPreview = false
+            _webView.allowsPictureInPictureMediaPlayback = true
         }
-        webView.keyboardDisplayRequiresUserAction = false
-        webView.delegate = self
-        webView.autoresizingMask = [UIViewAutoresizing.flexibleHeight,UIViewAutoresizing.flexibleWidth]
-        webView.scalesPageToFit = true
-        webViewContainer.addSubview(webView)
+        _webView.keyboardDisplayRequiresUserAction = false
+        _webView.delegate = self
+        _webView.autoresizingMask = [UIViewAutoresizing.flexibleHeight,UIViewAutoresizing.flexibleWidth]
+        _webView.scalesPageToFit = true
+        self.controller.webViewContainer.addSubview(webView)
     }
-    
-    
-    func reloadPage(){
-        self.webView.reload()
-        
-    }
+
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if !self.handleWing(request.url?.absoluteString) {
             return false;
@@ -77,7 +56,7 @@ class MGUIWebController: WebController,UIWebViewDelegate {
         if webView.request == nil {
             return
         }
-        if !(self is NotiController) {
+        if !(self.controller is NotiController) {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
         }
         self.createAccessCookie()
@@ -88,8 +67,8 @@ class MGUIWebController: WebController,UIWebViewDelegate {
         if webView.request!.url!.absoluteString.hasSuffix("smpay.kcp.co.kr/card.do") {
             self.runScript("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
         }
-        self.webLoadedCommit(webView.request?.url?.absoluteString)
-        self.webLoadedFinish(webView.request?.url?.absoluteString)
+        self.webDelegate?.webLoadedCommit(webView.request?.url?.absoluteString)
+        self.webDelegate?.webLoadedFinish(webView.request?.url?.absoluteString)
     }
     
     
@@ -234,8 +213,34 @@ class MGUIWebController: WebController,UIWebViewDelegate {
     }
     
     override func runScript(_ script: String) {
-        self.webView.stringByEvaluatingJavaScript(from: script)
+        _webView.stringByEvaluatingJavaScript(from: script)
     }
     
+    override var canGoBack: Bool {
+        get{ return _webView.canGoBack }
+    }
+    override var canGoForward: Bool{
+        get { return _webView.canGoForward }
+    }
+    override var currentURL: URL?{
+        get{ return _webView.request?.url }
+    }
+    override var webView: UIView{
+        get{ return _webView }
+    }
+    override var scrollView: UIScrollView{
+        get{ return _webView.scrollView }
+    }
+    override func goBack() {
+        _webView.goBack()
+    }
+    override func goForward() {
+        _webView.goForward()
+    }
+    override func reload(){
+        _webView.reload()
+    }
+    override func clearHistory() {
+    }
     
 }

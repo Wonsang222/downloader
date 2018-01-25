@@ -9,18 +9,16 @@
 import UIKit
 import WebKit
 
-class WMainController: MGWebController {
-    
+class WMainController: BaseWebController,WebControlDelegate {
     
     weak var introContrller:WIntroController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.engine.webDelegate = self
         DispatchQueue.main.async(execute: {
             self.performSegue(withIdentifier: "intro", sender: self)
         })
-        
-        
     }
     
 
@@ -72,20 +70,31 @@ class WMainController: MGWebController {
 
     func reqLogin(_ movePage:String) {
         let userInfo = WInfo.userInfo
-        RSHttp(controller:self,showingPopup:false).req(
-            [WingLogin().ap("member_id",userInfo["userId"] as! String)
-                .ap("pwd",userInfo["password"] as! String)
-                .ap("exec_file","member/login.exe.php")],
-            successCb: { (resource) -> Void in
-                self.loadPage(movePage)
-                self.reqSetLoginStat("Y")
-            },
-            errorCb : { (errorCode,resource) -> Void in
-                WInfo.userInfo = [String:AnyObject]()
-                self.loadPage(movePage)
-                self.reqSetLoginStat("N")
+        var id_save = "N"
+        var pw_save = "N"
+        WInfo.getCookieValue(key: "wisamall_id") { (value) in
+            id_save = value == nil ? "N" : "Y"
+            WInfo.getCookieValue(key: "wisamall_pw") { (value) in
+                pw_save = value == nil ? "N" : "Y"
+                RSHttp(controller:self,showingPopup:false).req(
+                    [WingLogin().ap("member_id",userInfo["userId"] as! String)
+                        .ap("pwd",userInfo["password"] as! String)
+                        .ap("id_save",id_save)
+                        .ap("pw_save",pw_save)
+                        .ap("exec_file","member/login.exe.php")],
+                    successCb: { (resource) -> Void in
+                        self.loadPage(movePage)
+                        self.reqSetLoginStat("Y")
+                },
+                    errorCb : { (errorCode,resource) -> Void in
+                        WInfo.userInfo = [String:AnyObject]()
+                        self.loadPage(movePage)
+                        self.reqSetLoginStat("N")
+                }
+                )
             }
-        )
+        }
+   
     }
     
     
@@ -132,11 +141,7 @@ class WMainController: MGWebController {
         }else{
             self.statusOverlay?.isHidden = true
             DispatchQueue.main.async{
-                self.webView.scrollView.contentInset.top = 0
-                //                if self.statusOverlay != nil {
-                //                    self.statusOverlay!.frame = CGRect(x:0 ,y:0,width:self.webViewContainer.frame.width ,height:
-                //                        UIApplication.shared.statusBarFrame.height)
-                //                }
+                self.engine.scrollView.contentInset.top = 0
             }
         }
         var url_obj = URL (string: url);
@@ -150,7 +155,8 @@ class WMainController: MGWebController {
         let requestObj = NSMutableURLRequest(url: url_obj!);
         requestObj.httpShouldHandleCookies = true
         view.isHidden = false
-        self.loadRequest(requestObj as URLRequest)
+        
+        self.engine.loadRequest(requestObj as URLRequest)
         
         if let appDelegate = UIApplication.shared.delegate as? WAppDelegate {
             if appDelegate.remotePushSeq != nil {
@@ -166,7 +172,7 @@ class WMainController: MGWebController {
                     appDelegate.commmandUrl = nil
                     let requestObj = NSMutableURLRequest(url: URL(string: appDelegate.commmandUrl!)!);
                     requestObj.httpShouldHandleCookies = true
-                    self.loadRequest(requestObj as URLRequest)
+                    self.engine.loadRequest(requestObj as URLRequest)
                 }
             }
         }
@@ -184,18 +190,7 @@ class WMainController: MGWebController {
         }
         let requestObj = NSMutableURLRequest(url: url_obj!);
 //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
-        self.loadRequest(requestObj as URLRequest)
-    }
-    
-    
-
-    override func hybridEvent(_ value: [String : AnyObject]) {
-        if value["func"] as! String == "saveMinfo"{
-            WInfo.userInfo = [ "userId" : value["param1"] as! String as AnyObject , "password" : value["param2"] as! String as AnyObject ]
-            self.reqSetLoginStat("Y")
-            self.reqMatching()
-            movePage(value["param3"] as! String)
-        }
+        engine.loadRequest(requestObj as URLRequest)
     }
     
 
@@ -221,35 +216,30 @@ class WMainController: MGWebController {
 
 
     @objc func onPrevClick(_ sender:UIButton!){
-
-        if webView.canGoBack {
-            webView.goBack()
+        if self.engine.canGoBack {
+            self.engine.goBack()
         }else{
            self.view.makeToast("이동할 페이지가 없습니다.", duration: 3.0, position: .bottom) 
         }
     }
     @objc func onNextClick(_ sender:UIButton!){
-        if webView.canGoForward {
-            webView.goForward()            
+        if self.engine.canGoForward {
+            self.engine.goForward()
         }else{
            self.view.makeToast("이동할 페이지가 없습니다.", duration: 3.0, position: .bottom) 
        }
     }
     @objc func onReloadClick(_ sender:UIButton!){
-        webView.reload()
+        self.engine.reload()
     }
     @objc func onHomeClick(_ sender:UIButton!){
         let url = URL (string: WInfo.appUrl);
         let requestObj = NSMutableURLRequest(url: url!);
 //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
-        self.loadRequest(requestObj as URLRequest)
+        self.engine.loadRequest(requestObj as URLRequest)
     }
     @objc func onShareClick(_ sender:UIButton!){
-        if let currentUrl = self.currentURL {
-            let objectToShare = [currentUrl]
-            let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
-            present(activity, animated: true, completion: nil)
-        }
+        self.engine.sharedUrl()
     }
     @objc func onPushClick(_ sender:UIButton!){
         self.performSegue(withIdentifier: "noti" ,  sender : nil)
@@ -271,7 +261,17 @@ class WMainController: MGWebController {
     }
     
     
-    override func webLoadedCommit(_ urlString: String?) {
+    
+    /* WebControl Delegate */
+    func hybridEvent(_ value: [String : AnyObject]) {
+        if value["func"] as! String == "saveMinfo"{
+            WInfo.userInfo = [ "userId" : value["param1"] as! String as AnyObject , "password" : value["param2"] as! String as AnyObject ]
+            self.reqSetLoginStat("Y")
+            self.reqMatching()
+            movePage(value["param3"] as! String)
+        }
+    }
+    func webLoadedCommit(_ urlString: String?) {
         if self.presentedViewController != nil {
             self.introContrller?.webViewLoadedOk = true
             self.introContrller?.closeIntroProcess()
@@ -286,6 +286,11 @@ class WMainController: MGWebController {
         
 
     }
+    
+    func webLoadedFinish(_ urlString:String?){
+        
+    }
+
 
 }
 

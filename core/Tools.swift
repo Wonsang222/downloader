@@ -69,6 +69,14 @@ class Tools{
             return 0
         }
     }
+    static func border1px(parent: UIView, color:String) -> UIView{
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: parent.frame.height-Tools.toOriginPixel(1.0), width: parent.frame.width, height: Tools.toOriginPixel(1.0))
+        view.backgroundColor = UIColor(hexString: color)
+        view.autoresizingMask = [.flexibleWidth]
+        return view
+    }
+
 }
 
 class DownLoader{

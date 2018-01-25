@@ -17,11 +17,12 @@ class ThemeV2T3: CommonMkTheme {
             return
         }
         if let webBackground = uiData["webBackground"] as? String {
-            mainController!.webView.backgroundColor = UIColor(hexString:webBackground)
-            mainController!.webView.isOpaque = false
+            
+            mainController!.engine.webView.backgroundColor = UIColor(hexString:webBackground)
+            mainController!.engine.webView.isOpaque = false
         }else {
-            mainController!.webView.backgroundColor = UIColor.white
-            mainController!.webView.isOpaque = false
+            mainController!.engine.webView.backgroundColor = UIColor.white
+            mainController!.engine.webView.isOpaque = false
         }
     }
     

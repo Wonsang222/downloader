@@ -88,7 +88,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         if NSClassFromString("ASIdentifierManager") != nil {
             let ifa = ASIdentifierManager.shared().advertisingIdentifier
             let isAppleAdvertisingTrackingEnabled = ASIdentifierManager.shared().isAdvertisingTrackingEnabled
-            IgaworksCore.setAppleAdvertisingIdentifier(ifa!.uuidString, isAppleAdvertisingTrackingEnabled: isAppleAdvertisingTrackingEnabled)
+            IgaworksCore.setAppleAdvertisingIdentifier(ifa.uuidString, isAppleAdvertisingTrackingEnabled: isAppleAdvertisingTrackingEnabled)
         }
         IgaworksCore.igaworksCore(withAppKey: AppProp.adbrixAppKey, andHashKey: AppProp.adbrixHashKey)
             //            IgaworksCore.setLogLevel(IgaworksCoreLogTrace)

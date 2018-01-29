@@ -109,9 +109,9 @@ extension UIButton{
         }
         DispatchQueue.global(qos: .background).async {
             if let datas = try? Data(contentsOf: URL(string: icon_url)!) {
-                let server_img = UIImage(data: datas)?.makeFillImageV2(self)
-                ThemeCache.share().saveCache(icon_url, image: server_img)
-                DispatchQueue.main.async(execute: { 
+                DispatchQueue.main.async(execute: {
+                    let server_img = UIImage(data: datas)?.makeFillImageV2(self)
+                    ThemeCache.share().saveCache(icon_url, image: server_img)
                     self.setBackgroundImage(server_img, for: UIControlState())
                     self.setBackgroundImage(server_img, for: UIControlState.disabled)
 

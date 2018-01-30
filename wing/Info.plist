@@ -2,11 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>ko_KR</string>
 	<key>CFBundleExecutable</key>
@@ -76,16 +71,17 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>[필수 접근권한]게시물 파일첨부 용도로 사용합니다</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>해당기능 사용을 위해 현재위치를 가져옵니다.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>해당기능 사용을 위해 현재위치를 가져옵니다.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
 	<string>[필수 접근권한]게시물 파일첨부 용도로 사용합니다</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>해당기능 사용을 위해 Photo 권한을 요청합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>[필수 접근권한]게시물 파일첨부 용도로 사용합니다</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

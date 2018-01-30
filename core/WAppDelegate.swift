@@ -40,9 +40,13 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge,.sound,.alert], completionHandler: { (granted, error) in
                 if granted {
                     self.apnsCallback = callback
-                    DispatchQueue.main.async { UIApplication.shared.registerForRemoteNotifications() }
+                    DispatchQueue.main.async {
+                        UIApplication.shared.registerForRemoteNotifications()
+                    }
                 }else{
-                    callback(false);
+                    DispatchQueue.main.async {
+                        callback(false);
+                    }
                 }
             })
 

@@ -182,7 +182,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                     let subtitle = objectInfo["subtitle"] as? String
                     let title = objectInfo["title"] as? String
                     let img_url = objectInfo["img_url"] as? String
-                    let type = objectInfo["type"] as? String == "notice" ? "event" : "all";
+                    let type = objectInfo["type"] as? String == "notice" ? "event" : "all"
                     var msg = objectInfo["msg"] as? String
                     msg = msg?.replace("<br />", withString: "\r\n")
                     msg = msg?.replace("<br/>", withString: "\r\n")

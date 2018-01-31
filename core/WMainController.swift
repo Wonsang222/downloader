@@ -163,8 +163,8 @@ class WMainController: BaseWebController,WebControlDelegate {
                 RSHttp().req( ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(appDelegate.remotePushSeq!)),successCb : { (resource) -> Void in
                     let objectInfo = resource.body()["data"] as! [String:AnyObject]
                     let link = objectInfo["link"] as? String
-                    let type = objectInfo["type"] as? String
-                    appDelegate.goNotificationLink(link!, type!)
+                    let type = objectInfo["type"] as? String == "notice" ? "event" : "all"
+                    appDelegate.goNotificationLink(link!, type)
                 })
                 appDelegate.remotePushSeq = nil
             }

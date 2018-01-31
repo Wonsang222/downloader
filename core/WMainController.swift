@@ -253,10 +253,11 @@ class WMainController: BaseWebController,WebControlDelegate {
     override func prepare(for segue:UIStoryboardSegue, sender: Any?){
         if segue.identifier == "noti" {
             let notiController = segue.destination as! WNotiController
-            if let sender = sender {
-                let data = sender as? Array<String>;
-                notiController.link = data![0]
-                notiController.type = data![1]
+            if let data = sender as? Array<String> {
+                if data.count == 2 {
+                    notiController.link = data[0]
+                    notiController.type = data[1]
+                }
             } else {
                 notiController.link = sender as? String
             }

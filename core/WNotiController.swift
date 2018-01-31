@@ -24,8 +24,9 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         self.engine.webDelegate = self
         ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
         self.engine.webView.alpha = 0
-        type = type != nil ? type : "all"
-        let url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId + "&view=" + type!) ;
+        type = type != nil ? "all" : "event"
+//        let url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId + "&view=" + "event")
+        let url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId + "&view=" + type!)
 //        if link != nil {
 //            url = URL (string: link!);
 //        }

@@ -96,7 +96,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         self.webDelegate?.webLoadedCommit(webView.url?.absoluteString)
         self.controller.progressView.alpha = 1.0
         self.controller.progressView.setProgress(0.0, animated: true)
-        UIView.animate(withDuration: 1, delay: 1.3, options: .curveEaseIn, animations: { }, completion: { (bool) in
+        UIView.animate(withDuration: 1, delay: 0.5, options: .curveEaseIn, animations: { }, completion: { (bool) in
             self.controller.progressView.setProgress(Float(self._webView.estimatedProgress)+0.3, animated: true)
         })
     }
@@ -105,7 +105,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         self.controller.progressView.setProgress(1.0, animated: true)
-        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
+        UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
             self.controller.progressView.setProgress(0.0, animated: false)
         })
         
@@ -138,7 +138,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
 
-        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
+        UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
             self.controller.progressView.setProgress(0.0, animated: false)
         })
     }

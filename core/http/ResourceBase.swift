@@ -27,6 +27,7 @@ class ApiFormApp : HttpBaseResource{
     
 	
 	override func parse(_ _data: Data) throws{
+        //print( NSString(data: _data, encoding: NSUTF8StringEncoding))
         self.responseData = try JSONSerialization.jsonObject(with: _data, options: JSONSerialization.ReadingOptions()) as! [String:AnyObject]
         let isSuccess = self.body()["success"] == nil ? true : self.body()["success"] as! Bool
         if !isSuccess{
@@ -35,26 +36,6 @@ class ApiFormApp : HttpBaseResource{
         }
 	}
 }
-
-class ResourceVER: HttpBaseResource {
-
-    override var reqUrl: String {
-        get {
-            return "https://itunes.apple.com/lookup"
-        }
-    }
-    
-    override func parse(_ _data: Data) throws {
-        self.responseData = try JSONSerialization.jsonObject(with: _data, options: JSONSerialization.ReadingOptions()) as! [String:AnyObject]
-        let isSuccess = self.body()["resultCount"] as! Int > 0 ? true : false
-        if !isSuccess {
-            // 데이터 변환시 오류발생 코드 삽입
-            self.errorCode = ResourceCode.e9998
-            self.errorMsg = "데이터 파싱 에러"
-        }
-    }
-}
-
 
 class WingLogin : HttpBaseResource{
 
@@ -71,6 +52,7 @@ class WingLogin : HttpBaseResource{
 
 
     override func parse(_ _data: Data) throws{
+//        print(String(data: _data, encoding: NSUTF8StringEncoding) )
         if let value = String(data: _data, encoding: String.Encoding.utf8){
             self.responseData = [String:AnyObject]()
             if value.range(of: "login.php?err") == nil{

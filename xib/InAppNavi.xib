@@ -34,7 +34,7 @@
                         <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                     </accessibility>
                     <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                    <state key="normal" title="Button" image="ic_a_prev.png"/>
+                    <state key="normal" title="Button" image="ic_a_inapp_back.png"/>
                     <state key="highlighted" image="ic_a_prev_disable.png"/>
                     <connections>
                         <action selector="goBack:" destination="-1" eventType="touchUpInside" id="eXz-Lu-xBq"/>
@@ -47,7 +47,7 @@
                         <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                     </accessibility>
                     <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                    <state key="normal" title="Button" image="ic_a_next.png"/>
+                    <state key="normal" title="Button" image="ic_a_inapp_forward.png"/>
                     <state key="highlighted" image="ic_a_next_disable.png"/>
                     <connections>
                         <action selector="goNext:" destination="-1" eventType="touchUpInside" id="d0N-WU-Ek6"/>
@@ -60,7 +60,7 @@
                         <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                     </accessibility>
                     <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                    <state key="normal" title="Button" image="ic_a_share.png"/>
+                    <state key="normal" title="Button" image="ic_a_inapp_share.png"/>
                     <state key="highlighted" image="ic_a_share_disable.png"/>
                     <connections>
                         <action selector="shareContent:" destination="-1" eventType="touchUpInside" id="OFV-Wp-gHT"/>
@@ -73,11 +73,11 @@
         </view>
     </objects>
     <resources>
-        <image name="ic_a_next.png" width="34" height="44"/>
+        <image name="ic_a_inapp_back.png" width="65" height="46"/>
+        <image name="ic_a_inapp_forward.png" width="64" height="46"/>
+        <image name="ic_a_inapp_share.png" width="64" height="74"/>
         <image name="ic_a_next_disable.png" width="34" height="44"/>
-        <image name="ic_a_prev.png" width="35" height="44"/>
         <image name="ic_a_prev_disable.png" width="35" height="44"/>
-        <image name="ic_a_share.png" width="43" height="50"/>
         <image name="ic_a_share_disable.png" width="43" height="50"/>
     </resources>
 </document>

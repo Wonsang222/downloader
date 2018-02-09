@@ -16,6 +16,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
     var loopCount:UInt = 1
     var isLoaded = false
     var oncePlayOk = false
+    var updateUse: String?
     var webViewLoadedOk = false
     var introDrawable:UIImage?
     var viewIntroInfo = [String:Any]()
@@ -136,7 +137,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
 		   		let solutionType = resource.body()["solution_type"] as! String
                 let account_id = resource.body()["account_id"] as! String
                 let urlParam = resource.body()["url_param"] as! String
-
+            
                 if let marketingUrl = resource.body()["marketing_url"] as? String{
                     WInfo.getMarketingPopupUrl = marketingUrl
                 }
@@ -232,40 +233,73 @@ class WIntroController: BaseController,OLImageViewDelegate {
 		   		if Int(serverVersion)! > self.saveThemeVersion{
 					WInfo.themeInfo = resource.body()
 		   		}
+            
 		   		self.reqUpdate()
 		   }
 		)
     }
-    
 
 	fileprivate func reqUpdate(){
-		RSHttp(controller:self).req(
-		   ApiFormApp().ap("mode","version_chk").ap("pack_name",AppProp.appId),
-		   successCb: { (resource) -> Void in
-		   		let serverVersion = (resource.body()["version"] as! String).replace(".", withString: "")
-                let appUrl = resource.body()["app_url"] as! String
+        RSHttp(controller:self).req(
+            ResourceVER().ap("mode", "version_chk").ap("bundleId", AppProp.appId).ap("country", "KR"),
+            
+            successCb: { (resource) -> Void in
+                let appInfo = resource.body()["results"] as! [[String: AnyObject]]
+                let serverVersion = (appInfo[0]["version"] as! String).replace(".", withString: "")
+                let appUrl = appInfo[0]["trackViewUrl"] as! String
                 let curVersion = AppProp.appVersion.replace(".", withString: "")
-                let update_use = resource.body()["update_use"] as! String
-                if update_use == "N" {
+                if self.updateUse == "N" {
                     self.dismissProcess()
                     return
                 }
-		   		if Int(serverVersion)! > Int(curVersion)! && WInfo.ignoreUpdateVersion != serverVersion {
-					let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.alert)
-					alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.default, handler:{ action in
+                if Int(serverVersion)! > Int(curVersion)! && WInfo.ignoreUpdateVersion != serverVersion{
+                    let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.default, handler:{ action in
                         UIApplication.shared.openURL(URL(string:appUrl)!)
                         exit(0)
-					}))
-					alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.default, handler:{ action in
+                    }))
+                    alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.default, handler:{ action in
                         WInfo.ignoreUpdateVersion = serverVersion
-						self.dismissProcess()
-					}))
-					self.present(alert,animated:true, completion: nil)
-	   			}else{
-	   				self.dismissProcess()
-	   			}
-		   }
-		)
+                        self.dismissProcess()
+                    }))
+                    self.present(alert,animated:true, completion: nil)
+                }else{
+                    self.dismissProcess()
+                }
+                
+                
+        })
+//        errorCb: { (code, resource) -> (Void) in
+//            print("error : \(code) \(resource)")
+//        }
+
+//        RSHttp(controller:self).req(
+//           ApiFormApp().ap("mode","version_chk").ap("pack_name",AppProp.appId),
+//           successCb: { (resource) -> Void in
+//                   let serverVersion = (resource.body()["version"] as! String).replace(".", withString: "")
+//                let appUrl = resource.body()["app_url"] as! String
+//                let curVersion = AppProp.appVersion.replace(".", withString: "")
+//                let update_use = resource.body()["update_use"] as! String
+//                if update_use == "N" {
+//                    self.dismissProcess()
+//                    return
+//                }
+//                   if Int(serverVersion)! > Int(curVersion)! && WInfo.ignoreUpdateVersion != serverVersion {
+//                    let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.alert)
+//                    alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.default, handler:{ action in
+//                        UIApplication.shared.openURL(URL(string:appUrl)!)
+//                        exit(0)
+//                    }))
+//                    alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.default, handler:{ action in
+//                        WInfo.ignoreUpdateVersion = serverVersion
+//                        self.dismissProcess()
+//                    }))
+//                    self.present(alert,animated:true, completion: nil)
+//                   }else{
+//                       self.dismissProcess()
+//                   }
+//           }
+//        )
     }
 
     fileprivate func dismissProcess() {

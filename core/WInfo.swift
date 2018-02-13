@@ -332,4 +332,20 @@ class WInfo{
             }
         }
     }
+    
+    static var cacheVersion: String {
+        get {
+            if let returnValue = UserDefaults.standard.string(forKey: "kCacheVersion") {
+                return returnValue
+            } else {
+                return "1.0.0"
+            }
+    
+        }
+    
+        set {
+            UserDefaults.standard.set(newValue, forKey: "kCacheVersion")
+            UserDefaults.standard.synchronize()
+        }
+    }
 }

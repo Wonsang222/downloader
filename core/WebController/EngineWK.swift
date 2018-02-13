@@ -183,7 +183,9 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         let controller = MGWKSubWebController()
         let re_webView = controller.loadedView(url: (navigationAction.request), config: configuration)
         
-        self.controller.present(controller, animated: true, completion: nil)
+        self.controller.present(controller, animated: true, completion: {
+            re_webView.load(navigationAction.request)
+        })
         
         return re_webView
     }

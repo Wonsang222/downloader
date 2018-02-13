@@ -242,11 +242,19 @@ class WIntroController: BaseController,OLImageViewDelegate {
 	fileprivate func reqUpdate(){
         RSHttp(controller:self).req(
             ResourceVER().ap("mode", "version_chk").ap("bundleId", AppProp.appId).ap("country", "KR"),
-            
             successCb: { (resource) -> Void in
-                let appInfo = resource.body()["results"] as! [[String: AnyObject]]
-                let serverVersion = (appInfo[0]["version"] as! String).replace(".", withString: "")
-                let appUrl = appInfo[0]["trackViewUrl"] as! String
+                var serverVersion: String!
+                var appUrl: String!
+                if let appInfo = resource.body()["results"] as? [[String: AnyObject]] {
+                    if appInfo.count > 0 {
+                        serverVersion = (appInfo[0]["version"] as! String).replace(".", withString: "")
+                        appUrl = appInfo[0]["trackViewUrl"] as! String
+                    } else {
+                        // 배포전의 테스트플라잇 예외, 로컬버전 삽입
+                        serverVersion = AppProp.appVersion.replace(".", withString: "")
+                        appUrl = ""
+                    }
+                }
                 let curVersion = AppProp.appVersion.replace(".", withString: "")
                 if self.updateUse == "N" {
                     self.dismissProcess()

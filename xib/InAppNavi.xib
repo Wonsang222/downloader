@@ -27,41 +27,38 @@
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.72549019607843135" green="0.72549019607843135" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" adjustsImageSizeForAccessibilityContentSizeCategory="YES" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DSe-rV-TQa">
-                    <rect key="frame" x="20" y="0.0" width="40" height="40"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DSe-rV-TQa">
+                    <rect key="frame" x="17" y="0.0" width="30" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                     </accessibility>
-                    <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                    <inset key="imageEdgeInsets" minX="4" minY="12" maxX="4" maxY="12"/>
                     <state key="normal" title="Button" image="ic_a_inapp_back.png"/>
-                    <state key="highlighted" image="ic_a_prev_disable.png"/>
                     <connections>
                         <action selector="goBack:" destination="-1" eventType="touchUpInside" id="eXz-Lu-xBq"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="15C-xT-UnL">
-                    <rect key="frame" x="100" y="0.0" width="40" height="41"/>
+                    <rect key="frame" x="63" y="0.0" width="30" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                     </accessibility>
-                    <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                    <inset key="imageEdgeInsets" minX="4" minY="12" maxX="4" maxY="12"/>
                     <state key="normal" title="Button" image="ic_a_inapp_forward.png"/>
-                    <state key="highlighted" image="ic_a_next_disable.png"/>
                     <connections>
                         <action selector="goNext:" destination="-1" eventType="touchUpInside" id="d0N-WU-Ek6"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hmG-7N-gCP">
-                    <rect key="frame" x="315" y="0.0" width="40" height="41"/>
+                    <rect key="frame" x="327" y="0.0" width="40" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                     </accessibility>
-                    <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                    <inset key="imageEdgeInsets" minX="9" minY="9" maxX="9" maxY="9"/>
                     <state key="normal" title="Button" image="ic_a_inapp_share.png"/>
-                    <state key="highlighted" image="ic_a_share_disable.png"/>
                     <connections>
                         <action selector="shareContent:" destination="-1" eventType="touchUpInside" id="OFV-Wp-gHT"/>
                     </connections>
@@ -76,8 +73,5 @@
         <image name="ic_a_inapp_back.png" width="65" height="46"/>
         <image name="ic_a_inapp_forward.png" width="64" height="46"/>
         <image name="ic_a_inapp_share.png" width="64" height="74"/>
-        <image name="ic_a_next_disable.png" width="34" height="44"/>
-        <image name="ic_a_prev_disable.png" width="35" height="44"/>
-        <image name="ic_a_share_disable.png" width="43" height="50"/>
     </resources>
 </document>

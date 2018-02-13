@@ -47,8 +47,11 @@ class ResourceVER: HttpBaseResource {
     
     override func parse(_ _data: Data) throws {
         self.responseData = try JSONSerialization.jsonObject(with: _data, options: JSONSerialization.ReadingOptions()) as! [String:AnyObject]
-        let isSuccess = self.body()["resultCount"] as! Int > 0 ? true : false
-        if !isSuccess {
+        if let isSuccess = self.body()["resultCount"] as? Int {
+            if isSuccess == 0 {
+                // 테스트플라잇 및 기타사항
+            }
+        } else {
             // 데이터 변환시 오류발생 코드 삽입
             self.errorCode = ResourceCode.e9998
             self.errorMsg = "데이터 파싱 에러"

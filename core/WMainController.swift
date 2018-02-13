@@ -163,7 +163,8 @@ class WMainController: BaseWebController,WebControlDelegate {
                 RSHttp().req( ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(appDelegate.remotePushSeq!)),successCb : { (resource) -> Void in
                     let objectInfo = resource.body()["data"] as! [String:AnyObject]
                     let link = objectInfo["link"] as? String
-                    appDelegate.goNotificationLink(link!)
+                    let type = objectInfo["type"] as? String == "notice" ? "event" : "all"
+                    appDelegate.goNotificationLink(link!, type)
                 })
                 appDelegate.remotePushSeq = nil
             }
@@ -252,7 +253,15 @@ class WMainController: BaseWebController,WebControlDelegate {
     override func prepare(for segue:UIStoryboardSegue, sender: Any?){
         if segue.identifier == "noti" {
             let notiController = segue.destination as! WNotiController
-            notiController.link = sender as? String
+            if let data = sender as? Array<String> {
+                if data.count == 2 {
+                    notiController.link = data[0]
+                    notiController.type = data[1]
+                }
+            } else {
+                notiController.link = sender as? String
+            }
+            
         } else if segue.identifier == "intro"{
             self.introContrller = segue.destination as? WIntroController
             self.introContrller!.mainController = self

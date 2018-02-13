@@ -37,6 +37,29 @@ class ApiFormApp : HttpBaseResource{
 	}
 }
 
+class ResourceVER: HttpBaseResource {
+
+    override var reqUrl: String {
+        get {
+            return "https://itunes.apple.com/lookup"
+        }
+    }
+    
+    override func parse(_ _data: Data) throws {
+        self.responseData = try JSONSerialization.jsonObject(with: _data, options: JSONSerialization.ReadingOptions()) as! [String:AnyObject]
+        if let isSuccess = self.body()["resultCount"] as? Int {
+            if isSuccess == 0 {
+                // 테스트플라잇 및 기타사항
+            }
+        } else {
+            // 데이터 변환시 오류발생 코드 삽입
+            self.errorCode = ResourceCode.e9998
+            self.errorMsg = "데이터 파싱 에러"
+        }
+    }
+}
+
+
 class WingLogin : HttpBaseResource{
 
     override var reqUrl:String{
@@ -120,6 +143,7 @@ class WingLogin : HttpBaseResource{
     
     
 }
+
 
 
 class ResourceBuilderPushTest : HttpBaseResource{

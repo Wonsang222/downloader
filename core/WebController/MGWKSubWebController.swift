@@ -42,7 +42,7 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
     
     var bottomNavibarHeight: CGFloat {
         get {
-            return 50 + Tools.safeArea()
+            return 40 + Tools.safeArea()
         }
     }
     
@@ -62,8 +62,11 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         }
     }
 
+    
+    
     func loadedView(url: URLRequest, config: WKWebViewConfiguration) -> WKWebView {
-//        Bundle.main.loadNibNamed("InAppNavi", owner: self, options: nil)
+        
+        Bundle.main.loadNibNamed("InAppNavi", owner: self, options: nil)
 
         webViewSubContainer = UIView()
         topNavigationView = UIView()
@@ -111,13 +114,12 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         topNavigationView.addSubview(Tools.border1px(parent: topNavigationView, color: "#b9b9b9"))
 
         bottomNavigationView?.rsWidth = webViewSubContainer.frame.width
-        bottomNavigationView?.rsY = webViewSubContainer.frame.height - 50
-        print("bounds :: \(bottomNavigationView?.bounds.height)")
+        bottomNavigationView?.rsY = webViewSubContainer.frame.height - 40
         if #available(iOS 11.0, *) {
             print("safeAreaInsets \(Tools.safeArea())")
 
             bottomNavigationView?.rsHeight = (bottomNavigationView?.frame.height)! + Tools.safeArea()
-            bottomNavigationView?.rsY = webViewSubContainer.frame.height - (50 + Tools.safeArea())
+            bottomNavigationView?.rsY = webViewSubContainer.frame.height - (40 + Tools.safeArea())
         }
         
         webView.scrollView.contentInset = UIEdgeInsetsMake(topNavigationView.bounds.height - statusBarSize, 0.0, 0.0, 0.0)
@@ -127,12 +129,14 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         webView.frame = webViewSubContainer.bounds
         print("height : \(webViewSubContainer.bounds) \(self.view.bounds)")
         // wkwebview 에서는 기본적으로 오프셋이 잡히는경우가 있다.
-        webView.scrollView.contentInset = UIEdgeInsetsMake(50, 0, 50, 0)
+        webView.scrollView.contentInset = UIEdgeInsetsMake(50, 0, 40, 0)
+        
+        
         
         // 웹뷰는 컨테이너가 아니다. 안에 뷰를 넣지말자
         webViewSubContainer?.addSubview(webView)
         webViewSubContainer?.addSubview(topNavigationView)
-//        webViewSubContainer?.addSubview(bottomNavigationView!)
+        webViewSubContainer?.addSubview(bottomNavigationView!)
         return webView
     }
     
@@ -157,28 +161,29 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         self.dismiss(animated: true, completion: nil)
     }
     
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let moveY = scrollView.contentOffset.y < -self.topNavigationView!.frame.height ? -self.topNavigationView!.frame.height : scrollView.contentOffset.y
-//        let dy = moveY - self.scrollBefore
-//        self.scrollBefore = moveY
-//        if self.scrollDistance > 20 && controllToggle {
-//            UIView.animate(withDuration: 0.3, delay: 0, animations: {
-//                self.topNavigationView.rsY = -self.topNavigationView.frame.height
-//                self.bottomNavigationView?.rsY = +self.webViewSubContainer.frame.height + Tools.safeArea()
-//            })
-//            self.controllToggle = false
-//            self.scrollDistance = 0
-//        } else if self.scrollDistance < -20 && !controllToggle {
-//            UIView.animate(withDuration: 0.3, delay: 0, animations: {
-//                self.topNavigationView.rsY = 0
-//                self.bottomNavigationView?.rsY = self.webViewSubContainer.frame.height - self.bottomNavibarHeight
-//            })
-//            self.controllToggle = true
-//            self.scrollDistance = 0
-//        }
-//        
-//        if controllToggle && dy>0  || (!controllToggle && dy<0) {
-//            self.scrollDistance += dy
-//        }
-//    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let moveY = scrollView.contentOffset.y < -self.topNavigationView!.frame.height ? -self.topNavigationView!.frame.height : scrollView.contentOffset.y
+        let dy = moveY - self.scrollBefore
+        self.scrollBefore = moveY
+        if self.scrollDistance > 20 && controllToggle {
+            UIView.animate(withDuration: 0.3, delay: 0, animations: {
+                self.topNavigationView.rsY = -self.topNavigationView.frame.height
+                self.bottomNavigationView?.rsY = +self.webViewSubContainer.frame.height + Tools.safeArea()
+            })
+            self.controllToggle = false
+            self.scrollDistance = 0
+        } else if self.scrollDistance < -20 && !controllToggle {
+            UIView.animate(withDuration: 0.3, delay: 0, animations: {
+                self.topNavigationView.rsY = 0
+                self.bottomNavigationView?.rsY = self.webViewSubContainer.frame.height - self.bottomNavibarHeight
+            })
+            self.controllToggle = true
+            self.scrollDistance = 0
+        }
+        
+        if controllToggle && dy>0  || (!controllToggle && dy<0) {
+            self.scrollDistance += dy
+        }
+    }
 }

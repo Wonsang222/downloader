@@ -47,17 +47,12 @@ class WSettingController: BaseController {
         super.viewDidLoad()
         ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
         curVersion.text = AppProp.appVersion
+        newVersion.text = WInfo.cacheVersion
         RSHttp(controller:self).req(
                 ApiFormApp().ap("mode","get_agree").ap("pack_name", AppProp.appId),
-                ApiFormApp().ap("mode","version_chk").ap("pack_name", AppProp.appId)
-            ,
             successCb: { (resource) -> Void in
                 let mode = resource.params["mode"]!
-                if mode == "version_chk" {
-                    let version = resource.body()["version"] as! String
-                    self.appUpdateUrl = resource.body()["app_url"] as? String
-                    self.newVersion.text = version
-                }else {
+                if mode == "get_agree" {
                     let json = resource.body()["result"] as! [String:AnyObject]
                     let order_push_agree = json["order_push_agree"] as! String
                     let notice_push_agree = json["notice_push_agree"] as! String
@@ -67,6 +62,40 @@ class WSettingController: BaseController {
                 }
             }
         )
+        
+        
+        RSHttp(controller: self, showingPopup: false).req(
+            ResourceVER().ap("mode", "version_chk").ap("bundleId", AppProp.appId).ap("country", "KR")
+            //            com.looket.naingirl1
+            //            AppProp.appId
+            , successCb: { (resource) -> (Void) in
+                let mode = resource.params["mode"]!
+                var new_version_str: String = ""
+                
+                if mode == "version_chk" {
+                    if let app_info = resource.body()["results"] as? [[String: AnyObject]] {
+                        if app_info.count > 0 {
+                            new_version_str = app_info[0]["version"] as! String
+                            self.appUpdateUrl = app_info[0]["trackViewUrl"] as? String
+                        } else {
+                            // 배포전 테스트플라잇 예외, 로컬버전 삽입
+                            new_version_str = AppProp.appVersion
+                            self.appUpdateUrl = ""
+                        }
+                    }
+                    let cur_version_tmp = AppProp.appVersion.replace(".", withString: "")
+                    let new_version_tmp = new_version_str.replace(".", withString: "")
+                    
+                    if Int(cur_version_tmp) < Int(new_version_tmp) {
+                        print(WInfo.cacheVersion)
+                        self.newVersion.text = new_version_str
+                        WInfo.cacheVersion = new_version_str
+                    }
+                    
+                }
+        })
+        
+
         
         self.orderSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , for: UIControlEvents.touchUpInside)
         self.eventSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , for: UIControlEvents.touchUpInside)

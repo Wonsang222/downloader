@@ -12,6 +12,7 @@ import WebKit
 class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate{
 
 	var link:String?
+    var type:String?
     var scrollBefore:CGFloat = 0.0
     var scrollDistance:CGFloat = 0.0
     var controlToggle = true
@@ -23,10 +24,11 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         self.engine.webDelegate = self
         ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
         self.engine.webView.alpha = 0
-        var url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId);
-        if link != nil {
-        	url = URL (string: link!);
-        }
+        type = type != nil ? type : "all"
+        let url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId + "&view=" + type!)
+//        if link != nil {
+//            url = URL (string: link!);
+//        }
         var requestObj = URLRequest(url: url!);
         if let userId = WInfo.userInfo["userId"] as? String{
             requestObj.addValue(userId.encryptAES256(), forHTTPHeaderField: "MAGIC_USER_ID")

@@ -161,7 +161,6 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("scroll \(scrollView.contentOffset.y)")
         
         let moveY = scrollView.contentOffset.y < -self.topNavigationView!.frame.height ? -self.topNavigationView!.frame.height : scrollView.contentOffset.y
         let dy = moveY - self.scrollBefore
@@ -186,7 +185,4 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
             self.scrollDistance += dy
         }
     }
-//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//
-//    }
 }

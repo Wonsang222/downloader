@@ -177,7 +177,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in
                 let objectInfo = resource.body()["data"] as! [String:AnyObject]
-                if( UIApplication.shared.applicationState == .active){
+                if( UIApplication.shared.applicationState == .active && !isBackground){
                     let link = objectInfo["link"] as? String
                     let subtitle = objectInfo["subtitle"] as? String
                     let title = objectInfo["title"] as? String

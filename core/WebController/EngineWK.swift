@@ -25,6 +25,8 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         let config = WKWebViewConfiguration()
         config.processPool = WebEngine.gPool
         //        let jsctrl = WKUserContentController()
+        config.preferences.javaScriptCanOpenWindowsAutomatically = true
+
         _webView = WKWebView(frame: self.controller.webViewContainer.bounds, configuration: config)
         if #available(iOS 9.0, *) {
             //            webView.allowsLinkPreview = true
@@ -178,14 +180,13 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         }
         
     }
+    
+    
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         let controller = MGWKSubWebController()
         let re_webView = controller.loadedView(url: (navigationAction.request), config: configuration)
         
-        self.controller.present(controller, animated: true, completion: {
-            re_webView.load(navigationAction.request)
-        })
-        
+        self.controller.present(controller, animated: true, completion: nil)
         return re_webView
     }
     

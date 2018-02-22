@@ -131,7 +131,7 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         // wkwebview 에서는 기본적으로 오프셋이 잡히는경우가 있다.
         webView.scrollView.contentInset = UIEdgeInsetsMake(50, 0, 40, 0)
         
-        
+        webView.load(url)
         
         // 웹뷰는 컨테이너가 아니다. 안에 뷰를 넣지말자
         webViewSubContainer?.addSubview(webView)

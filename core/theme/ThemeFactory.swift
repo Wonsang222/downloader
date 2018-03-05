@@ -95,13 +95,21 @@ class ThemeCache {
         }
         return nil
     }
-    
+    func clear(){
+        let fileManager = FileManager.default
+        let document = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, .userDomainMask, true)
+        do{
+            let directoryContents = try fileManager.contentsOfDirectory(atPath: "\(document[0])/icon")
+            for path in directoryContents {
+                try fileManager.removeItem(atPath: "\(document[0])/icon/\(path)")
+            }
+        }catch{}
+    }
 }
 extension UIButton{
     
     
     func themeIconLoader(_ icon_url:String){
-        
         if let cacheImage = ThemeCache.share().getCache(icon_url) {
             self.setBackgroundImage(cacheImage, for: UIControlState())
             self.setBackgroundImage(cacheImage, for: UIControlState.disabled)

@@ -14,8 +14,8 @@ class CommonMkTheme {
     var viewController:UIViewController
     var uiData:[String:Any]
     
-    
-    init(controller:UIViewController, object:[String:Any]){
+    // required 
+    required init(controller:UIViewController, object:[String:Any]){
         self.uiData = object["ui_data"] as! [String:Any]
         self.viewController = controller
     }

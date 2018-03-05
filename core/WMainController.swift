@@ -249,6 +249,22 @@ class WMainController: BaseWebController,WebControlDelegate {
         self.performSegue(withIdentifier: "setting" ,  sender : self)
     }
     
+    // NAIN custom
+    @objc func onLayout(_ sender: UIButton) {
+        let layout1 =  sender.superview! as UIView
+        let wisaMenu =  layout1.superview! as UIView
+        UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveEaseInOut, animations: {
+            if wisaMenu.rsY == self.view.bounds.height - 50  {
+                wisaMenu.transform = CGAffineTransform(translationX: wisaMenu.rsX, y: 0)
+            } else {
+                wisaMenu.transform = CGAffineTransform(translationX: wisaMenu.rsX, y: 50)
+            }
+        }) { (finish) in
+            print("seeee 11")
+        }
+    }
+    //
+    
     
     override func prepare(for segue:UIStoryboardSegue, sender: Any?){
         if segue.identifier == "noti" {

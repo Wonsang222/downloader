@@ -11,30 +11,47 @@ import UIKit
 class ThemeFactory {
     
     static func createTheme(_ contoller:UIViewController, themeInfo:[String:Any]?) -> CommonMkTheme? {
+        
         if themeInfo == nil{
             return nil
         }
-        let core = themeInfo!["core"] == nil ? "v1" : themeInfo!["core"] as! String
+        let core = themeInfo!["core"] == nil ? "v1" : (themeInfo!["core"] as! String == "v3" ? "v2" : themeInfo!["core"] as! String)
         if themeInfo!["theme"] == nil {
             return nil
         }
         let theme = themeInfo!["theme"] as! String
+        print("theme info :", theme)
+        // TODO: Test
+        
+//        let themeCls = NSClassFromString("\(AppProp.appName!).Theme\(core.uppercased())\(theme.uppercased())") as? CommonMkTheme.Type
+        let themeCls = NSClassFromString("wing.ThemeV2NAIN") as? CommonMkTheme.Type
+        print("test 111 ", themeCls)
+        print("test 22 ", "\(AppProp.appName!).Theme\(core.uppercased())\(theme.uppercased())")
+        
         switch core {
-            case "v1":
-                return ThemeV1( controller: contoller, object:themeInfo!)
-            case "v2","v3":
-                if theme == "t1" {
-                    return ThemeV2T1( controller: contoller, object:themeInfo!)
-                }else if theme == "t2" {
-                    return ThemeV2T2( controller: contoller, object:themeInfo!)
-                }else if theme == "t3" {
-                    return ThemeV2T3( controller: contoller, object:themeInfo!)
-                }else{
-                    return ThemeV2T1( controller: contoller, object:themeInfo!)
-                }
-            default :
-                return ThemeV1( controller: contoller, object:themeInfo!)
+        case "v1", "v2", "v3":
+            return themeCls!.init(controller: contoller, object:themeInfo!)
+        default:
+            return ThemeV1( controller: contoller, object:themeInfo!)
         }
+        
+        
+        //        switch core {
+        //            case "v1":
+        //                return ThemeV1( controller: contoller, object:themeInfo!)
+        //            case "v2","v3":
+        //                if theme == "t1" {
+        //                    return ThemeV2T1( controller: contoller, object:themeInfo!)
+        //                }else if theme == "t2" {
+        //                    return ThemeV2T2( controller: contoller, object:themeInfo!)
+        //                }else if theme == "t3" {
+        //                    return ThemeV2T3( controller: contoller, object:themeInfo!)
+        //                }else{
+        //                    return ThemeV2T1( controller: contoller, object:themeInfo!)
+        //                }
+        //            default :
+        //                return ThemeV1( controller: contoller, object:themeInfo!)
+        //        }
     }
 }
 

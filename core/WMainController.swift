@@ -163,7 +163,8 @@ class WMainController: BaseWebController,WebControlDelegate {
                 RSHttp().req( ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(appDelegate.remotePushSeq!)),successCb : { (resource) -> Void in
                     let objectInfo = resource.body()["data"] as! [String:AnyObject]
                     let link = objectInfo["link"] as? String
-                    appDelegate.goNotificationLink(link!)
+                    let type = objectInfo["type"] as? String == "notice" ? "event" : "all"
+                    appDelegate.goNotificationLink(link!, type)
                 })
                 appDelegate.remotePushSeq = nil
             }
@@ -248,11 +249,35 @@ class WMainController: BaseWebController,WebControlDelegate {
         self.performSegue(withIdentifier: "setting" ,  sender : self)
     }
     
+    // NAIN custom
+    @objc func onLayout(_ sender: UIButton) {
+        let layout1 =  sender.superview! as UIView
+        let wisaMenu =  layout1.superview! as UIView
+        UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveEaseInOut, animations: {
+            if wisaMenu.rsY == self.view.bounds.height - 50  {
+                wisaMenu.transform = CGAffineTransform(translationX: wisaMenu.rsX, y: 0)
+            } else {
+                wisaMenu.transform = CGAffineTransform(translationX: wisaMenu.rsX, y: 50)
+            }
+        }) { (finish) in
+            print("seeee 11")
+        }
+    }
+    //
+    
     
     override func prepare(for segue:UIStoryboardSegue, sender: Any?){
         if segue.identifier == "noti" {
             let notiController = segue.destination as! WNotiController
-            notiController.link = sender as? String
+            if let data = sender as? Array<String> {
+                if data.count == 2 {
+                    notiController.link = data[0]
+                    notiController.type = data[1]
+                }
+            } else {
+                notiController.link = sender as? String
+            }
+            
         } else if segue.identifier == "intro"{
             self.introContrller = segue.destination as? WIntroController
             self.introContrller!.mainController = self

@@ -84,6 +84,10 @@
 		D4DC5E2A1FAAB2C8008772AD /* search_ico_focus.png in Resources */ = {isa = PBXBuildFile; fileRef = D4DC5E251FAAB2C8008772AD /* search_ico_focus.png */; };
 		D4DC5E2C1FAAB6D7008772AD /* ic_navi_back_white.png in Resources */ = {isa = PBXBuildFile; fileRef = D4DC5E2B1FAAB6D7008772AD /* ic_navi_back_white.png */; };
 		D4FD0F121CBB354E00018CDF /* BaseConroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FD0F111CBB354E00018CDF /* BaseConroller.swift */; };
+		F50E53F6202D7829001CDAFA /* InAppNavi.xib in Resources */ = {isa = PBXBuildFile; fileRef = F50E53F5202D7829001CDAFA /* InAppNavi.xib */; };
+		F50E53FA202D79B0001CDAFA /* ic_a_inapp_forward.png in Resources */ = {isa = PBXBuildFile; fileRef = F50E53F7202D79B0001CDAFA /* ic_a_inapp_forward.png */; };
+		F50E53FB202D79B0001CDAFA /* ic_a_inapp_back.png in Resources */ = {isa = PBXBuildFile; fileRef = F50E53F8202D79B0001CDAFA /* ic_a_inapp_back.png */; };
+		F50E53FC202D79B0001CDAFA /* ic_a_inapp_share.png in Resources */ = {isa = PBXBuildFile; fileRef = F50E53F9202D79B0001CDAFA /* ic_a_inapp_share.png */; };
 		F58B1D531FBD618500543A2B /* ic_a_notification.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D501FBD618400543A2B /* ic_a_notification.png */; };
 		F58B1D541FBD618500543A2B /* ic_a_location.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D511FBD618500543A2B /* ic_a_location.png */; };
 		F58B1D551FBD618500543A2B /* ic_a_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D521FBD618500543A2B /* ic_a_camera.png */; };
@@ -181,6 +185,10 @@
 		D4DC5E2B1FAAB6D7008772AD /* ic_navi_back_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_navi_back_white.png; sourceTree = "<group>"; };
 		D4FD0F111CBB354E00018CDF /* BaseConroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseConroller.swift; sourceTree = "<group>"; };
 		D4FD0F131CBB5DC000018CDF /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		F50E53F5202D7829001CDAFA /* InAppNavi.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InAppNavi.xib; sourceTree = "<group>"; };
+		F50E53F7202D79B0001CDAFA /* ic_a_inapp_forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_inapp_forward.png; sourceTree = "<group>"; };
+		F50E53F8202D79B0001CDAFA /* ic_a_inapp_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_inapp_back.png; sourceTree = "<group>"; };
+		F50E53F9202D79B0001CDAFA /* ic_a_inapp_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_inapp_share.png; sourceTree = "<group>"; };
 		F58B1D501FBD618400543A2B /* ic_a_notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_notification.png; sourceTree = "<group>"; };
 		F58B1D511FBD618500543A2B /* ic_a_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_location.png; sourceTree = "<group>"; };
 		F58B1D521FBD618500543A2B /* ic_a_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_camera.png; sourceTree = "<group>"; };
@@ -263,6 +271,7 @@
 		D41622671C9C44A300A818DA = {
 			isa = PBXGroup;
 			children = (
+				F50E53F4202D7829001CDAFA /* xib */,
 				D4CC07CC2015B1E50033A011 /* objc */,
 				D4FD0F131CBB5DC000018CDF /* WebKit.framework */,
 				D47A8D5A1CE0448900E655F1 /* BridgingHeader.h */,
@@ -342,6 +351,9 @@
 				F58B1D501FBD618400543A2B /* ic_a_notification.png */,
 				D4D9FCB31FBA92EF00B088B1 /* pop_icon.png */,
 				D42321C21CC5CDB3007C2F3C /* ic_a_isnew.png */,
+				F50E53F8202D79B0001CDAFA /* ic_a_inapp_back.png */,
+				F50E53F7202D79B0001CDAFA /* ic_a_inapp_forward.png */,
+				F50E53F9202D79B0001CDAFA /* ic_a_inapp_share.png */,
 				D4DC5E211FAAB2C8008772AD /* search_bg_focus_box_l.png */,
 				D4DC5E221FAAB2C8008772AD /* search_bg_focus_box_lb.png */,
 				D4DC5E231FAAB2C8008772AD /* search_bg_focus_box_r.png */,
@@ -437,6 +449,14 @@
 			path = objc;
 			sourceTree = "<group>";
 		};
+		F50E53F4202D7829001CDAFA /* xib */ = {
+			isa = PBXGroup;
+			children = (
+				F50E53F5202D7829001CDAFA /* InAppNavi.xib */,
+			);
+			path = xib;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -510,6 +530,7 @@
 				D4DC5E2A1FAAB2C8008772AD /* search_ico_focus.png in Resources */,
 				D4154F5C1CBF5CFE00ED25CE /* setting_bar.png in Resources */,
 				D4932E8C1CA433740014B769 /* LaunchScreen.storyboard in Resources */,
+				F50E53FB202D79B0001CDAFA /* ic_a_inapp_back.png in Resources */,
 				D4154F4F1CBF569C00ED25CE /* ic_a_menu.png in Resources */,
 				D4DC5E291FAAB2C8008772AD /* search_bg_focus_box_rb.png in Resources */,
 				D4154F4D1CBF569C00ED25CE /* ic_a_home.png in Resources */,
@@ -521,7 +542,9 @@
 				D4154F521CBF569C00ED25CE /* ic_a_prev_disable.png in Resources */,
 				D4154F5E1CBF6F9D00ED25CE /* setting_update_btn.png in Resources */,
 				D4154F571CBF569C00ED25CE /* ic_a_share.png in Resources */,
+				F50E53F6202D7829001CDAFA /* InAppNavi.xib in Resources */,
 				D4154F501CBF569C00ED25CE /* ic_a_next_disable.png in Resources */,
+				F50E53FA202D79B0001CDAFA /* ic_a_inapp_forward.png in Resources */,
 				D4154F541CBF569C00ED25CE /* ic_a_refresh_disable.png in Resources */,
 				D4D9FCB41FBA92EF00B088B1 /* pop_icon.png in Resources */,
 				D4154F5A1CBF569C00ED25CE /* ic_navi_back.png in Resources */,
@@ -533,6 +556,7 @@
 				D4154F561CBF569C00ED25CE /* ic_a_share_disable.png in Resources */,
 				F58B1D551FBD618500543A2B /* ic_a_camera.png in Resources */,
 				D4DC5E261FAAB2C8008772AD /* search_bg_focus_box_l.png in Resources */,
+				F50E53FC202D79B0001CDAFA /* ic_a_inapp_share.png in Resources */,
 				D4154F591CBF569C00ED25CE /* ic_a_tab.png in Resources */,
 				D42321C31CC5CDB3007C2F3C /* ic_a_isnew.png in Resources */,
 				D4DC5E2C1FAAB6D7008772AD /* ic_navi_back_white.png in Resources */,

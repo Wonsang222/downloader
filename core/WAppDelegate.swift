@@ -177,18 +177,19 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in
                 let objectInfo = resource.body()["data"] as! [String:AnyObject]
-                if( UIApplication.shared.applicationState == .active){
+                if( UIApplication.shared.applicationState == .active && !isBackground){
                     let link = objectInfo["link"] as? String
                     let subtitle = objectInfo["subtitle"] as? String
                     let title = objectInfo["title"] as? String
                     let img_url = objectInfo["img_url"] as? String
+                    let type = objectInfo["type"] as? String == "notice" ? "event" : "all"
                     var msg = objectInfo["msg"] as? String
                     msg = msg?.replace("<br />", withString: "\r\n")
                     msg = msg?.replace("<br/>", withString: "\r\n")
                     if img_url != nil {
                         let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
-                            self.goNotificationLink(link!)
+                            self.goNotificationLink(link!, type)
                         }))
                         alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.cancel,handler: { action in
                             
@@ -197,7 +198,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                     }else if msg != nil {
                         let alertController = UIAlertController(title: subtitle!, message: msg!,preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
-                            self.goNotificationLink(link!)
+                            self.goNotificationLink(link!, type)
                         }))
                         alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.cancel,handler: { action in
                             
@@ -207,7 +208,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                     }else{
                         let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
-                            self.goNotificationLink(link!)
+                            self.goNotificationLink(link!, type)
                         }))
                         alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.cancel,handler: { action in
                             
@@ -217,7 +218,8 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                     
                 }else{
                     let link = objectInfo["link"] as? String
-                    self.goNotificationLink(link!)
+                    let type = objectInfo["type"] as? String == "notice" ? "event" : "all";
+                    self.goNotificationLink(link!, type)
                 }
                 
                 
@@ -225,11 +227,11 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         )
     }
     
-    func goNotificationLink(_ link:String){
+    func goNotificationLink(_ link:String, _ type:String){
         if let rootViewController = self.window!.rootViewController as? UINavigationController {
             rootViewController.popToRootViewController(animated: true)
             if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                mainController.performSegue(withIdentifier: "noti" ,  sender : link)
+                mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
             }
         }
     }

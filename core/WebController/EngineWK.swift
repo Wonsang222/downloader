@@ -25,6 +25,8 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         let config = WKWebViewConfiguration()
         config.processPool = WebEngine.gPool
         //        let jsctrl = WKUserContentController()
+        config.preferences.javaScriptCanOpenWindowsAutomatically = true
+
         _webView = WKWebView(frame: self.controller.webViewContainer.bounds, configuration: config)
         if #available(iOS 9.0, *) {
             //            webView.allowsLinkPreview = true
@@ -96,7 +98,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         self.webDelegate?.webLoadedCommit(webView.url?.absoluteString)
         self.controller.progressView.alpha = 1.0
         self.controller.progressView.setProgress(0.0, animated: true)
-        UIView.animate(withDuration: 1, delay: 1.3, options: .curveEaseIn, animations: { }, completion: { (bool) in
+        UIView.animate(withDuration: 1, delay: 0.5, options: .curveEaseIn, animations: { }, completion: { (bool) in
             self.controller.progressView.setProgress(Float(self._webView.estimatedProgress)+0.3, animated: true)
         })
     }
@@ -105,7 +107,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         self.controller.progressView.setProgress(1.0, animated: true)
-        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
+        UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
             self.controller.progressView.setProgress(0.0, animated: false)
         })
         
@@ -113,7 +115,6 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
             self.runScript("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
         }
         self.webDelegate?.webLoadedFinish(webView.url?.absoluteString)
-        
         
 //        if #available(iOS 11.0, *) {
 //            WKWebsiteDataStore.default().httpCookieStore.getAllCookies { (cookies) in
@@ -138,7 +139,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
 
-        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
+        UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
             self.controller.progressView.setProgress(0.0, animated: false)
         })
     }
@@ -179,19 +180,20 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         }
         
     }
+    
+    
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         let controller = MGWKSubWebController()
         let re_webView = controller.loadedView(url: (navigationAction.request), config: configuration)
         
         self.controller.present(controller, animated: true, completion: nil)
-        
         return re_webView
     }
     
     func webViewDidClose(_ webView: WKWebView) {
         self.controller.presentedViewController?.dismiss(animated: true, completion: nil)
     }
-    
+//    webViewDidClo
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         webView.reload()
     }

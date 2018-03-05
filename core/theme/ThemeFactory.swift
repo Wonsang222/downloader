@@ -23,10 +23,8 @@ class ThemeFactory {
         print("theme info :", theme)
         // TODO: Test
         
-//        let themeCls = NSClassFromString("\(AppProp.appName!).Theme\(core.uppercased())\(theme.uppercased())") as? CommonMkTheme.Type
-        let themeCls = NSClassFromString("wing.ThemeV2NAIN") as? CommonMkTheme.Type
-        print("test 111 ", themeCls)
-        print("test 22 ", "\(AppProp.appName!).Theme\(core.uppercased())\(theme.uppercased())")
+        let themeCls = NSClassFromString("\(AppProp.appName!).Theme\(core.uppercased())\(theme.uppercased())") as? CommonMkTheme.Type
+//        let themeCls = NSClassFromString("wing.ThemeV2NAIN") as? CommonMkTheme.Type
         
         switch core {
         case "v1", "v2", "v3":

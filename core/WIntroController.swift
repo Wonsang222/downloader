@@ -131,7 +131,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
  
     fileprivate func reqCheckApiKey(){
 		RSHttp(controller:self).req(
-		   [ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId)],
+		   ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
 		   		let siteUrl = resource.body()["site_url"] as! String
 		   		let solutionType = resource.body()["solution_type"] as! String

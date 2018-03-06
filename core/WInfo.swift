@@ -348,4 +348,11 @@ class WInfo{
             UserDefaults.standard.synchronize()
         }
     }
+    // ThemeInfo
+    static var getAbleTheme: [String] {
+        get {
+            return ["T1","T2","T3","NAIN"]
+        }
+    }
+    //
 }

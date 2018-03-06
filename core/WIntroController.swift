@@ -23,6 +23,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
     weak var mainController:WMainController?
     var permissionController:PermissionController?
     
+    
 	fileprivate var saveVersion:Int{
 		get{
 			if let returnValue = WInfo.introInfo["version"]{
@@ -227,7 +228,10 @@ class WIntroController: BaseController,OLImageViewDelegate {
 
 	fileprivate func reqTheme(){
 		RSHttp(controller:self).req(
-		   ApiFormApp().ap("mode","get_theme").ap("pack_name",AppProp.appId),
+		   ApiFormApp()
+            .ap("mode","get_theme")
+            .ap("able_theme", WInfo.getAbleTheme.joined(separator: ","))
+            .ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
 		   		let serverVersion = resource.body()["version"] as! String
 		   		if Int(serverVersion)! > self.saveThemeVersion{

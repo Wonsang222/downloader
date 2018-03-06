@@ -23,12 +23,14 @@ class ThemeFactory {
         print("theme info :", theme)
         // TODO: Test
         
-        let themeCls = NSClassFromString("\(AppProp.appName!).Theme\(core.uppercased())\(theme.uppercased())") as? CommonMkTheme.Type
-//        let themeCls = NSClassFromString("wing.ThemeV2NAIN") as? CommonMkTheme.Type
+//        let themeCls = NSClassFromString("\(AppProp.appName!).Theme\(core.uppercased())\(theme.uppercased())") as? CommonMkTheme.Type
+//        print("theme dong", themeCls)
+//                let themeCls = NSClassFromString("wing.ThemeV2T3") as? CommonMkTheme.Type
         
         switch core {
         case "v1", "v2", "v3":
-            return themeCls!.init(controller: contoller, object:themeInfo!)
+//            return themeCls!.init(controller: contoller, object:themeInfo!)
+            return ThemeV2T2( controller: contoller, object:themeInfo!)
         default:
             return ThemeV1( controller: contoller, object:themeInfo!)
         }

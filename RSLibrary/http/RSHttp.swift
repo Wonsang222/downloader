@@ -45,7 +45,11 @@ class RSHttp{
 	func req(_ resources:HttpBaseResource..., successCb:RSHttpSuccessHandler?){
         self.req(resources,successCb:successCb,errorCb:nil)
 	}
-
+    
+    func req(_ resources:HttpBaseResource..., successCb:RSHttpSuccessHandler?, errorCb:RSHttpErrorHandler?){
+        self.req(resources,successCb:successCb,errorCb:errorCb)
+    }
+    
 	func req(_ resources:[HttpBaseResource], successCb:RSHttpSuccessHandler?, errorCb:RSHttpErrorHandler?){
 		progressShow()
 		DispatchQueue.global(qos: .background).async {

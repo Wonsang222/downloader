@@ -338,9 +338,8 @@ class WInfo{
             if let returnValue = UserDefaults.standard.string(forKey: "kCacheVersion") {
                 return returnValue
             } else {
-                return "1.0.0"
+                return AppProp.appVersion
             }
-    
         }
     
         set {

@@ -85,8 +85,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 .ap("token",WInfo.deviceToken)
         )
         
-//        WInfo.restoreAllCookie()
-//        WInfo.clearSessionCookie()
+        if(AppProp.appCookieSet != "YES") {
+            WInfo.restoreAllCookie()
+            WInfo.clearSessionCookie()
+        }
         
         #if ADBRIX
         if NSClassFromString("ASIdentifierManager") != nil {
@@ -115,7 +117,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-//       WInfo.saveAllCookie()
+        if(AppProp.appCookieSet != "YES") {
+            WInfo.saveAllCookie()
+        }
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

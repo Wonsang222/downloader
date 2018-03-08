@@ -108,7 +108,7 @@
 	<string></string>
 	<key>WGAdbrixHashKey</key>
 	<string></string>
-    <key>WCookieSetting</key>
-    <string>NO</string>
+	<key>WGCookieSetting</key>
+	<string>NO</string>
 </dict>
 </plist>

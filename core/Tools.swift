@@ -51,7 +51,7 @@ class AppProp{
     // 쿠키 클리어 여부
     static var appCookieSet:String?{
         get{
-            return Bundle.main.infoDictionary?["CFBundleName"] as? String
+            return Bundle.main.infoDictionary?["WGCookieSetting"] as? String
         }
     }
 }

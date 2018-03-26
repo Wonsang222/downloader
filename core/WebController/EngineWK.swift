@@ -86,21 +86,28 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         if webView.url == nil {
+            print("dong webview url null ")
             return
         }
+        print("dong webview url not null \(webView.url)")
+        
         if !(self.controller is NotiController) {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
         }
+
         self.createAccessCookie()
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        self.webDelegate?.webLoadedCommit(webView.url?.absoluteString)
+        
         self.controller.progressView.alpha = 1.0
         self.controller.progressView.setProgress(0.0, animated: true)
         UIView.animate(withDuration: 1, delay: 0.5, options: .curveEaseIn, animations: { }, completion: { (bool) in
             self.controller.progressView.setProgress(Float(self._webView.estimatedProgress)+0.3, animated: true)
         })
+        
+        self.webDelegate?.webLoadedCommit(webView.url?.absoluteString)
+        self.webDelegate?.webLoadedFinish(webView.url?.absoluteString)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -193,7 +200,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
     func webViewDidClose(_ webView: WKWebView) {
         self.controller.presentedViewController?.dismiss(animated: true, completion: nil)
     }
-//    webViewDidClo
+    
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         webView.reload()
     }

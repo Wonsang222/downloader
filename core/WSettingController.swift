@@ -83,10 +83,10 @@ class WSettingController: BaseController {
                             self.appUpdateUrl = ""
                         }
                     }
-                    let cur_version_tmp = AppProp.appVersion.replace(".", withString: "")
                     let new_version_tmp = new_version_str.replace(".", withString: "")
+                    let cur_version_tmp = AppProp.appVersion.replace(".", withString: "")
                     
-                    if Int(cur_version_tmp) < Int(new_version_tmp) {
+                    if Tools.compareVersion(new_version_tmp, cur_version_tmp) {
                         print(WInfo.cacheVersion)
                         self.newVersion.text = new_version_str
                         WInfo.cacheVersion = new_version_str
@@ -216,7 +216,7 @@ class WSettingController: BaseController {
     
     @IBAction func doUpdateBtn(_ sender:UIButton){
         
-        if Int(newVersion.text!.replace(".", withString: "")) > Int(curVersion.text!.replace(".", withString: "")) {
+        if Tools.compareVersion(newVersion.text!, curVersion.text!) {
             UIApplication.shared.openURL(URL(string:self.appUpdateUrl!)!)
         }else{
             self.view.makeToast("최신버전입니다.")

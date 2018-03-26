@@ -264,7 +264,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
                     self.dismissProcess()
                     return
                 }
-                if Int(serverVersion)! > Int(curVersion)! && WInfo.ignoreUpdateVersion != serverVersion{
+                if Tools.compareVersion(serverVersion, curVersion) && WInfo.ignoreUpdateVersion != serverVersion{
                     let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.default, handler:{ action in
                         UIApplication.shared.openURL(URL(string:appUrl)!)

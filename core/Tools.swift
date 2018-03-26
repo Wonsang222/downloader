@@ -82,6 +82,21 @@ class Tools{
         return view
     }
 
+    static func compareVersion(_ serverVersion: String, _ localVersion: String) -> Bool {
+            let server = serverVersion.split(separator:".").map{ String($0) }
+            let local = localVersion.split(separator:".").map{ String($0) }
+            if Int(server[0]+server[1])! > Int(local[0]+local[1])! {
+                return true;
+            } else if Int(server[0]+server[1])! == Int(local[0]+local[1])! {
+                if Int(server[2])! > Int(local[2])! {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false
+            }
+    }
 }
 
 class DownLoader{

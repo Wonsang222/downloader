@@ -255,23 +255,25 @@ class WIntroController: BaseController,OLImageViewDelegate {
                         appUrl = appInfo[0]["trackViewUrl"] as! String
                     } else {
                         // 배포전의 테스트플라잇 예외, 로컬버전 삽입
-                        serverVersion = AppProp.appVersion.replace(".", withString: "")
+                        serverVersion = AppProp.appVersion
+//                            .replace(".", withString: "")
                         appUrl = ""
                     }
                 }
-                let curVersion = AppProp.appVersion.replace(".", withString: "")
+                let curVersion = AppProp.appVersion
+//                    .replace(".", withString: "")
                 if self.updateUse == "N" {
                     self.dismissProcess()
                     return
                 }
-                if Tools.compareVersion(serverVersion, curVersion) && WInfo.ignoreUpdateVersion != serverVersion{
+                if Tools.compareVersion(serverVersion, curVersion) && WInfo.ignoreUpdateVersion != serverVersion.replace(".", withString: ""){
                     let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.default, handler:{ action in
                         UIApplication.shared.openURL(URL(string:appUrl)!)
                         exit(0)
                     }))
                     alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.default, handler:{ action in
-                        WInfo.ignoreUpdateVersion = serverVersion
+                        WInfo.ignoreUpdateVersion = serverVersion.replace(".", withString: "")
                         self.dismissProcess()
                     }))
                     self.present(alert,animated:true, completion: nil)

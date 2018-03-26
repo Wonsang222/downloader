@@ -83,10 +83,10 @@ class WSettingController: BaseController {
                             self.appUpdateUrl = ""
                         }
                     }
-                    let new_version_tmp = new_version_str.replace(".", withString: "")
-                    let cur_version_tmp = AppProp.appVersion.replace(".", withString: "")
+//                    let new_version_tmp = new_version_str.replace(".", withString: "")
+//                    let cur_version_tmp = AppProp.appVersion.replace(".", withString: "")
                     
-                    if Tools.compareVersion(new_version_tmp, cur_version_tmp) {
+                    if Tools.compareVersion(new_version_str, AppProp.appVersion) {
                         print(WInfo.cacheVersion)
                         self.newVersion.text = new_version_str
                         WInfo.cacheVersion = new_version_str

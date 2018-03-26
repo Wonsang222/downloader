@@ -66,12 +66,10 @@ class WSettingController: BaseController {
         
         RSHttp(controller: self, showingPopup: false).req(
             ResourceVER().ap("mode", "version_chk").ap("bundleId", AppProp.appId).ap("country", "KR")
-            //            com.looket.naingirl1
-            //            AppProp.appId
             , successCb: { (resource) -> (Void) in
                 let mode = resource.params["mode"]!
                 var new_version_str: String = ""
-                
+                print("dong info : \(AppProp.appId)")
                 if mode == "version_chk" {
                     if let app_info = resource.body()["results"] as? [[String: AnyObject]] {
                         if app_info.count > 0 {

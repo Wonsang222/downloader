@@ -252,12 +252,10 @@ class WIntroController: BaseController,OLImageViewDelegate {
                 if let appInfo = resource.body()["results"] as? [[String: AnyObject]] {
                     if appInfo.count > 0 {
                         serverVersion = (appInfo[0]["version"] as! String)
-//                            .replace(".", withString: "")
                         appUrl = appInfo[0]["trackViewUrl"] as! String
                     } else {
                         // 배포전의 테스트플라잇 예외, 로컬버전 삽입
                         serverVersion = AppProp.appVersion
-//                            .replace(".", withString: "")
                         appUrl = ""
                     }
                 }

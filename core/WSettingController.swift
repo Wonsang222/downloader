@@ -70,24 +70,32 @@ class WSettingController: BaseController {
                 let mode = resource.params["mode"]!
                 var new_version_str: String = ""
                 print("dong info : \(AppProp.appId)")
+                //
+                var test = ""
+                //
                 if mode == "version_chk" {
                     if let app_info = resource.body()["results"] as? [[String: AnyObject]] {
                         if app_info.count > 0 {
                             new_version_str = app_info[0]["version"] as! String
                             self.appUpdateUrl = app_info[0]["trackViewUrl"] as? String
+                            test += "ttt \(app_info.count) , \(new_version_str)"
                         } else {
                             // 배포전 테스트플라잇 예외, 로컬버전 삽입
                             new_version_str = AppProp.appVersion
+                            test += "fff \(AppProp.appVersion)"
                             self.appUpdateUrl = ""
                         }
+                        print("test 11 \(new_version_str)")
                     }
 //                    let new_version_tmp = new_version_str.replace(".", withString: "")
 //                    let cur_version_tmp = AppProp.appVersion.replace(".", withString: "")
                     
                     if Tools.compareVersion(new_version_str, AppProp.appVersion) {
                         print(WInfo.cacheVersion)
-                        self.newVersion.text = new_version_str
+                        self.newVersion.text = new_version_str+" -t \(test)"
                         WInfo.cacheVersion = new_version_str
+                    } else {
+                        self.newVersion.text = new_version_str+" -f \(test)"
                     }
                     
                 }
@@ -214,11 +222,11 @@ class WSettingController: BaseController {
     
     @IBAction func doUpdateBtn(_ sender:UIButton){
         
-        if Tools.compareVersion(newVersion.text!, curVersion.text!) {
-            UIApplication.shared.openURL(URL(string:self.appUpdateUrl!)!)
-        }else{
-            self.view.makeToast("최신버전입니다.")
-        }
+//        if Tools.compareVersion(newVersion.text!, curVersion.text!) {
+//            UIApplication.shared.openURL(URL(string:self.appUpdateUrl!)!)
+//        }else{
+            self.view.makeToast("최신버전입니다. test")
+//        }
         
     }
 }

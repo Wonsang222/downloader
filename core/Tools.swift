@@ -83,8 +83,10 @@ class Tools{
     }
 
     static func compareVersion(_ serverVersion: String, _ localVersion: String) -> Bool {
+            /// 매직앱 아이폰 버전의 종류는 x.x , x.x.x , x.x.xx 가 있다.
             let server = serverVersion.split(separator:".").map{ String($0) }
             let local = localVersion.split(separator:".").map{ String($0) }
+        
             if Int(server[0]+server[1])! > Int(local[0]+local[1])! {
                 return true;
             } else if Int(server[0]+server[1])! == Int(local[0]+local[1])! {
@@ -94,6 +96,7 @@ class Tools{
                     return false;
                 }
             } else {
+                print("dong dd : \(server) , \(local)")
                 return false
             }
     }

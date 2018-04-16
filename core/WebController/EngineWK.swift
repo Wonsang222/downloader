@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 
 
-class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
+class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegate {
     private var _webView:WKWebView!
     var createWebView: WKWebView?
  
@@ -26,13 +26,20 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         config.processPool = WebEngine.gPool
         //        let jsctrl = WKUserContentController()
         config.preferences.javaScriptCanOpenWindowsAutomatically = true
-
-        _webView = WKWebView(frame: self.controller.webViewContainer.bounds, configuration: config)
+        
+//        _webView.scrollView.cont
+        print("dong2 statusbar frame :", UIApplication.shared.statusBarFrame.height)
+        _webView = WKWebView(frame: CGRect(x: self.controller.webViewContainer.bounds.origin.x,
+                                           y: UIApplication.shared.statusBarFrame.height,
+                                           width: self.controller.webViewContainer.bounds.size.width,
+                                           height: self.controller.webViewContainer.bounds.size.height - UIApplication.shared.statusBarFrame.height),
+                             configuration: config)
         if #available(iOS 9.0, *) {
             //            webView.allowsLinkPreview = true
         }
         _webView.uiDelegate = self
         _webView.navigationDelegate = self
+        _webView.scrollView.delegate = self
         self.controller.webViewContainer.addSubview(_webView)
     }
     
@@ -91,11 +98,16 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate {
         }
         print("dong webview url not null \(webView.url)")
         
+        
+//        WInfo.userInfo
         if !(self.controller is NotiController) {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
         }
 
         self.createAccessCookie()
+        
+        WInfo.customAction(theme: WInfo.themeInfo["theme"] as! String, rootView: self.controller.view )
+        
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {

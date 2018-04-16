@@ -10,8 +10,9 @@ import UIKit
 import WebKit
 
 
-class EngineUI: WebEngine,UIWebViewDelegate {
+class EngineUI: WebEngine,UIWebViewDelegate{
     private var _webView:UIWebView!
+    private var _tmpUrl: String!
     
     override func loadRequest(_ request: URLRequest) {
         _webView.loadRequest(request)
@@ -19,36 +20,55 @@ class EngineUI: WebEngine,UIWebViewDelegate {
     
     override func loadEngine() {
         super.loadEngine()
-        _webView = UIWebView(frame: self.controller.webViewContainer.bounds)
+        print("dong3 loadEngine \(self.controller.webViewContainer.bounds.origin.y) \(UIApplication.shared.statusBarFrame.height)")
+        _webView = UIWebView(frame: CGRect(x: self.controller.webViewContainer.bounds.origin.x,
+                                           y: UIApplication.shared.statusBarFrame.height,
+                                           width: self.controller.webViewContainer.bounds.size.width,
+                                           height: self.controller.webViewContainer.bounds.size.height)
+        )
         _webView.allowsInlineMediaPlayback = true
         
         if #available(iOS 9, *) {
             _webView.allowsLinkPreview = false
             _webView.allowsPictureInPictureMediaPlayback = true
         }
+        
         _webView.keyboardDisplayRequiresUserAction = false
         _webView.delegate = self
         _webView.autoresizingMask = [UIViewAutoresizing.flexibleHeight,UIViewAutoresizing.flexibleWidth]
         _webView.scalesPageToFit = true
+        
         self.controller.webViewContainer.addSubview(webView)
     }
 
+    
+    
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if !self.handleWing(request.url?.absoluteString) {
-            return false;
+        
+        if let urlString = request.url?.absoluteString {
+            if !self.handleWing(urlString) {
+                return false;
+            }
+            if !self.handleEvent(urlString) {
+                return false;
+            }
+            if !self.handleApiEvent(urlString) {
+                return false;
+            }
+            if !self.handleItunes(urlString) {
+                return false;
+            }
+            if !self.handleSchema(urlString) {
+                return false;
+            }
+            if let req_host = request.url?.host {
+                if WInfo.appUrl.range(of: req_host) == nil && navigationType == .linkClicked {
+                    UIApplication.shared.openURL(request.url!);
+                    return false;
+                }
+            }
         }
-        if !self.handleEvent(request.url?.absoluteString) {
-            return false;
-        }
-        if !self.handleApiEvent(request.url?.absoluteString) {
-            return false;
-        }
-        if !self.handleItunes(request.url?.absoluteString) {
-            return false;
-        }
-        if !self.handleSchema(request.url?.absoluteString) {
-            return false;
-        }
+        
         return true
     }
     
@@ -56,10 +76,23 @@ class EngineUI: WebEngine,UIWebViewDelegate {
         if webView.request == nil {
             return
         }
+       
+        
         if !(self.controller is NotiController) {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
         }
+        
+        
+//        if self._tmpUrl == webView.request?.url?.absoluteString {
+//            print("dong3 start??")
+//            return ;
+//        } else {
+//            self._tmpUrl = webView.request?.url?.absoluteString;
+//        }
+        
         self.createAccessCookie()
+        
+        print("dong3 back start \(webView.request?.url?.absoluteString)")
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
@@ -67,10 +100,13 @@ class EngineUI: WebEngine,UIWebViewDelegate {
         if webView.request!.url!.absoluteString.hasSuffix("smpay.kcp.co.kr/card.do") {
             self.runScript("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
         }
+        
+        print("dong3 back do? \(webView.scrollView.contentOffset.y)")
+        
         self.webDelegate?.webLoadedCommit(webView.request?.url?.absoluteString)
         self.webDelegate?.webLoadedFinish(webView.request?.url?.absoluteString)
     }
-    
+
     
   
     
@@ -206,10 +242,8 @@ class EngineUI: WebEngine,UIWebViewDelegate {
         return true
     }
     
-    
-    
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        print(error)
+        print("dong3 error erorr \(error)")
     }
     
     override func runScript(_ script: String) {

@@ -15,7 +15,7 @@ import AVKit
 import AVFoundation
 import WebKit
 
-class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReaderDelegate {
+class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReaderDelegate{
     static let gPool:WKProcessPool = WKProcessPool()
     let CONTACT_CALLBACK = 40
     let SCANNER_CALLBACK = 50
@@ -140,6 +140,14 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReader
             return false
         }
         if url!.hasPrefix("https://itunes.apple.com/us/app/") {
+            UIApplication.shared.openURL(URL(string:url!)!)
+            return false
+        }
+        if url!.hasPrefix("https://appsto.re/kr/") {
+            UIApplication.shared.openURL(URL(string:url!)!)
+            return false
+        }
+        if url!.hasPrefix("https://appsto.re/us/") {
             UIApplication.shared.openURL(URL(string:url!)!)
             return false
         }

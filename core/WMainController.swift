@@ -9,13 +9,17 @@
 import UIKit
 import WebKit
 
-class WMainController: BaseWebController,WebControlDelegate {
+class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegate {
     
     weak var introContrller:WIntroController?
-
+    // nain
+    var openedButton: UIButton? = nil
+    var menuState: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.engine.webDelegate = self
+        self.engine.scrollView.delegate = self
         DispatchQueue.main.async(execute: {
             self.performSegue(withIdentifier: "intro", sender: self)
         })
@@ -131,14 +135,15 @@ class WMainController: BaseWebController,WebControlDelegate {
 
 
     func loadPage(_ url:String){
-        
+        print("dong2 loadPage")
         let ui_data = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
         let objTopFix = ui_data["isTopFix"] as? Bool
         let topFix = objTopFix == nil ? true : objTopFix!
         if topFix && statusOverlay != nil{
             self.statusOverlay!.frame = CGRect(x:0 ,y:0,width:self.webViewContainer.frame.width ,height:
                 UIApplication.shared.statusBarFrame.height)
-        }else{
+        }
+        else{
             self.statusOverlay?.isHidden = true
             DispatchQueue.main.async{
                 self.engine.scrollView.contentInset.top = 0
@@ -250,21 +255,87 @@ class WMainController: BaseWebController,WebControlDelegate {
     }
     
     // NAIN custom
-    @objc func onLayout(_ sender: UIButton) {
+    @objc func openLayout(_ sender: UIButton) {
         let layout1 =  sender.superview! as UIView
-        let wisaMenu =  layout1.superview! as UIView
-        UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveEaseInOut, animations: {
-            if wisaMenu.rsY == self.view.bounds.height - 50  {
-                wisaMenu.transform = CGAffineTransform(translationX: wisaMenu.rsX, y: 0)
-            } else {
-                wisaMenu.transform = CGAffineTransform(translationX: wisaMenu.rsX, y: 50)
-            }
+        let root = layout1.superview! as UIView
+        openedButton = root.subviews[2].subviews[5] as? UIButton
+
+        root.subviews[2].transform = CGAffineTransform(translationX: layout1.rsX, y: 100)
+        sender.isHidden = true
+        layout1.subviews[8].isHidden = false
+        root.subviews[2].isHidden = false
+        
+        UIView.animate(withDuration: 0.3, delay: 0.1, options: [.allowUserInteraction, .curveEaseInOut], animations: {
+            
+            root.subviews[2].transform = CGAffineTransform(translationX: layout1.rsX, y: 0)
         }) { (finish) in
-            print("seeee 11")
+            
         }
     }
-    //
     
+    @objc func closeLayout(_ sender: UIButton) {
+        let layout2 =  sender.superview! as UIView
+        let root = layout2.superview! as UIView
+        openedButton = nil
+        root.subviews[3].subviews[8].isHidden = true
+        root.subviews[3].subviews[7].isHidden = false
+        
+        root.subviews[2].transform = CGAffineTransform(translationX: layout2.rsX, y: 0)
+        UIView.animate(withDuration: 0.3, delay: 0.1, options: [.allowUserInteraction, .curveEaseInOut], animations: {
+            layout2.transform = CGAffineTransform(translationX: layout2.rsX, y: 100)
+        }) { (finish) in
+        }
+    }
+    
+    // url 뒤에부분은 서버에서 json으로 내리기
+    
+    @objc func onLoginClick(_ sender: UIButton) {
+        let url = URL (string: "\(WInfo.appUrl)/member/login.php");
+        let requestObj = NSMutableURLRequest(url: url!);
+        self.engine.loadRequest(requestObj as URLRequest)
+    }
+    @objc func onMypageClick(_ sender: UIButton) {
+        let url = URL (string: "\(WInfo.appUrl)/mypage/mypage.php");
+        let requestObj = NSMutableURLRequest(url: url!);
+        self.engine.loadRequest(requestObj as URLRequest)
+    }
+    @objc func onLatestPrdClick(_ sender: UIButton) {
+        let url = URL (string: "\(WInfo.appUrl)/shop/click_prd.php");
+        let requestObj = NSMutableURLRequest(url: url!);
+        self.engine.loadRequest(requestObj as URLRequest)
+    }
+    @objc func onWishClick(_ sender: UIButton) {
+        let url = URL (string: "\(WInfo.appUrl)/mypage/wish_list.php");
+        let requestObj = NSMutableURLRequest(url: url!);
+        self.engine.loadRequest(requestObj as URLRequest)
+    }
+    @objc func onCartClick(_ sender: UIButton) {
+        let url = URL (string: "\(WInfo.appUrl)/shop/cart.php");
+        let requestObj = NSMutableURLRequest(url: url!);
+        self.engine.loadRequest(requestObj as URLRequest)
+    }
+    @objc func onDeliverClick(_ sender: UIButton) {
+        let url = URL (string: "\(WInfo.appUrl)/mypage/order_list.php");
+        let requestObj = NSMutableURLRequest(url: url!);
+        self.engine.loadRequest(requestObj as URLRequest)
+    }
+    @objc func onLocationClick(_ sender: UIButton) {
+        let url = URL (string: "\(WInfo.appUrl)/board/?db=basic_1");
+        let requestObj = NSMutableURLRequest(url: url!);
+        self.engine.loadRequest(requestObj as URLRequest)
+    }
+    
+//}else if key == "latest_prd"{
+//    button.addTarget(self.viewController , action: #selector(WMainController.onLatestPrdClick(_:)) , for: UIControlEvents.touchUpInside)
+//}else if key == "wish"{
+//    button.addTarget(self.viewController , action: #selector(WMainController.onWishClick(_:)) , for: UIControlEvents.touchUpInside)
+//}else if key == "cart"{
+//    button.addTarget(self.viewController , action: #selector(WMainController.onCartClick(_:)) , for: UIControlEvents.touchUpInside)
+//}else if key == "deliver"{
+//    button.addTarget(self.viewController , action: #selector(WMainController.onDeliverClick(_:)) , for: UIControlEvents.touchUpInside)
+//}else if key == "location"{
+//    button.addTarget(self.viewController , action: #selector(WMainController.onLocationClick(_:)) , for: UIControlEvents.touchUpInside)
+//}else if key == "setting"{
     
     override func prepare(for segue:UIStoryboardSegue, sender: Any?){
         if segue.identifier == "noti" {
@@ -297,6 +368,7 @@ class WMainController: BaseWebController,WebControlDelegate {
         }
     }
     func webLoadedCommit(_ urlString: String?) {
+        print("dong3 run commit code ")
         if self.presentedViewController != nil {
             self.introContrller?.webViewLoadedOk = true
             self.introContrller?.closeIntroProcess()
@@ -316,6 +388,12 @@ class WMainController: BaseWebController,WebControlDelegate {
         
     }
 
-
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if openedButton == nil {
+            return ;
+        } else {
+            self.closeLayout(openedButton!)
+        }
+    }
 }
 

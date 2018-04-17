@@ -83,7 +83,7 @@
 		D4DC5E291FAAB2C8008772AD /* search_bg_focus_box_rb.png in Resources */ = {isa = PBXBuildFile; fileRef = D4DC5E241FAAB2C8008772AD /* search_bg_focus_box_rb.png */; };
 		D4DC5E2A1FAAB2C8008772AD /* search_ico_focus.png in Resources */ = {isa = PBXBuildFile; fileRef = D4DC5E251FAAB2C8008772AD /* search_ico_focus.png */; };
 		D4DC5E2C1FAAB6D7008772AD /* ic_navi_back_white.png in Resources */ = {isa = PBXBuildFile; fileRef = D4DC5E2B1FAAB6D7008772AD /* ic_navi_back_white.png */; };
-		D4DCF2B3204D3FBC00C824AA /* ThemeV2NAIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DCF2B2204D3FBC00C824AA /* ThemeV2NAIN.swift */; };
+		D4DCF2B3204D3FBC00C824AA /* ThemeV2CNAIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DCF2B2204D3FBC00C824AA /* ThemeV2CNAIN.swift */; };
 		D4FD0F121CBB354E00018CDF /* BaseConroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FD0F111CBB354E00018CDF /* BaseConroller.swift */; };
 		F50E53F6202D7829001CDAFA /* InAppNavi.xib in Resources */ = {isa = PBXBuildFile; fileRef = F50E53F5202D7829001CDAFA /* InAppNavi.xib */; };
 		F50E53FA202D79B0001CDAFA /* ic_a_inapp_forward.png in Resources */ = {isa = PBXBuildFile; fileRef = F50E53F7202D79B0001CDAFA /* ic_a_inapp_forward.png */; };
@@ -184,7 +184,7 @@
 		D4DC5E241FAAB2C8008772AD /* search_bg_focus_box_rb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_bg_focus_box_rb.png; sourceTree = "<group>"; };
 		D4DC5E251FAAB2C8008772AD /* search_ico_focus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_ico_focus.png; sourceTree = "<group>"; };
 		D4DC5E2B1FAAB6D7008772AD /* ic_navi_back_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_navi_back_white.png; sourceTree = "<group>"; };
-		D4DCF2B2204D3FBC00C824AA /* ThemeV2NAIN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeV2NAIN.swift; sourceTree = "<group>"; };
+		D4DCF2B2204D3FBC00C824AA /* ThemeV2CNAIN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeV2CNAIN.swift; sourceTree = "<group>"; };
 		D4FD0F111CBB354E00018CDF /* BaseConroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseConroller.swift; sourceTree = "<group>"; };
 		D4FD0F131CBB5DC000018CDF /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		F50E53F5202D7829001CDAFA /* InAppNavi.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InAppNavi.xib; sourceTree = "<group>"; };
@@ -455,7 +455,7 @@
 		D4DCF2B1204D3FBC00C824AA /* custom */ = {
 			isa = PBXGroup;
 			children = (
-				D4DCF2B2204D3FBC00C824AA /* ThemeV2NAIN.swift */,
+				D4DCF2B2204D3FBC00C824AA /* ThemeV2CNAIN.swift */,
 			);
 			path = custom;
 			sourceTree = "<group>";
@@ -664,7 +664,7 @@
 				D4D9FCB21FBA754A00B088B1 /* PermissionController.swift in Sources */,
 				D4326BD01CB561E8007A07C6 /* WAppDelegate.swift in Sources */,
 				D4FD0F121CBB354E00018CDF /* BaseConroller.swift in Sources */,
-				D4DCF2B3204D3FBC00C824AA /* ThemeV2NAIN.swift in Sources */,
+				D4DCF2B3204D3FBC00C824AA /* ThemeV2CNAIN.swift in Sources */,
 				D408A9CF1CA2B50400E0DCB5 /* HttpBaseResource.swift in Sources */,
 				D4932E811CA432710014B769 /* HttpMap.swift in Sources */,
 				D408A9D01CA2B50400E0DCB5 /* RSHttp.swift in Sources */,

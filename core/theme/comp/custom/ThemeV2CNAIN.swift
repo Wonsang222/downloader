@@ -48,10 +48,6 @@ class ThemeV2CNAIN: CommonMkTheme {
         var bottom_position = CGFloat(0)
         let menuWidth_bottom = UIScreen.main.bounds.width / CGFloat(menus["bottomNm"] as! CGFloat)
         
-        
-        print("dong nain theme info  \(WInfo.themeInfo["theme"])")
-        
-        
         for menu in bottom_menus {
             let key = menu["click"] as! String
             let menuView = UIButton.init(type: .custom)

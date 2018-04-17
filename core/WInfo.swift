@@ -35,9 +35,9 @@ class WInfo{
 		get{
 			if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{
 //              return "http://118.129.243.73/sendbege.html"
-                return "http://m.naintest.wisa.co.kr"
+//                return "http://m.nain.co.kr"
 //                return "http://m.single888.com"
-//              return returnValue
+              return returnValue
 			}else{
 				return ""
 			}
@@ -352,7 +352,9 @@ class WInfo{
     // ThemeInfo
     static var getAbleTheme: [String] {
         get {
-            return ["T1","T2","T3", "CNAIN"]
+            return ["T1","T2","T3"
+//                ,"CNAIN"
+            ]
         }
     }
     //

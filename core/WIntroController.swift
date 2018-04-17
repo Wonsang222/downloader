@@ -230,7 +230,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
 		RSHttp(controller:self).req(
 		   ApiFormApp()
             .ap("mode","get_theme")
-            .ap("able_theme", WInfo.getAbleTheme.joined(separator: ","))
+//            .ap("able_theme", WInfo.getAbleTheme.joined(separator: ","))
             .ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
 		   		let serverVersion = resource.body()["version"] as! String

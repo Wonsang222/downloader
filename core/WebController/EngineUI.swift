@@ -38,6 +38,12 @@ class EngineUI: WebEngine,UIWebViewDelegate{
         _webView.autoresizingMask = [UIViewAutoresizing.flexibleHeight,UIViewAutoresizing.flexibleWidth]
         _webView.scalesPageToFit = true
         
+        // cache clear
+//        URLCache.shared.removeAllCachedResponses()
+//        URLCache.shared.diskCapacity = 0
+//        URLCache.shared.memoryCapacity = 0
+        
+        
         self.controller.webViewContainer.addSubview(webView)
     }
 
@@ -91,8 +97,6 @@ class EngineUI: WebEngine,UIWebViewDelegate{
 //        }
         
         self.createAccessCookie()
-        
-        print("dong3 back start \(webView.request?.url?.absoluteString)")
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {

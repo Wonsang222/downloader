@@ -114,13 +114,36 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func applicationDidBecomeActive( _ application: UIApplication) {
+        clearCache()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        if(AppProp.appCookieSet != "YES") {
-            WInfo.saveAllCookie()
+        WInfo.saveAllCookie()
+    }
+    
+    
+    func clearCache() {
+        let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        let fileManager = FileManager.default
+        
+        do {
+            let directoryContents = try FileManager.default.contentsOfDirectory( at: cacheURL, includingPropertiesForKeys: nil, options: [])
+            for file in directoryContents {
+                print("dong wing for문 ")
+                do {
+                    try fileManager.removeItem(at: file)
+                    
+                } catch let error as NSError {
+                    debugPrint("dong Ooops! Something went wrong: \(error)")
+                }
+                
+            }
+            
+        } catch let error as NSError {
+            print("dong \(error.localizedDescription)")
         }
     }
+    
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
 //        let tokenString = deviceToken.description.replacingOccurrences(of: "[ <>]", with: "", options: .regularExpression, range: nil)

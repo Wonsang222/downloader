@@ -156,7 +156,12 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         webUrl.text = webView.url?.host
         webUrl.isHidden = false
     }
-    
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        print("inapp didcommit")
+    }
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        print("inapp didfail : : \(error)")
+    }
     func webViewDidClose(_ webView: WKWebView) {
         self.dismiss(animated: true, completion: nil)
     }

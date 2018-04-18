@@ -40,8 +40,8 @@ class EngineUI: WebEngine,UIWebViewDelegate{
         
         // cache clear
 //        URLCache.shared.removeAllCachedResponses()
-//        URLCache.shared.diskCapacity = 0
-//        URLCache.shared.memoryCapacity = 0
+        URLCache.shared.diskCapacity = 0
+        URLCache.shared.memoryCapacity = 0
         
         
         self.controller.webViewContainer.addSubview(webView)

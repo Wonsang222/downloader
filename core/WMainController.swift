@@ -150,10 +150,13 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             }
         }
         var url_obj = URL (string: url);
-        
         if url == WInfo.appUrl {
-            let new_url = "\(WInfo.appUrl)?\(WInfo.urlParam)"
-            url_obj = URL (string: new_url);
+            // 'wsmk=' 값만 넘어온다면 파라미터 넣지않기
+            if WInfo.urlParam != "wsmk=" {
+                let new_url = "\(WInfo.appUrl)?\(WInfo.urlParam)"
+                url_obj = URL (string: new_url);
+            }
+            print("dong url_obj2 \(url_obj)")
         }
 
         

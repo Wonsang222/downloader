@@ -202,6 +202,13 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     
     
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+
+        if let req_host = navigationAction.request.url?.host {
+            if WInfo.appUrl.range(of: req_host) != nil {
+                webView.load(navigationAction.request)
+                return nil
+            }
+        }
         let controller = MGWKSubWebController()
         let re_webView = controller.loadedView(url: (navigationAction.request), config: configuration)
         
@@ -248,7 +255,12 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         _webView.reload()
     }
     override func clearHistory() {
+        
     }
+    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        print("dong scroll gogo", WMainController.)
+//    }
 
 }
 

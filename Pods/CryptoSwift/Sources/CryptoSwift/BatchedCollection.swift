@@ -34,7 +34,7 @@ protocol BatchedCollectionType: Collection {
 
 struct BatchedCollection<Base: Collection>: Collection {
     let base: Base
-    let size: Base.IndexDistance
+    let size: Int
     typealias Index = BatchedCollectionIndex<Base>
     private func nextBreak(after idx: Base.Index) -> Base.Index {
         return base.index(idx, offsetBy: size, limitedBy: base.endIndex)

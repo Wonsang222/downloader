@@ -35,9 +35,9 @@ class WInfo{
 		get{
 			if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{
 //              return "http://118.129.243.73/sendbege.html"
-//                return "http://m.nain.co.kr"
-//                return "http://m.single888.com"
-              return returnValue
+                return "http://m.naintest.wisa.co.kr"
+//                return "http://rankingdak.com/m"
+//              return returnValue
 			}else{
 				return ""
 			}
@@ -353,20 +353,18 @@ class WInfo{
     static var getAbleTheme: [String] {
         get {
             return ["T1","T2","T3"
-//                ,"CNAIN"
+                ,"CNAIN"
             ]
         }
     }
     //
     
     static func customAction(theme: String, rootView: UIView!) {
-        // 1. winfo.themeinfo를 통해 커스텀 클래스 인지 확인한다
-        // - null 이거나 첫글자가 T이면 커스텀클래스가 아니다. T로 시작하는업체가 있을수있는데, 앞에 커스텀용 알파벳을 붙이도록 하자. (W, C, WC 등..)
-        // 2. 커스텀 테마인 경우, 커스텀 클래스에 접근하여 userinfo 에 배열요소가 존재하면 'mypage'를, 존재하지않으면 'login'을 띄운다.
-        
+        // winfo.themeinfo를 통해 커스텀 클래스 인지 확인한다
+        // 커스텀 테마인 경우, 커스텀 클래스에 접근하여 userinfo 에 배열요소가 존재하면 'mypage'를, 존재하지않으면 'login'을 띄운다.
         if WInfo.themeInfo["theme"] != nil {
             // Theme별 분기 ... 다른 방법있나?
-            if theme == "nain" {
+            if theme == "cnain" {
                 print("dong subviews count : :", rootView.subviews.count)
                 if rootView.subviews != nil && rootView.subviews.count > 3 && rootView.subviews[3] != nil {
                     let login = rootView.subviews[3].subviews[5] as! UIButton

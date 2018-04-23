@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>ko_KR</string>
+	<key>CFBundleDisplayName</key>
+	<string>지비스타일몰</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -82,6 +84,10 @@
 	<string>해당기능 사용을 위해 Photo 권한을 요청합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>[필수 접근권한]게시물 파일첨부 용도로 사용합니다</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string></string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

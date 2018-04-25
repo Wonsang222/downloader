@@ -114,7 +114,8 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func applicationDidBecomeActive( _ application: UIApplication) {
-        clearCache()
+//          나인
+//        clearCache()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

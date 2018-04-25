@@ -67,12 +67,12 @@ class EngineUI: WebEngine,UIWebViewDelegate{
             if !self.handleSchema(urlString) {
                 return false;
             }
-            if let req_host = request.url?.host {
-                if WInfo.appUrl.range(of: req_host) == nil && navigationType == .linkClicked {
-                    UIApplication.shared.openURL(request.url!);
-                    return false;
-                }
-            }
+//            if let req_host = request.url?.host {
+//                if WInfo.appUrl.range(of: req_host) == nil && navigationType == .linkClicked {
+//                    UIApplication.shared.openURL(request.url!);
+//                    return false;
+//                }
+//            }
         }
         
         return true

@@ -138,6 +138,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
 		   		let solutionType = resource.body()["solution_type"] as! String
                 let account_id = resource.body()["account_id"] as! String
                 let urlParam = resource.body()["url_param"] as! String
+                self.updateUse = resource.body()["update_use"] as? String
             
                 if let marketingUrl = resource.body()["marketing_url"] as? String{
                     WInfo.getMarketingPopupUrl = marketingUrl

@@ -22,9 +22,9 @@ class EngineUI: WebEngine,UIWebViewDelegate{
         super.loadEngine()
         print("dong3 loadEngine \(self.controller.webViewContainer.bounds.origin.y) \(UIApplication.shared.statusBarFrame.height)")
         _webView = UIWebView(frame: CGRect(x: self.controller.webViewContainer.bounds.origin.x,
-                                           y: UIApplication.shared.statusBarFrame.height,
+                                           y: 0,
                                            width: self.controller.webViewContainer.bounds.size.width,
-                                           height: self.controller.webViewContainer.bounds.size.height - UIApplication.shared.statusBarFrame.height - CGFloat(truncating: WInfo.naviHeight))
+                                           height: self.controller.webViewContainer.bounds.size.height - CGFloat(truncating: WInfo.naviHeight))
         )
         _webView.allowsInlineMediaPlayback = true
         

@@ -34,6 +34,8 @@ class ThemeV1: CommonMkTheme {
         let menuSize = CGFloat((uiData["menusSize"] as! NSString).floatValue)
         let wisaMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - menuSize - Tools.safeArea(),width: UIScreen.main.bounds.width, height: menuSize) )
 
+        WInfo.naviHeight = NSNumber(value:Float(menuSize));
+        
         let menuWidth = UIScreen.main.bounds.width / CGFloat(menus.count)
         let bgColor = UIColor(hexString:uiData["menusBg"] as! String)
         let iconColor = UIColor(hexString:uiData["menuIcon"] as! String)
@@ -81,7 +83,7 @@ class ThemeV1: CommonMkTheme {
         borderLayer.frame = CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: Tools.toOriginPixel(1.0))
         wisaMenu.layer.addSublayer(borderLayer)
         view?.addSubview(wisaMenu)
-        mainController!.engine.scrollView.contentInset.bottom = wisaMenu.frame.height
+//        mainController!.engine.scrollView.contentInset.bottom = wisaMenu.frame.height
         if Tools.safeArea() != 0 {
             let safeView = UIView(frame: CGRect(x: 0, y: view!.frame.height - Tools.safeArea(), width: UIScreen.main.bounds.width, height: Tools.safeArea()))
             safeView.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)

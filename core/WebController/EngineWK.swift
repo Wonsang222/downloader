@@ -30,9 +30,9 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
 //        _webView.scrollView.cont
         print("dong2 statusbar frame :", UIApplication.shared.statusBarFrame.height)
         _webView = WKWebView(frame: CGRect(x: self.controller.webViewContainer.bounds.origin.x,
-                                           y: 0,
+                                           y: UIApplication.shared.statusBarFrame.height,
                                            width: self.controller.webViewContainer.bounds.size.width,
-                                           height: self.controller.webViewContainer.bounds.size.height - Tools.safeArea()),
+                                           height: self.controller.webViewContainer.bounds.size.height - Tools.safeArea() - UIApplication.shared.statusBarFrame.height - CGFloat(truncating: WInfo.naviHeight)),
                              configuration: config)
         if #available(iOS 9.0, *) {
             //            webView.allowsLinkPreview = true

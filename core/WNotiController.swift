@@ -37,6 +37,7 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         let contentView = self.view.subviews[0]
         let topView = self.view.subviews[1]
         contentView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: UIScreen.main.bounds.size.height)
+        self.engine.webView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - Tools.safeArea())
         DispatchQueue.main.async{
             self.engine.scrollView.contentInset.top = topView.frame.size.height
             self.engine.scrollView.contentInset.bottom = 0

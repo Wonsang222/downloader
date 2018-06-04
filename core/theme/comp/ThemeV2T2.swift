@@ -17,7 +17,7 @@ class ThemeV2T2: CommonMkTheme {
         if mainController == nil {
             return
         }
-        
+        WInfo.naviHeight = 50;
         let menus = uiData["menus"] as! [[String:AnyObject]]
         let wisaMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - 50 - Tools.safeArea(),width: UIScreen.main.bounds.width, height: 50) )
         let menuWidth = UIScreen.main.bounds.width / CGFloat(menus.count)
@@ -70,7 +70,7 @@ class ThemeV2T2: CommonMkTheme {
         borderLayer.frame = CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: Tools.toOriginPixel(1.0))
         wisaMenu.layer.addSublayer(borderLayer)
         view?.addSubview(wisaMenu)
-        mainController!.engine.scrollView.contentInset.bottom = wisaMenu.frame.height
+//        mainController!.engine.scrollView.contentInset.bottom = wisaMenu.frame.height
         if Tools.safeArea() != 0 {
             let safeView = UIView(frame: CGRect(x: 0, y: view!.frame.height - Tools.safeArea(), width: UIScreen.main.bounds.width, height: Tools.safeArea()))
             safeView.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)

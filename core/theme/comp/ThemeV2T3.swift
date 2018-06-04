@@ -24,8 +24,9 @@ class ThemeV2T3: CommonMkTheme {
             mainController!.engine.webView.backgroundColor = UIColor.white
             mainController!.engine.webView.isOpaque = false
         }
+        WInfo.naviHeight = 0;
     }
-    
+
     override func applyNavi() {
         
         let labelViewTag = 100

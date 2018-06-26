@@ -231,6 +231,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
 		RSHttp(controller:self).req(
 		   ApiFormApp()
             .ap("mode","get_theme")
+//            나인 커스텀 관련
             .ap("able_theme", WInfo.getAbleTheme.joined(separator: ","))
             .ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in

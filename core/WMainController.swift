@@ -16,6 +16,7 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     var openedButton: UIButton? = nil
     var menuState: Int = 0
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.engine.webDelegate = self
@@ -140,6 +141,9 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
         let objTopFix = ui_data["isTopFix"] as? Bool
         let topFix = objTopFix == nil ? true : objTopFix!
         if topFix && statusOverlay != nil{
+            DispatchQueue.main.async{
+                self.engine.scrollView.contentInset.top = 0
+            }
             self.statusOverlay!.frame = CGRect(x:0 ,y:0,width:self.webViewContainer.frame.width ,height:
                 UIApplication.shared.statusBarFrame.height)
         }
@@ -156,7 +160,6 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
                 let new_url = "\(WInfo.appUrl)?\(WInfo.urlParam)"
                 url_obj = URL (string: new_url);
             }
-            print("dong url_obj2 \(url_obj)")
         }
 
         
@@ -256,6 +259,32 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     @objc func onSettingClick(_ sender:UIButton!){
         self.performSegue(withIdentifier: "setting" ,  sender : self)
     }
+    
+    @objc func onExtendFunc(_ sender:UIButton!, _ key: String) {
+        print("dong succcc00 \(key)")
+        if key == "prev"{
+            self.onPrevClick(sender)
+        }else if key == "next"{
+            self.onNextClick(sender)
+        }else if key == "reload"{
+            self.onReloadClick(sender)
+        }else if key == "home"{
+            self.onHomeClick(sender)
+        }else if key == "share"{
+            self.onShareClick(sender)
+        }else if key == "push"{
+            self.onPushClick(sender)
+        }else if key == "setting"{
+            self.onSettingClick(sender)
+        } else {
+            let url = URL(string: String(describing: "\(WInfo.appUrl)/\(key)"))
+            print("dong succcc \(url)")
+            let requestObj = NSMutableURLRequest(url: url!)
+            self.engine.loadRequest(requestObj as URLRequest)
+        }
+        
+    }
+    //
     
     // NAIN custom
     @objc func openLayout(_ sender: UIButton) {

@@ -354,7 +354,7 @@ class WInfo{
     // ThemeInfo
     static var getAbleTheme: [String] {
         get {
-            return ["T1","T2","T3"
+            return ["T1","T2","T3","T4"
 //                나인
 //                ,"CNAIN"
             ]
@@ -379,7 +379,6 @@ class WInfo{
             UserDefaults.standard.synchronize()
         }
     }
-
     
     static func customAction(theme: String, rootView: UIView!) {
         // winfo.themeinfo를 통해 커스텀 클래스 인지 확인한다

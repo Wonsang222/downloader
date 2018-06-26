@@ -61,6 +61,50 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
             self.present(activity, animated: true, completion: nil)
         }
     }
+    
+    let paySchema = [
+        ["schema" : "smartxpay-transfer", "url" : "https://itunes.apple.com/kr/app/seumateu-egseupei-gyejwaiche/id393794374?mt=8"],  //SmartXPay
+        ["schema" : "hdcardappcardansimclick", "url" : "http://itunes.apple.com/kr/app/id702653088?mt=8"],  //현대카드
+        ["schema" : "shinhan-sr-ansimclick", "url" : "https://itunes.apple.com/kr/app/sinhan-mobilegyeolje/id572462317?mt=8"], //신한카드
+        ["schema" : "kb-acp", "url" : "https://itunes.apple.com/kr/app/kbgugmin-aebkadue/id695436326?mt=8"],    //KB카드
+        ["schema" : "mpocket.online.ansimclick", "url" : "https://itunes.apple.com/kr/app/mpokes/id535125356?mt=8&ls=1"], // 삼성카드
+        ["schema" : "tswansimclick", "url" : "https://itunes.apple.com/kr/app/id430282710"],   //삼성 서랍
+        
+        ["schema" : "lotteappcard", "url" : "https://itunes.apple.com/kr/app/losde-aebkadeu/id688047200?mt=8"], //롯데카드
+        ["schema" : "lottesmartpay", "url" : ""], //롯데
+        
+        ["schema" : "cloudpay", "url" : "itmss://itunes.apple.com/app/id847268987"], //외환카드 , 하나카드
+        ["schema" : "nhappcardansimclick", "url" : "http://itunes.apple.com/kr/app/nhnonghyeob-mobailkadeu-aebkadeu/id698023004?mt=8"], //NH카드
+        ["schema" : "citispay", "url" : "https://itunes.apple.com/kr/app/citi-cards-mobile-ssitikadeu/id373559493?l=en&mt=8"],          //NH카드
+        ["schema" : "lguthepay", "url" : "https://itunes.apple.com/kr/app/paynow/id760098906?mt=8"],          //페이나우
+        
+        ["schema" : "smhyundaiansimclick", "url" : ""],
+        ["schema" : "nonghyupcardansimclick", "url" : ""],
+        ["schema" : "nhallonepayansimclick" , "url" : ""],  // 농협앱카드 추가 관련
+        
+        ["schema" : "lguthepay-xpay", "url" : ""],
+        ["schema" : "payco", "url" : ""],
+        ["schema" : "smshinhanansimclick", "url" : ""],
+        ["schema" : "ansimclickscard", "url" : ""],     // 삼성카드
+        ["schema" : "ansimclickipcollect", "url" : ""], // 삼성카드
+        ["schema" : "vguardstart", "url" : ""], // 삼성카드
+        ["schema" : "samsungpay", "url" : ""], // 삼성카드
+        ["schema" : "scardcertiapp", "url" : ""], // 삼성카드
+        
+        ["schema" : "ispmobile", "url" : "https://itunes.apple.com/kr/app/mobail-anjeongyeolje-isp/id369125087?mt=8"],  // ISP
+        
+        ["schema" : "citispay", "url" : ""], // 삼성카드
+        ["schema" : "nhallonepayansimclick", "url" : ""], // 삼성카드
+        ["schema" : "citispay", "url" : ""], // 삼성카드
+        ["schema" : "citicardappkr", "url" : ""], // 삼성카드
+        ["schema" : "citimobileapp", "url" : ""], // 삼성카드
+        ["schema" : "uppay", "url" : ""], // 삼성카드
+        ["schema" : "shinsegaeeasypayment", "url" : ""], // 삼성카드
+        ["schema" : "paypin", "url" : ""], // 페이핀
+        ["schema" : "storylink", "url" : "https://itunes.apple.com/us/app/kakaostory/id486244601?mt=8"], // 카카오스토리
+        ["schema" : "kakaotalk", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오톡
+        ["schema" : "kakaolink", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"] // 카카오링크
+    ]
 
     
     
@@ -138,6 +182,45 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         webViewSubContainer?.addSubview(topNavigationView)
         webViewSubContainer?.addSubview(bottomNavigationView!)
         return webView
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let urlString = navigationAction.request.url?.absoluteString {
+            if urlString.hasPrefix("tel:") || urlString.hasPrefix("mailto:") {
+                UIApplication.shared.openURL(navigationAction.request.url!)
+                decisionHandler(.cancel)
+            } else if !self.handleSchema(urlString) {
+                decisionHandler(.cancel)
+            } else {
+                decisionHandler(.allow)
+                return ;
+            }
+            
+        } else {
+            decisionHandler(.allow)
+            return ;
+        }
+        
+    }
+    
+    func handleSchema(_ url:String?)->Bool{
+        
+        if url == nil {
+            return true
+        }
+        for appSchema in paySchema {
+            if url!.hasPrefix(appSchema["schema"]! as String) {
+                if UIApplication.shared.canOpenURL(URL(string:url!)!) {
+                    UIApplication.shared.openURL(URL(string:url!)!)
+                }else{
+                    if appSchema["url"] != "" {
+                        UIApplication.shared.openURL(URL(string:appSchema["url"]! as String)!)
+                    }
+                }
+                return false
+            }
+        }
+        return true
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {

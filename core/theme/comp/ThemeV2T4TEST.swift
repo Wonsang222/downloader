@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ThemeV2T4: CommonMkTheme {
+class ThemeV2T4TEST: CommonMkTheme {
     
     
     override func applayMain() {
@@ -128,6 +128,7 @@ class ThemeV2T4: CommonMkTheme {
             safeView.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)
             view?.addSubview(safeView)
         }
+        
         if let webBackground = uiData["webBackground"] as? String {
             mainController!.engine.webView.backgroundColor = UIColor(hexString:webBackground)
             mainController!.engine.webView.isOpaque = false

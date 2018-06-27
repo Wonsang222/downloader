@@ -88,12 +88,12 @@
 		F50E53FA202D79B0001CDAFA /* ic_a_inapp_forward.png in Resources */ = {isa = PBXBuildFile; fileRef = F50E53F7202D79B0001CDAFA /* ic_a_inapp_forward.png */; };
 		F50E53FB202D79B0001CDAFA /* ic_a_inapp_back.png in Resources */ = {isa = PBXBuildFile; fileRef = F50E53F8202D79B0001CDAFA /* ic_a_inapp_back.png */; };
 		F50E53FC202D79B0001CDAFA /* ic_a_inapp_share.png in Resources */ = {isa = PBXBuildFile; fileRef = F50E53F9202D79B0001CDAFA /* ic_a_inapp_share.png */; };
+		F51C74D020E3715C00FE5CE9 /* ThemeV2T4TEST.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51C74CF20E3715B00FE5CE9 /* ThemeV2T4TEST.swift */; };
 		F58B1D531FBD618500543A2B /* ic_a_notification.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D501FBD618400543A2B /* ic_a_notification.png */; };
 		F58B1D541FBD618500543A2B /* ic_a_location.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D511FBD618500543A2B /* ic_a_location.png */; };
 		F58B1D551FBD618500543A2B /* ic_a_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = F58B1D521FBD618500543A2B /* ic_a_camera.png */; };
 		F5FCD42D20E1E32600B36214 /* MGWKSubWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FCD42C20E1E32500B36214 /* MGWKSubWebController.swift */; };
 		F5FCD42F20E1E35400B36214 /* WInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FCD42E20E1E35400B36214 /* WInfo.swift */; };
-		F5FCD43120E1E38200B36214 /* ThemeV2T4.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FCD43020E1E38200B36214 /* ThemeV2T4.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -191,12 +191,12 @@
 		F50E53F7202D79B0001CDAFA /* ic_a_inapp_forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_inapp_forward.png; sourceTree = "<group>"; };
 		F50E53F8202D79B0001CDAFA /* ic_a_inapp_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_inapp_back.png; sourceTree = "<group>"; };
 		F50E53F9202D79B0001CDAFA /* ic_a_inapp_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_inapp_share.png; sourceTree = "<group>"; };
+		F51C74CF20E3715B00FE5CE9 /* ThemeV2T4TEST.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeV2T4TEST.swift; sourceTree = "<group>"; };
 		F58B1D501FBD618400543A2B /* ic_a_notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_notification.png; sourceTree = "<group>"; };
 		F58B1D511FBD618500543A2B /* ic_a_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_location.png; sourceTree = "<group>"; };
 		F58B1D521FBD618500543A2B /* ic_a_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_camera.png; sourceTree = "<group>"; };
 		F5FCD42C20E1E32500B36214 /* MGWKSubWebController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGWKSubWebController.swift; sourceTree = "<group>"; };
 		F5FCD42E20E1E35400B36214 /* WInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WInfo.swift; sourceTree = "<group>"; };
-		F5FCD43020E1E38200B36214 /* ThemeV2T4.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeV2T4.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -430,7 +430,7 @@
 				D4ABD0FB1E6562D100EC0649 /* ThemeV2T1.swift */,
 				D4ABD0FD1E6562DC00EC0649 /* ThemeV2T2.swift */,
 				D4D9FCAF1FBA6EBA00B088B1 /* ThemeV2T3.swift */,
-				F5FCD43020E1E38200B36214 /* ThemeV2T4.swift */,
+				F51C74CF20E3715B00FE5CE9 /* ThemeV2T4TEST.swift */,
 			);
 			path = comp;
 			sourceTree = "<group>";
@@ -664,10 +664,10 @@
 				D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */,
 				D4BBE1842002F5A000CD7717 /* EngineUI.swift in Sources */,
 				D4CC07D32015B26F0033A011 /* OLImage.m in Sources */,
+				F51C74D020E3715C00FE5CE9 /* ThemeV2T4TEST.swift in Sources */,
 				D4ABD0FE1E6562DC00EC0649 /* ThemeV2T2.swift in Sources */,
 				D408A9D11CA2B50400E0DCB5 /* HttpInfo.swift in Sources */,
 				D4D9FCB21FBA754A00B088B1 /* PermissionController.swift in Sources */,
-				F5FCD43120E1E38200B36214 /* ThemeV2T4.swift in Sources */,
 				D4326BD01CB561E8007A07C6 /* WAppDelegate.swift in Sources */,
 				D4FD0F121CBB354E00018CDF /* BaseConroller.swift in Sources */,
 				D4DCF2B3204D3FBC00C824AA /* ThemeV2CNAIN.swift in Sources */,

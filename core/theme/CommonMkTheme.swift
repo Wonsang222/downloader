@@ -26,6 +26,10 @@ class CommonMkTheme {
     }
     func applyNavi(){
     }
+    
+    func applyTutorialView() {
+    
+    }
     func preferredStatusBarStyle() -> UIStatusBarStyle{
         return .default
     }

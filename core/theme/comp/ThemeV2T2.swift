@@ -76,6 +76,16 @@ class ThemeV2T2: CommonMkTheme {
             safeView.backgroundColor = UIColor(hexString:uiData["menusBg"] as! String)
             view?.addSubview(safeView)
         }
+            // holding
+//        let testView: UIPageControl = UIPageControl(frame: CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: self.viewController.view.frame.height))
+//        testView.backgroundColor = .red
+//        testView.alpha = 0.5
+//        testView.currentPage = 0
+//        testView.numberOfPages = 5
+//        testView.tintColor = .blue
+//        testView.currentPageIndicatorTintColor = .green
+
+        
         if let webBackground = uiData["webBackground"] as? String {
             mainController!.engine.webView.backgroundColor = UIColor(hexString:webBackground)
             mainController!.engine.webView.isOpaque = false

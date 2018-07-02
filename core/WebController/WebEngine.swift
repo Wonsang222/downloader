@@ -75,6 +75,7 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReader
         ["schema" : "shinsegaeeasypayment", "url" : ""], // 삼성카드
         ["schema" : "paypin", "url" : ""], // 페이핀
         ["schema" : "storylink", "url" : "https://itunes.apple.com/us/app/kakaostory/id486244601?mt=8"], // 카카오스토리
+//        ["schema" : "kakaostory", "url" : "https://itunes.apple.com/us/app/kakaostory/id486244601?mt=8"], // 카카오스토리2 test
         ["schema" : "kakaotalk", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오톡
         ["schema" : "kakaolink", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"] // 카카오링크
 
@@ -118,7 +119,6 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReader
         }
         
         if url!.hasPrefix("https://kauth.kakao.com/oauth/authorize?") {
-            
             print("kakao oauth pass")
             
         }

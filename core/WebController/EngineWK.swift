@@ -94,10 +94,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
             print("dong webview url null ")
             return
         }
-        print("dong webview url not null \(webView.url)")
         
-        
-//        WInfo.userInfo
         if !(self.controller is NotiController) {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
         }

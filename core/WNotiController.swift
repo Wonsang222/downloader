@@ -24,11 +24,13 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         self.engine.webDelegate = self
         ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
         self.engine.webView.alpha = 0
-        type = type != nil ? type : "all"
+        print("dong push text flag \(WInfo.useTextPush)")
+        type = WInfo.useTextPush == true ? "all" : "event"
         let url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId + "&view=" + type!)
 //        if link != nil {
 //            url = URL (string: link!);
 //        }
+        print("dong noty type  \(url)");
         var requestObj = URLRequest(url: url!);
         if let userId = WInfo.userInfo["userId"] as? String{
             requestObj.addValue(userId.encryptAES256(), forHTTPHeaderField: "MAGIC_USER_ID")

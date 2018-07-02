@@ -20,7 +20,6 @@ class EngineUI: WebEngine,UIWebViewDelegate{
     
     override func loadEngine() {
         super.loadEngine()
-        print("dong3 loadEngine \(self.controller.webViewContainer.bounds.origin.y) \(UIApplication.shared.statusBarFrame.height)")
         _webView = UIWebView(frame: CGRect(x: self.controller.webViewContainer.bounds.origin.x,
                                            y: 0,
                                            width: self.controller.webViewContainer.bounds.size.width,

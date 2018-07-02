@@ -134,6 +134,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
 		RSHttp(controller:self).req(
 		   ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
+                let app_func = (resource.body()["app_func"] as! String).jsonObject()
 		   		let siteUrl = resource.body()["site_url"] as! String
 		   		let solutionType = resource.body()["solution_type"] as! String
                 let account_id = resource.body()["account_id"] as! String
@@ -147,9 +148,18 @@ class WIntroController: BaseController,OLImageViewDelegate {
 		   		WInfo.appUrl = siteUrl
                 WInfo.urlParam = urlParam;
                 WInfo.solutionType = solutionType
+            
                 if let tracker_id = resource.body()["tracker_id"] as? String {
                     WInfo.trackerId = tracker_id
                 }
+                if let push_type = app_func["use_text_push"] as? NSNumber {
+                    
+                    WInfo.useTextPush = push_type == 1 ? true : false;
+                } else {
+                    print("dong tttt")
+                    WInfo.useTextPush = false
+            }
+            
                 WInfo.accountId = account_id;
                 RSHttp().req(
                     ApiFormApp().ap("mode","add_token")

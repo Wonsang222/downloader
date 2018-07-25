@@ -35,7 +35,7 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         if let userId = WInfo.userInfo["userId"] as? String{
             requestObj.addValue(userId.encryptAES256(), forHTTPHeaderField: "MAGIC_USER_ID")
         }
-        requestObj.addValue(UIDevice.current.identifierForVendor!.uuidString.encryptAES256(), forHTTPHeaderField: "MAGIC_DEVICE_ID")
+        requestObj.addValue(WInfo.deviceId.encryptAES256(), forHTTPHeaderField: "MAGIC_DEVICE_ID")
         let contentView = self.view.subviews[0]
         let topView = self.view.subviews[1]
         contentView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: UIScreen.main.bounds.size.height)

@@ -67,8 +67,13 @@ class RSHttp{
 				let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
 				resource.reqHeader["User-Agent"] = "\(String(describing: appId))/\(appVersion)"
                 
-				urlConfig.timeoutIntervalForRequest = Double(HttpInfo.TIMEOUT) / 1000
-				urlConfig.timeoutIntervalForResource = Double(HttpInfo.TIMEOUT) / 1000
+                if(WInfo.accountId == "naingirl") {
+                    urlConfig.timeoutIntervalForRequest = Double(60000) / 1000
+                    urlConfig.timeoutIntervalForResource = Double(60000) / 1000
+                } else {
+                    urlConfig.timeoutIntervalForRequest = Double(HttpInfo.TIMEOUT) / 1000
+                    urlConfig.timeoutIntervalForResource = Double(HttpInfo.TIMEOUT) / 1000
+                }
                 URLSession.shared.dataTask(with: resource.makeRequest(),completionHandler: { (data, response, error) in
 					if error == nil {
 						do{

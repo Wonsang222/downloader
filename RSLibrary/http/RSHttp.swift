@@ -38,7 +38,6 @@ class RSHttp{
 	}
 
 	func req(_ resources:HttpBaseResource...){
-//            print(resources)
         self.req(resources,successCb:nil,errorCb:nil)
 	}
 
@@ -74,7 +73,8 @@ class RSHttp{
                     urlConfig.timeoutIntervalForRequest = Double(HttpInfo.TIMEOUT) / 1000
                     urlConfig.timeoutIntervalForResource = Double(HttpInfo.TIMEOUT) / 1000
                 }
-                URLSession.shared.dataTask(with: resource.makeRequest(),completionHandler: { (data, response, error) in
+
+                URLSession(configuration: urlConfig).dataTask(with: resource.makeRequest(),completionHandler: { (data, response, error) in
 					if error == nil {
 						do{
 							try resource.parseHeader(response!)
@@ -86,8 +86,12 @@ class RSHttp{
 						}
                         
 					}else{
-                        print(error!)
-						resource.errorCode = ResourceCode.e9994
+                        print("req error ", error!)
+                        if (error! as NSError).code == -1001 {
+                            resource.errorCode = ResourceCode.e9996
+                        } else {
+                            resource.errorCode = ResourceCode.e9994
+                        }
 					}
 					semaphore.signal()
 				}).resume()

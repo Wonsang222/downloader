@@ -367,12 +367,11 @@ class WIntroController: BaseController,OLImageViewDelegate {
     
     
     fileprivate func finishPopup(){
-        let alert = UIAlertController(title: "알림", message: "데이터가 잘못되어 앱을종료합니다.\n다시실행해주세요." ,preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "알림", message: "데이터가 잘못되어 앱을종료합니다.\n다시 실행해주세요." ,preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "종료" , style: UIAlertActionStyle.default, handler:{ action in
             exit(0)
         }))
         self.present(alert,animated:true, completion: nil)
-
     }
     
     

@@ -90,7 +90,7 @@ class Tools{
             if Int(server[0]+server[1])! > Int(local[0]+local[1])! {
                 return true;
             } else if Int(server[0]+server[1])! == Int(local[0]+local[1])! {
-                if Int(server[2])! > Int(local[2])! {
+                if server.count == 3 && local.count == 3 && Int(server[2])! > Int(local[2])! {
                     return true;
                 } else {
                     return false;

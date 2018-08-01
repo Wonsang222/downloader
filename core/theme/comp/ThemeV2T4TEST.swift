@@ -19,37 +19,49 @@ class ThemeV2T4TEST: CommonMkTheme {
         }
         // 확장
         WInfo.naviHeight = 80;
+        print("dong account :", WInfo.accountId)
         
-        let menus = uiData["menus"] as! [[String:AnyObject]]
-        let extend_menus = uiData["extend_menus"] as! [[String:AnyObject]]
-        let wisaExtendMenuHeight: CGFloat = 30.0;
+        let basic = uiData["basic"] as! [String:AnyObject]
+        let extends = uiData["extends"] as! [String:AnyObject]
         
-        let wisaMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - CGFloat(truncating: WInfo.naviHeight) + wisaExtendMenuHeight - Tools.safeArea(),width: UIScreen.main.bounds.width, height: 50) )
-        let wisaExtendMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - CGFloat(truncating: WInfo.naviHeight) - Tools.safeArea(),width: UIScreen.main.bounds.width, height: wisaExtendMenuHeight) )
+        let basic_menus = basic["menus"] as! [AnyObject]
+        var extends_menus = extends["menus"] as! [AnyObject]
         
-        let menuWidth = UIScreen.main.bounds.width / CGFloat(menus.count)
-        let extendMenuWidth = UIScreen.main.bounds.width / CGFloat(extend_menus.count)
-        let bgColor = UIColor(hexString:uiData["menusBg"] as! String)
-        print("dong uiData \(uiData)")
-        let extendBgColor = UIColor(hexString:(uiData["extend_menusBg"] as! [String:Any])["color"] as! String)
+        let wisaExtendMenuHeight: CGFloat = 50.0;
+        WInfo.naviHeight = 50;
+        let wisaMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - CGFloat(truncating: WInfo.naviHeight),width: UIScreen.main.bounds.width, height: CGFloat(truncating: WInfo.naviHeight)) )
+        let wisaExtendMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - (CGFloat(truncating: WInfo.naviHeight) + wisaExtendMenuHeight) - Tools.safeArea(),width: UIScreen.main.bounds.width, height: wisaExtendMenuHeight) )
+        
+        for i in 0..<extends_menus.count {
+            print("dong for ", extends_menus[i]["enable"] as! Int );
+            if (extends_menus[i]["enable"] as! Int) == 0 {
+                extends_menus.remove(at: i)
+            }
+        }
+//        print("dong extend result : ", extends_menus)
+        
+        let basic_menu_width = UIScreen.main.bounds.width / CGFloat(basic_menus.count)
+        let extends_menu_width = UIScreen.main.bounds.width / CGFloat(extends_menus.count)
+        let basic_bgColor = UIColor(hexString:basic["menusBg"] as! String)
+        let extends_bgColor = UIColor(hexString:extends["menusBg"] as! String)
         
         wisaMenu.isUserInteractionEnabled = true
-        wisaMenu.backgroundColor = bgColor
+        wisaMenu.backgroundColor = basic_bgColor
         wisaExtendMenu.isUserInteractionEnabled = true
-        wisaExtendMenu.backgroundColor = extendBgColor
+        wisaExtendMenu.backgroundColor = extends_bgColor
         
         var position = CGFloat(0)
-        for menu in menus {
-            let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: menuWidth ,height: wisaMenu.frame.height))
+        for menu in basic_menus {
+            let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: basic_menu_width ,height: wisaMenu.frame.height))
             let key = menu["click"] as! String
             let icon_url = menu["icon_url"] as! String
             menuView.themeIconLoader(icon_url)
-            
+
             menuView.showsTouchWhenHighlighted = true
             self.applyAction(menuView, key: key)
             wisaMenu.addSubview(menuView)
-            position += menuWidth
-            
+            position += basic_menu_width
+
             if key == "next" {
                 mainController?.nextBtn = menuView
                 menuView.isEnabled = false
@@ -58,10 +70,10 @@ class ThemeV2T4TEST: CommonMkTheme {
                 mainController?.prevBtn = menuView
                 menuView.isEnabled = false
             }
-            
+
             if key == "push" {
                 let newView = UIImageView()
-                newView.themeIconLoaderN(menu["badge_url"] as! String)
+//                newView.themeIconLoaderN(menu["badge_url"] as! String)
                 mainController?.isNewBadge = newView
                 newView.frame = CGRect(x: 30,
                                        y: 13.166,
@@ -73,47 +85,49 @@ class ThemeV2T4TEST: CommonMkTheme {
         }
         // extend menu
         position = CGFloat(0)
-        for extend_menu in extend_menus {
-            let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: extendMenuWidth ,height: wisaExtendMenu.frame.height))
-            let key = extend_menu["click"] as! String
-            let page_url = extend_menu["page_url"] as! String
-            
+        for menu in extends_menus {
+            let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: extends_menu_width ,height: wisaExtendMenu.frame.height))
+            let key = menu["click"] as! String
+            let page_url = menu["page_url"] as! String
+            let icon_url = menu["icon_url"] as! String
+            menuView.themeIconLoader(icon_url)
+
             menuView.showsTouchWhenHighlighted = true
 //            let test = extend_menu["name"] as? String
-//            menuView.setTitle(test, for: .normal)
-            print("page url \(page_url) \(key)")
-            menuView.setTitleColor(.white, for: .normal)
+            menuView.setTitle(menu["title"] as? String, for: .normal)
+            menuView.setTitleColor(UIColor(hexString: extends["titleColor"] as! String), for: .normal)
             menuView.titleLabel?.font = UIFont.systemFont(ofSize: 14)
             let rightBorderLayer = CALayer()
             rightBorderLayer.backgroundColor = UIColor(hexString:"#ffffff").cgColor
-            rightBorderLayer.frame = CGRect(x: extendMenuWidth, y: wisaExtendMenuHeight / 3 , width: Tools.toOriginPixel(1.0), height: 10)
+            rightBorderLayer.frame = CGRect(x: extends_menu_width, y: wisaExtendMenuHeight / 3 , width: Tools.toOriginPixel(1.0), height: 10)
             menuView.layer.addSublayer(rightBorderLayer)
-            
-            if key == "extend1" {
-                menuView.setTitle("마이페이지", for: .normal)
-                self.applyAction(menuView, key: page_url)
-            } else if key == "extend2" {
-                menuView.setTitle("장바구니", for: .normal)
-                self.applyAction(menuView, key: page_url)
-            } else if key == "extend3" {
-                menuView.setTitle("관심상품", for: .normal)
-                self.applyAction(menuView, key: page_url)
-            } else if key == "extend4" {
-                menuView.setTitle("주문내역", for: .normal)
-                self.applyAction(menuView, key: page_url)
-            }
-            
-            
+//            self.applyAction(menuView, key: page_url)
+//
+//            if key == "extend1" {
+//                menuView.setTitle("마이페이지", for: .normal)
+//
+//            } else if key == "extend2" {
+//                menuView.setTitle("장바구니", for: .normal)
+//                self.applyAction(menuView, key: page_url)
+//            } else if key == "extend3" {
+//                menuView.setTitle("관심상품", for: .normal)
+//                self.applyAction(menuView, key: page_url)
+//            } else if key == "extend4" {
+//                menuView.setTitle("주문내역", for: .normal)
+//                self.applyAction(menuView, key: page_url)
+//            }
+
+
             menuView.titleLabel?.textAlignment = .right
-            
+
             wisaExtendMenu.addSubview(menuView)
 //            let wl = NSMutableString(string: "\\"+(extend_menu["name"] as! String))
 //            let ss = CFStringTransform(wl, nil, "Any-Hex/Java" as NSString, true)
 //
 //            print("dong uiData333 \(wl as String)")
-            
-            position += extendMenuWidth
-            
+
+            position += extends_menu_width
+
         }
         
         let borderLayer = CALayer()

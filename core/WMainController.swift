@@ -259,6 +259,30 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     @objc func onSettingClick(_ sender:UIButton!){
         self.performSegue(withIdentifier: "setting" ,  sender : self)
     }
+    @objc func onMoreClick(_ sender:UIButton!){
+        // toggle
+        let extendsMenu:UIView! = sender.superview?.superview?.subviews[2];
+        let extendsArrow:UIView! = sender.subviews[2];
+        
+        if extendsMenu.isHidden == false {
+            UIView.animate(withDuration: 0.2, animations: {
+                extendsMenu.frame = extendsMenu.frame.changeY(self.view!.frame.height - 50 - Tools.safeArea() - 0.5)
+                extendsArrow.alpha = 0.0
+            }) { (bool) in
+                extendsMenu.isHidden = true
+                extendsArrow.isHidden = true
+            }
+        } else {
+            extendsMenu.isHidden = false
+            extendsArrow.isHidden = false
+            UIView.animate(withDuration: 0.2, animations: {
+                extendsMenu.frame =
+                    extendsMenu.frame.changeY(self.view!.frame.height - 120 - Tools.safeArea() - 0.5)
+                extendsArrow.alpha = 1.0
+            }) { (bool) in
+            }
+        }
+    }
     
     @objc func onExtendFunc(_ sender:UIButton!, _ key: String) {
         print("dong succcc00 \(key)")
@@ -276,9 +300,11 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             self.onPushClick(sender)
         }else if key == "setting"{
             self.onSettingClick(sender)
-        } else {
+        }else if key == "more"{
+            openedButton = sender;
+            self.onMoreClick(sender)
+        }else {
             let url = URL(string: String(describing: "\(WInfo.appUrl)/\(key)"))
-            print("dong succcc \(url)")
             let requestObj = NSMutableURLRequest(url: url!)
             self.engine.loadRequest(requestObj as URLRequest)
         }
@@ -306,16 +332,17 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     }
     
     @objc func closeLayout(_ sender: UIButton) {
-        let layout2 =  sender.superview! as UIView
-        let root = layout2.superview! as UIView
-        openedButton = nil
-        root.subviews[3].subviews[8].isHidden = true
-        root.subviews[3].subviews[7].isHidden = false
+        let extendsMenu:UIView! = sender.superview?.superview?.subviews[2];
+        let extendsArrow:UIView! = sender.subviews[2];
         
-        root.subviews[2].transform = CGAffineTransform(translationX: layout2.rsX, y: 0)
-        UIView.animate(withDuration: 0.3, delay: 0.1, options: [.allowUserInteraction, .curveEaseInOut], animations: {
-            layout2.transform = CGAffineTransform(translationX: layout2.rsX, y: 100)
-        }) { (finish) in
+        if extendsMenu.isHidden == false {
+            UIView.animate(withDuration: 0.2, animations: {
+                extendsMenu.frame = extendsMenu.frame.changeY(self.view!.frame.height - 50 - Tools.safeArea() - 0.5)
+                extendsArrow.alpha = 0.0
+            }) { (bool) in
+                extendsMenu.isHidden = true
+                extendsArrow.isHidden = true
+            }
         }
     }
     
@@ -421,6 +448,7 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        print("djdjd")
         if openedButton == nil {
             return ;
         } else {

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4867A458847E14ACBE8CFF29 /* Pods_wing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8F876D90701912874616002 /* Pods_wing.framework */; };
-		5F1DB0CB2125191200888483 /* ic_a_extends_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F1DB0CA2125191200888483 /* ic_a_extends_arrow.png */; };
+		5FB52EAD2133936B003A3896 /* ic_a_extends_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FB52EAC2133936A003A3896 /* ic_a_extends_arrow.png */; };
 		CAAAC7CC1CB6245E00031667 /* ExtenstionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAAC7CB1CB6245E00031667 /* ExtenstionUIImage.swift */; };
 		D405296C1DFE7CD600E09FAD /* MarketingPopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D405296B1DFE7CD600E09FAD /* MarketingPopupController.swift */; };
 		D405296E1DFE7CFA00E09FAD /* RPopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D405296D1DFE7CFA00E09FAD /* RPopupController.swift */; };
@@ -99,7 +99,7 @@
 
 /* Begin PBXFileReference section */
 		31A9CEAD2E2D84469E764C8B /* Pods-wing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wing.release.xcconfig"; path = "Pods/Target Support Files/Pods-wing/Pods-wing.release.xcconfig"; sourceTree = "<group>"; };
-		5F1DB0CA2125191200888483 /* ic_a_extends_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_a_extends_arrow.png; path = ../../../../Downloads/ic_a_extends_arrow.png; sourceTree = "<group>"; };
+		5FB52EAC2133936A003A3896 /* ic_a_extends_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_extends_arrow.png; sourceTree = "<group>"; };
 		B8F876D90701912874616002 /* Pods_wing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B92924B3AB6793240BC14B4B /* Pods-wing.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wing.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wing/Pods-wing.debug.xcconfig"; sourceTree = "<group>"; };
 		CAAAC7CB1CB6245E00031667 /* ExtenstionUIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtenstionUIImage.swift; sourceTree = "<group>"; };
@@ -352,7 +352,7 @@
 		D45D647C1CB29B5D004976A2 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				5F1DB0CA2125191200888483 /* ic_a_extends_arrow.png */,
+				5FB52EAC2133936A003A3896 /* ic_a_extends_arrow.png */,
 				F58B1D521FBD618500543A2B /* ic_a_camera.png */,
 				F58B1D511FBD618500543A2B /* ic_a_location.png */,
 				F58B1D501FBD618400543A2B /* ic_a_notification.png */,
@@ -557,7 +557,7 @@
 				D4154F601CBF723900ED25CE /* setting_update_btn_over.png in Resources */,
 				F58B1D531FBD618500543A2B /* ic_a_notification.png in Resources */,
 				D4154F521CBF569C00ED25CE /* ic_a_prev_disable.png in Resources */,
-				5F1DB0CB2125191200888483 /* ic_a_extends_arrow.png in Resources */,
+				5FB52EAD2133936B003A3896 /* ic_a_extends_arrow.png in Resources */,
 				D4154F5E1CBF6F9D00ED25CE /* setting_update_btn.png in Resources */,
 				D4154F571CBF569C00ED25CE /* ic_a_share.png in Resources */,
 				F50E53F6202D7829001CDAFA /* InAppNavi.xib in Resources */,

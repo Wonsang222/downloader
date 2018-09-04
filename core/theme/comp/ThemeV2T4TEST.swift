@@ -17,8 +17,7 @@ class ThemeV2T4TEST: CommonMkTheme {
         if mainController == nil {
             return
         }
-        
-//        WInfo.naviHeight = 80;
+
         print("dong account :", WInfo.accountId)
         
         let basic = uiData["basic"] as! [String:AnyObject]
@@ -41,8 +40,9 @@ class ThemeV2T4TEST: CommonMkTheme {
                 extends_enable_menus.append(extends_menus[i])
             }
         }
-        print("dong extend result : ", extends_enable_menus.count)
         
+        let themeCache: Bool = WInfo.extendIconCnt != extends_enable_menus.count ? false : true
+        WInfo.extendIconCnt = extends_enable_menus.count;
         let basic_menu_width = UIScreen.main.bounds.width / CGFloat(basic_menus.count)
         let extends_menu_width = UIScreen.main.bounds.width / CGFloat(extends_enable_menus.count)
         let basic_bgColor = UIColor(hexString:basic["menusBg"] as! String)
@@ -52,13 +52,14 @@ class ThemeV2T4TEST: CommonMkTheme {
         wisaMenu.backgroundColor = basic_bgColor
         wisaExtendMenu.isUserInteractionEnabled = true
         wisaExtendMenu.backgroundColor = extends_bgColor
-        
+        print("dong icon cache state", themeCache)
         var position = CGFloat(0)
         for menu in basic_menus {
             let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: basic_menu_width ,height: wisaMenu.frame.height))
             let key = menu["click"] as! String
             let icon_url = menu["icon_url"] as! String
-            menuView.themeIconLoader(icon_url)
+            
+            menuView.extendThemeIconLoader(icon_url, cache: themeCache)
 
             menuView.showsTouchWhenHighlighted = true
             self.applyAction(menuView, key: key)
@@ -73,11 +74,6 @@ class ThemeV2T4TEST: CommonMkTheme {
                 mainController?.prevBtn = menuView
                 menuView.isEnabled = false
             }
-            
-//            if key == "more" {
-////                mainController?.prevBtn = menuView
-//                menuView.isEnabled = false
-//            }
 
             if key == "push" {
                 let newView = UIImageView()
@@ -116,15 +112,15 @@ class ThemeV2T4TEST: CommonMkTheme {
         print("dong size ", extends_menu_width, wisaExtendMenuHeight)
         for menu in extends_enable_menus {
             let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: extends_menu_width ,height: wisaExtendMenu.frame.height))
-//            let key = menu["click"] as! String
-            let page_url = menu["page_url"] as! String
-            print("dong icon url ", menu["icon_url"])
+            var page_url = ""
+            if let check_url = menu["page_url"] as? String {
+                page_url = check_url
+            }
+            
             let icon_url = menu["icon_url"] as? String
             menuView.themeIconLoader(icon_url!)
-
             menuView.showsTouchWhenHighlighted = true
-//            let test = extend_menu["name"] as? String
-//            print("dong title", menu["title"] as? String, extends_menu_width, position)
+
             if ((menu["title"] as! String).isEmpty) != true  {
                 let title_offset = CGFloat(6.5)
                 let title_size = CGFloat(11)
@@ -136,30 +132,7 @@ class ThemeV2T4TEST: CommonMkTheme {
             }
             
             self.applyAction(menuView, key: page_url)
-//
-//            if key == "extend1" {
-//                menuView.setTitle("마이페이지", for: .normal)
-//
-//            } else if key == "extend2" {
-//                menuView.setTitle("장바구니", for: .normal)
-//                self.applyAction(menuView, key: page_url)
-//            } else if key == "extend3" {
-//                menuView.setTitle("관심상품", for: .normal)
-//                self.applyAction(menuView, key: page_url)
-//            } else if key == "extend4" {
-//                menuView.setTitle("주문내역", for: .normal)
-//                self.applyAction(menuView, key: page_url)
-//            }
-//
-//
-//            menuView.titleLabel?.textAlignment = .right
-
             wisaExtendMenu.addSubview(menuView)
-//            let wl = NSMutableString(string: "\\"+(extend_menu["name"] as! String))
-//            let ss = CFStringTransform(wl, nil, "Any-Hex/Java" as NSString, true)
-//
-//            print("dong uiData333 \(wl as String)")
-
             position += extends_menu_width
 
         }
@@ -168,27 +141,17 @@ class ThemeV2T4TEST: CommonMkTheme {
         let extendBorderLayer = CALayer()
         let defaultMenuHeight = view!.frame.height - CGFloat(truncating: WInfo.naviHeight) - Tools.safeArea()
         let border:UIView! = UIView(frame: CGRect(x: 0, y: defaultMenuHeight - 0.5, width: UIScreen.main.bounds.width, height: 0.5))
-//        CGRect(x: 0, y: view!.frame.height - CGFloat(truncating: WInfo.naviHeight) - Tools.safeArea(), width: UIScreen.main.bounds.width, height: CGFloat(truncating: WInfo.naviHeight))
         border.backgroundColor = UIColor(hexString: "#c7c7c7")
-//        borderLayer.backgroundColor = UIColor(hexString:"#c7c7c7").cgColor
         extendBorderLayer.backgroundColor = UIColor(hexString:"#c7c7c7").cgColor
-//        borderLayer.frame = CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: Tools.toOriginPixel(1.0))
         
         extendBorderLayer.frame = CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: 0.5)
         
-//        wisaMenu.layer.addSublayer(borderLayer)
         wisaExtendMenu.layer.addSublayer(extendBorderLayer)
         view?.addSubview(wisaExtendMenu)
         view?.addSubview(border)
         view?.addSubview(wisaMenu)
         wisaExtendMenu.isHidden = true
        
-//        if Tools.safeArea() != 0 {
-//            let safeView = UIView(frame: CGRect(x: 0, y: view!.frame.height - Tools.safeArea(), width: UIScreen.main.bounds.width, height: Tools.safeArea()))
-//            safeView.backgroundColor = UIColor(hexString:basic["menusBg"] as! String)
-//            view?.addSubview(safeView)
-//        }
-//
         if let webBackground = uiData["webBackground"] as? String {
             mainController!.engine.webView.backgroundColor = UIColor(hexString:webBackground)
             mainController!.engine.webView.isOpaque = false

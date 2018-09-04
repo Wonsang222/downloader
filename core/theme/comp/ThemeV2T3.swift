@@ -16,6 +16,9 @@ class ThemeV2T3: CommonMkTheme {
         if mainController == nil {
             return
         }
+
+        mainController!.engine.webView.frame = mainController!.engine.webView.frame.changeHeight(mainController!.webViewContainer.bounds.size.height - Tools.safeArea() - UIApplication.shared.statusBarFrame.height)
+        
         if let webBackground = uiData["webBackground"] as? String {
             
             mainController!.engine.webView.backgroundColor = UIColor(hexString:webBackground)
@@ -24,7 +27,6 @@ class ThemeV2T3: CommonMkTheme {
             mainController!.engine.webView.backgroundColor = UIColor.white
             mainController!.engine.webView.isOpaque = false
         }
-        WInfo.naviHeight = 0;
     }
 
     override func applyNavi() {

@@ -120,6 +120,26 @@ class ThemeCache {
 }
 extension UIButton{
     
+    func extendThemeIconLoader(_ icon_url:String, cache:Bool){
+        if cache {
+            if let cacheImage = ThemeCache.share().getCache(icon_url) {
+                self.setBackgroundImage(cacheImage, for: UIControlState())
+                self.setBackgroundImage(cacheImage, for: UIControlState.disabled)
+                return
+            }
+        }
+        DispatchQueue.global(qos: .background).async {
+            if let datas = try? Data(contentsOf: URL(string: icon_url)!) {
+                DispatchQueue.main.async(execute: {
+                    let server_img = UIImage(data: datas)?.makeFillImageV2(self)
+                    ThemeCache.share().saveCache(icon_url, image: server_img)
+                    self.setBackgroundImage(server_img, for: UIControlState())
+                    self.setBackgroundImage(server_img, for: UIControlState.disabled)
+                    
+                });
+            }
+        }
+    }
     
     func themeIconLoader(_ icon_url:String){
         if let cacheImage = ThemeCache.share().getCache(icon_url) {

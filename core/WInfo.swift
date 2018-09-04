@@ -351,11 +351,27 @@ class WInfo{
             UserDefaults.standard.synchronize()
         }
     }
+    
+    static var extendIconCnt: Int {
+        get {
+            if let returnValue = UserDefaults.standard.string(forKey: "kExtendIconCnt") {
+                return Int(truncating: NumberFormatter().number(from: returnValue)!)
+            } else {
+                return 0
+            }
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: "kExtendIconCnt")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     // ThemeInfo
     static var getAbleTheme: [String] {
         get {
             return ["T1","T2","T3",
-//                    "T4TEST"
+                    "T4TEST"
 //                나인
 //                ,"CNAIN"
             ]

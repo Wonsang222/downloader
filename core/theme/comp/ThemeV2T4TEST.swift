@@ -29,7 +29,7 @@ class ThemeV2T4TEST: CommonMkTheme {
         
         let wisaExtendMenuHeight: CGFloat = 70.0;
         WInfo.naviHeight = 50;
-        let wisaMenu:UIView = UIView(frame : CGRect(x: 0, y: view!.frame.height - CGFloat(truncating: WInfo.naviHeight) - Tools.safeArea(), width: UIScreen.main.bounds.width, height: CGFloat(truncating: WInfo.naviHeight)) )
+        let wisaMenu:UIView = UIView(frame : CGRect(x: 0, y: view!.frame.height - CGFloat(truncating: WInfo.naviHeight) - Tools.safeArea(), width: UIScreen.main.bounds.width, height: CGFloat(truncating: WInfo.naviHeight)  + Tools.safeArea()) )
         let wisaExtendMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - (wisaExtendMenuHeight) - Tools.safeArea()-0.5,width: UIScreen.main.bounds.width, height: wisaExtendMenuHeight) )
         
         print("dong extend result before : ", extends_menus.count, extends_menus)
@@ -55,7 +55,7 @@ class ThemeV2T4TEST: CommonMkTheme {
         print("dong icon cache state", themeCache)
         var position = CGFloat(0)
         for menu in basic_menus {
-            let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: basic_menu_width ,height: wisaMenu.frame.height))
+            let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: basic_menu_width ,height: wisaMenu.frame.height - Tools.safeArea()))
             let key = menu["click"] as! String
             let icon_url = menu["icon_url"] as! String
             

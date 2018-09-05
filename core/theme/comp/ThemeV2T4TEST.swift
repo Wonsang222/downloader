@@ -95,8 +95,8 @@ class ThemeV2T4TEST: CommonMkTheme {
                 overlapArrowView.image = UIImage(named: "ic_a_extends_arrow.png")
                 arrowView.image = UIImage(named: "ic_a_extends_arrow.png")?.tintWithColor(extends_bgColor)
 
-                overlapArrowView.frame = CGRect(x: 0, y: 0, width: 22, height: 16)
-                arrowView.frame = CGRect(x: 1, y: 0, width: 20, height: 15)
+                overlapArrowView.frame = CGRect(x: 0, y: 0, width: 12, height: 7)
+                arrowView.frame = CGRect(x: 1, y: 0, width: 10, height: 6)
                 
                 moreArrowView.addSubview(overlapArrowView)
                 moreArrowView.addSubview(arrowView)

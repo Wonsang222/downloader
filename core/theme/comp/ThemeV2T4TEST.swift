@@ -89,10 +89,10 @@ class ThemeV2T4TEST: CommonMkTheme {
             
             if key == "more" {
                 let moreArrowView = UIView()
-                moreArrowView.frame = CGRect(x: menuView.frame.size.width / 2 - 11, y: -0.5, width: 22, height: 16)
+                moreArrowView.frame = CGRect(x: menuView.frame.size.width / 2 - 6, y: -0.5, width: 22, height: 16)
                 let arrowView = UIImageView()
                 let overlapArrowView = UIImageView()
-                overlapArrowView.image = UIImage(named: "ic_a_extends_arrow.png")
+                overlapArrowView.image = UIImage(named: "ic_a_extends_arrow.png")?.tintWithColor(UIColor(hexString:"#c7c7c7"))
                 arrowView.image = UIImage(named: "ic_a_extends_arrow.png")?.tintWithColor(extends_bgColor)
 
                 overlapArrowView.frame = CGRect(x: 0, y: 0, width: 12, height: 7)

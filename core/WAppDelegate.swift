@@ -129,7 +129,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         do {
             let directoryContents = try FileManager.default.contentsOfDirectory( at: cacheURL, includingPropertiesForKeys: nil, options: [])
             for file in directoryContents {
-                print("dong wing for문 ")
                 do {
                     try fileManager.removeItem(at: file)
                     
@@ -140,7 +139,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             }
             
         } catch let error as NSError {
-            print("dong \(error.localizedDescription)")
+            debugPrint("dong \(error.localizedDescription)")
         }
     }
     

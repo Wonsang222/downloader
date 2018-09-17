@@ -96,7 +96,6 @@ class Tools{
                     return false;
                 }
             } else {
-                print("dong dd : \(server) , \(local)")
                 return false
             }
     }

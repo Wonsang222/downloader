@@ -89,13 +89,11 @@ class ThemeV2CNAIN: CommonMkTheme {
             }
             
             if key == "prev" {
-                print("dong prev")
                 mainController?.prevBtn = menuView
                 menuView.isEnabled = false
             }
             
             if key == "next" {
-                print("dong next")
                 mainController?.nextBtn = menuView
                 menuView.isEnabled = false
             }
@@ -361,7 +359,6 @@ class ThemeV2CNAIN: CommonMkTheme {
     }
     
     func checkWingLogin(_ key: String, _ menuView: UIButton) {
-        print("dong count !! : ", WInfo.userInfo.count)
         if WInfo.userInfo.count != 0 {
             if key == "login" {
                 menuView.isHidden = true

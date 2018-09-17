@@ -416,7 +416,6 @@ class WInfo{
         if WInfo.themeInfo["theme"] != nil {
             // Theme별 분기 ... 다른 방법있나?
             if theme == "cnain" {
-                print("dong subviews count : :", rootView.subviews.count)
                 if rootView.subviews != nil && rootView.subviews.count > 3 && rootView.subviews[3] != nil {
                     let login = rootView.subviews[3].subviews[5] as! UIButton
                     let mypage = rootView.subviews[3].subviews[6] as! UIButton

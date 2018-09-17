@@ -17,8 +17,6 @@ class ThemeV2T4: CommonMkTheme {
         if mainController == nil {
             return
         }
-
-        print("dong account :", WInfo.accountId)
         
         let basic = uiData["basic"] as! [String:AnyObject]
         let extends = uiData["extends"] as! [String:AnyObject]
@@ -32,10 +30,7 @@ class ThemeV2T4: CommonMkTheme {
         let wisaMenu:UIView = UIView(frame : CGRect(x: 0, y: view!.frame.height - CGFloat(truncating: WInfo.naviHeight) - Tools.safeArea(), width: UIScreen.main.bounds.width, height: CGFloat(truncating: WInfo.naviHeight)  + Tools.safeArea()) )
         let wisaExtendMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - (wisaExtendMenuHeight) - Tools.safeArea()-0.5,width: UIScreen.main.bounds.width, height: wisaExtendMenuHeight) )
         
-        print("dong extend result before : ", extends_menus.count, extends_menus)
-        
         for i in 0..<extends_menus.count {
-            print("dong for ", extends_menus[i] );
             if (extends_menus[i]["enable"] as! Int) == 1 {
                 extends_enable_menus.append(extends_menus[i])
             }
@@ -52,7 +47,7 @@ class ThemeV2T4: CommonMkTheme {
         wisaMenu.backgroundColor = basic_bgColor
         wisaExtendMenu.isUserInteractionEnabled = true
         wisaExtendMenu.backgroundColor = extends_bgColor
-        print("dong icon cache state", themeCache)
+
         var position = CGFloat(0)
         for menu in basic_menus {
             let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: basic_menu_width ,height: wisaMenu.frame.height - Tools.safeArea()))
@@ -109,7 +104,6 @@ class ThemeV2T4: CommonMkTheme {
         }
         // extend menu
         position = CGFloat(0)
-        print("dong size ", extends_menu_width, wisaExtendMenuHeight)
         for menu in extends_enable_menus {
             let menuView = UIButton(frame : CGRect(x: CGFloat(position), y: 0 , width: extends_menu_width ,height: wisaExtendMenu.frame.height))
             var page_url = ""

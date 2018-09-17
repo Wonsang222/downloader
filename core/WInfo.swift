@@ -370,7 +370,7 @@ class WInfo{
     // ThemeInfo
     static var getAbleTheme: [String] {
         get {
-            return ["T1","T2","T3","T4",
+            return ["T1","T2","T3", 
 //                나인
 //                ,"CNAIN"
             ]

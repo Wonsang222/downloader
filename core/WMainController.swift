@@ -285,7 +285,6 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     }
     
     @objc func onExtendFunc(_ sender:UIButton!, _ key: String) {
-        print("dong succcc00 \(key)")
         if key == "prev"{
             self.onPrevClick(sender)
         }else if key == "next"{
@@ -448,7 +447,6 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        print("djdjd")
         if openedButton == nil {
             return ;
         } else {

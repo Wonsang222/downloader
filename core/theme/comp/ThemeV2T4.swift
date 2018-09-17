@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ThemeV2T4TEST: CommonMkTheme {
+class ThemeV2T4: CommonMkTheme {
     
     
     override func applayMain() {
@@ -95,8 +95,8 @@ class ThemeV2T4TEST: CommonMkTheme {
                 overlapArrowView.image = UIImage(named: "ic_a_extends_arrow.png")?.tintWithColor(UIColor(hexString:"#c7c7c7"))
                 arrowView.image = UIImage(named: "ic_a_extends_arrow.png")?.tintWithColor(extends_bgColor)
 
-                overlapArrowView.frame = CGRect(x: 0, y: 0, width: 12, height: 7)
-                arrowView.frame = CGRect(x: 1, y: 0, width: 10, height: 6)
+                overlapArrowView.frame = CGRect(x: 0, y: 0, width: 11, height: 7)
+                arrowView.frame = CGRect(x: 0.5, y: 0, width: 10, height: 6)
                 
                 moreArrowView.addSubview(overlapArrowView)
                 moreArrowView.addSubview(arrowView)

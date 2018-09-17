@@ -20,7 +20,7 @@ class ApiFormApp : HttpBaseResource{
 
     override var reqUrl:String{
         get{
-            return "/api/api_from_app_tmp_test.exe.php"
+            return "/api/api_from_app.exe.php"
         }
     }
 

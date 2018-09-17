@@ -21,9 +21,9 @@ class EngineUI: WebEngine,UIWebViewDelegate{
     override func loadEngine() {
         super.loadEngine()
         _webView = UIWebView(frame: CGRect(x: self.controller.webViewContainer.bounds.origin.x,
-                                           y: 0,
+                                           y: UIApplication.shared.statusBarFrame.height / 2,
                                            width: self.controller.webViewContainer.bounds.size.width,
-                                           height: self.controller.webViewContainer.bounds.size.height - CGFloat(truncating: WInfo.naviHeight))
+                                           height: self.controller.webViewContainer.bounds.size.height - UIApplication.shared.statusBarFrame.height / 2 - CGFloat(truncating: WInfo.naviHeight))
         )
         _webView.allowsInlineMediaPlayback = true
         

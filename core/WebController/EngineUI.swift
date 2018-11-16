@@ -83,9 +83,9 @@ class EngineUI: WebEngine,UIWebViewDelegate{
         }
        
         
-        if !(self.controller is NotiController) {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        }
+//        if !(self.controller is NotiController) {
+//            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+//        }
         
         
 //        if self._tmpUrl == webView.request?.url?.absoluteString {
@@ -99,7 +99,7 @@ class EngineUI: WebEngine,UIWebViewDelegate{
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         if webView.request!.url!.absoluteString.hasSuffix("smpay.kcp.co.kr/card.do") {
             self.runScript("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
         }

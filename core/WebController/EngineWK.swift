@@ -94,9 +94,9 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
             return
         }
         
-        if !(self.controller is NotiController) {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        }
+//        if !(self.controller is NotiController) {
+//            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+//        }
 
         self.createAccessCookie()
         
@@ -106,23 +106,23 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         
-        self.controller.progressView.alpha = 1.0
-        self.controller.progressView.setProgress(0.0, animated: true)
-        UIView.animate(withDuration: 1, delay: 0.5, options: .curveEaseIn, animations: { }, completion: { (bool) in
-            self.controller.progressView.setProgress(Float(self._webView.estimatedProgress)+0.3, animated: true)
-        })
+//        self.controller.progressView.alpha = 1.0
+//        self.controller.progressView.setProgress(0.0, animated: true)
+//        UIView.animate(withDuration: 1, delay: 0.5, options: .curveEaseIn, animations: { }, completion: { (bool) in
+//            self.controller.progressView.setProgress(Float(self._webView.estimatedProgress)+0.3, animated: true)
+//        })
         
         self.webDelegate?.webLoadedCommit(webView.url?.absoluteString)
         self.webDelegate?.webLoadedFinish(webView.url?.absoluteString)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
-        self.controller.progressView.setProgress(1.0, animated: true)
-        UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
-            self.controller.progressView.setProgress(0.0, animated: false)
-        })
+//        self.controller.progressView.setProgress(1.0, animated: true)
+//        UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
+//            self.controller.progressView.setProgress(0.0, animated: false)
+//        })
         
         if webView.url!.absoluteString.hasSuffix("smpay.kcp.co.kr/card.do") {
             self.runScript("document.getElementById('layer_mpi').contentWindow.open = function(url,frame,feature) { }")
@@ -152,9 +152,9 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
 
-        UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
-            self.controller.progressView.setProgress(0.0, animated: false)
-        })
+//        UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
+//            self.controller.progressView.setProgress(0.0, animated: false)
+//        })
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {

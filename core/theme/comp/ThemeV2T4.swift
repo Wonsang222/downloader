@@ -130,8 +130,7 @@ class ThemeV2T4: CommonMkTheme {
             position += extends_menu_width
 
         }
-        
-        let borderLayer = CALayer()
+       
         let extendBorderLayer = CALayer()
         let defaultMenuHeight = view!.frame.height - CGFloat(truncating: WInfo.naviHeight) - Tools.safeArea()
         let border:UIView! = UIView(frame: CGRect(x: 0, y: defaultMenuHeight - 0.5, width: UIScreen.main.bounds.width, height: 0.5))

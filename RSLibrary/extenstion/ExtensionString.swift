@@ -65,8 +65,8 @@ extension String {
     }
     
     subscript (range: Range<Int>) -> Substring {
-        let startIndex = self.index(self.startIndex, offsetBy: range.startIndex)
-        let stopIndex = self.index(self.startIndex, offsetBy: range.startIndex + range.count)
+        let startIndex = self.index(self.startIndex, offsetBy: range.lowerBound)
+        let stopIndex = self.index(self.startIndex, offsetBy: range.lowerBound + range.count)
         return self[startIndex..<stopIndex]
     }
 

@@ -34,7 +34,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class WSettingController: BaseController {
 
-    var tapCount = 0
+    let pattern: String = "111000"
+    var patternPos: Int = 0
     
     @IBOutlet weak var curVersion: UILabel!
     @IBOutlet weak var newVersion: UILabel!
@@ -89,37 +90,51 @@ class WSettingController: BaseController {
         
         self.orderSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , for: UIControlEvents.touchUpInside)
         self.eventSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , for: UIControlEvents.touchUpInside)
-
         
-        
-        let bundle_id = Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String
-        if bundle_id.hasSuffix(".lh") || bundle_id.hasSuffix(".adhoc"){
-            let gesture = UITapGestureRecognizer(target: self, action: #selector(WSettingController.push_test))
-            gesture.numberOfTapsRequired = 1;
-            self.newVersion.superview!.addGestureRecognizer(gesture)
-        }
-        
-        
-        
+        let one_gesture = UITapGestureRecognizer(target: self, action: #selector(self.push_test))
+        let zero_gesture = UITapGestureRecognizer(target: self, action: #selector(self.push_test))
+        one_gesture.numberOfTapsRequired = 1;
+        zero_gesture.numberOfTapsRequired = 1;
+        self.curVersion.superview!.tag = 100
+        self.newVersion.superview!.tag = 101
+        self.curVersion.superview!.addGestureRecognizer(one_gesture)
+        self.newVersion.superview!.addGestureRecognizer(zero_gesture)
     }
     
-    @objc func push_test(){
-        tapCount = tapCount + 1
-        if tapCount == 10 {
-            tapCount = 0;
-            let bundle_id = Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String
-
-            RSHttp(controller: self).req(
-                
-                
-            )
-            RSHttp(controller: self).req(
-                ResourceBuilderPushTest().ap("token",WInfo.deviceToken).ap("package",bundle_id)
-                , successCb: { (resource) -> (Void) in
-                    self.view.makeToast("테스트 푸쉬 발송")
-                UIApplication.shared.openURL(URL(string: "http://naver.com")!)
+    @objc func push_test(gesture: UITapGestureRecognizer){
+        let num = gesture.view?.tag
+        let str_num: String
+        if num == 100 { str_num = "1" }
+        else { str_num = "0" }
+        
+        if pattern.count - 1 < patternPos {
+            patternPos = 0
+            return
+        }
+        
+        print("dong 12", String(pattern[patternPos]))
+        if String(pattern[patternPos]) == str_num {
+            patternPos = patternPos + 1
+        } else {
+            patternPos = 0
+        }
+        
+        if patternPos == 6 {
+            patternPos = 0
+            print("dong rorro")
+            let alert = UIAlertController(title: AppProp.appName, message: "테스트 푸시를 발송하시겠습니까?" ,preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.default) { (action) in
+                RSHttp(controller: self).req(
+                    ResourceBuilderPushTest()
+                        .ap("account_id", WInfo.accountId)
+                        .ap("ios_token" , WInfo.deviceToken)
+                    , successCb: { (resource) -> (Void) in
+                })
+                exit(0)
             })
-
+            alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.cancel, handler:nil))
+            
+            self.present(alert,animated:true, completion: nil)
         }
     }
 
@@ -179,15 +194,10 @@ class WSettingController: BaseController {
 //        }else{
 //           
 //        }
-        
-        
-        
-
     }
 
     
     func reqSetAgree(_ yn:String,orderyn:String){
-        
         RSHttp(controller:self).req(
             ApiFormApp().ap("mode","set_agree")
                 .ap("pack_name", AppProp.appId)

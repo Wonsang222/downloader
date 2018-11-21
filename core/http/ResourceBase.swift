@@ -151,12 +151,11 @@ class ResourceBuilderPushTest : HttpBaseResource{
     
     override init() {
         super.init()
-        reqHeader["core_version"] = WInfo.coreVersion
-        
+//        reqHeader["core_version"] = WInfo.coreVersion
     }
     
     override func makeRequest() -> URLRequest{
-        var request = URLRequest(url: URL(string:"http://118.129.243.173:8080/apn")!)
+        var request = URLRequest(url: URL(string:"http://m.magicapp.co.kr/api/push-one.php")!)
         request.addValue(self.reqUrl, forHTTPHeaderField: "Referer")
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")

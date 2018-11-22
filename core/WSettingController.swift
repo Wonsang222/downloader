@@ -128,8 +128,10 @@ class WSettingController: BaseController {
                     ResourceBuilderPushTest()
                         .ap("account_id", WInfo.accountId)
                         .ap("ios_token" , WInfo.deviceToken)
+                        .ap("ios_pack_name", AppProp.appId)
                     , successCb: { (resource) -> (Void) in
-                })
+                    }
+                )
                 exit(0)
             })
             alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.cancel, handler:nil))
@@ -151,6 +153,7 @@ class WSettingController: BaseController {
             ,
             successCb: { (resource) -> Void in
             }
+            
         )
         
 //        if eventSwitch.on && !WInfo.agreeMarketing {

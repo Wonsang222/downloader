@@ -132,7 +132,6 @@ class WSettingController: BaseController {
                     , successCb: { (resource) -> (Void) in
                     }
                 )
-                exit(0)
             })
             alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.cancel, handler:nil))
             

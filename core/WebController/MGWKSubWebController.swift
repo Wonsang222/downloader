@@ -139,6 +139,7 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         dismissBtn.setImage(UIImage(named: "ic_navi_back.png"), for: .normal)
         dismissBtn.onClick { (view) in
             self.dismiss(animated: true, completion: nil)
+            self.webView.evaluateJavaScript("window.close()", completionHandler: nil)
         }
         webTitle.frame = CGRect(x: 50, y: 11+statusBarSize, width: topNavigationView.bounds.width, height: 15.0)
         webUrl.frame = CGRect(x: 50, y: 11+statusBarSize+15, width: topNavigationView.bounds.width, height: 13.0)

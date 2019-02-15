@@ -151,16 +151,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
                 if let tracker_id = resource.body()["tracker_id"] as? String {
                     WInfo.trackerId = tracker_id
                 }
-            
-                if let app_func = (resource.body()["app_func"] as? String) {
-                    let json_data = app_func.jsonObject()
-                    if let push_type = json_data["use_text_push"] as? NSNumber {
-                        WInfo.useTextPush = push_type == 1 ? true : false;
-                    } else {
-                        WInfo.useTextPush = false
-                    }
-                }
-            
+
             
                 WInfo.accountId = account_id;
                 RSHttp().req(

@@ -396,20 +396,6 @@ class WInfo{
         }
     }
     
-    static var useTextPush:Bool {
-        get {
-            if let returnValue = UserDefaults.standard.string(forKey: "kUseTextPush") {
-                return returnValue == "NO" ? false : true
-            } else {
-                return false;
-            }
-        }
-        set {
-            UserDefaults.standard.set(newValue ? "YES" : "NO", forKey: "kUseTextPush")
-            UserDefaults.standard.synchronize()
-        }
-    }
-    
     static func customAction(theme: String, rootView: UIView!) {
         // winfo.themeinfo를 통해 커스텀 클래스 인지 확인한다
         // 커스텀 테마인 경우, 커스텀 클래스에 접근하여 userinfo 에 배열요소가 존재하면 'mypage'를, 존재하지않으면 'login'을 띄운다.

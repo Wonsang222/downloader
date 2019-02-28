@@ -136,6 +136,7 @@ class WingLogin : HttpBaseResource{
         }
         request.addValue(self.reqUrl, forHTTPHeaderField: "Referer")
         request.httpMethod = "POST"
+        request.httpShouldHandleCookies = false
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = self.generateParamter().data(using: String.Encoding.utf8)
         return request

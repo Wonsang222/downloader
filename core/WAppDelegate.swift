@@ -153,18 +153,23 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         #if DEBUG
         print(tokenString)
         #endif
-        WInfo.deviceToken = tokenString
-        let api = ApiFormApp().ap("mode","add_token")
-            .ap("pack_name",AppProp.appId)
-            .ap("token",WInfo.deviceToken)
+        if !WInfo.deviceToken.elementsEqual(tokenString) {
+            WInfo.deviceToken = tokenString
+            
+            let api = ApiFormApp().ap("mode","add_token")
+                .ap("pack_name",AppProp.appId)
+                .ap("token",WInfo.deviceToken)
 
-        RSHttp().req([api],successCb: { (resource) -> Void in
+            RSHttp().req(api, successCb: { (resource) -> (Void) in
+                self.apnsCallback?(true)
+                self.apnsCallback = nil
+            }) { (errorCode, resource) -> (Void) in
+                self.apnsCallback?(false)
+                self.apnsCallback = nil
+            }
+        } else {
             self.apnsCallback?(true)
-            self.apnsCallback = nil
-        },errorCb : { (errorCode,resource) -> Void in
-            self.apnsCallback?(false)
-            self.apnsCallback = nil
-        })
+        }
     }
 
     @available(iOS 10.0, *)

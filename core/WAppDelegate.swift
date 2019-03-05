@@ -169,6 +169,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             }
         } else {
             self.apnsCallback?(true)
+            self.apnsCallback = nil
         }
     }
 

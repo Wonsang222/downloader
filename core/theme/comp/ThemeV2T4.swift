@@ -27,8 +27,9 @@ class ThemeV2T4: CommonMkTheme {
         
         let wisaExtendMenuHeight: CGFloat = 70.0;
         WInfo.naviHeight = 50;
+        WInfo.extendThemeTag = 1004
         let wisaMenu:UIView = UIView(frame : CGRect(x: 0, y: view!.frame.height - CGFloat(truncating: WInfo.naviHeight) - Tools.safeArea(), width: UIScreen.main.bounds.width, height: CGFloat(truncating: WInfo.naviHeight)  + Tools.safeArea()) )
-        let wisaExtendMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - (wisaExtendMenuHeight) - Tools.safeArea()-0.5,width: UIScreen.main.bounds.width, height: wisaExtendMenuHeight) )
+        let wisaExtendMenu:UIView = UIView(frame : CGRect(x: 0,y: view!.frame.height - (wisaExtendMenuHeight) - Tools.safeArea() - 0.5,width: UIScreen.main.bounds.width, height: wisaExtendMenuHeight) )
         
         for i in 0..<extends_menus.count {
             if (extends_menus[i]["enable"] as! Int) == 1 {
@@ -140,10 +141,12 @@ class ThemeV2T4: CommonMkTheme {
         extendBorderLayer.frame = CGRect(x: 0, y: 0, width: wisaMenu.frame.width, height: 0.5)
         
         wisaExtendMenu.layer.addSublayer(extendBorderLayer)
+        wisaExtendMenu.tag = WInfo.extendThemeTag
         view?.addSubview(wisaExtendMenu)
         view?.addSubview(border)
         view?.addSubview(wisaMenu)
         wisaExtendMenu.isHidden = true
+        
        
         if let webBackground = uiData["webBackground"] as? String {
             mainController!.engine.webView.backgroundColor = UIColor(hexString:webBackground)

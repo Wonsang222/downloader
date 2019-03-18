@@ -16,7 +16,6 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     var openedButton: UIButton? = nil
     var menuState: Int = 0
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.engine.webDelegate = self
@@ -25,12 +24,10 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             self.performSegue(withIdentifier: "intro", sender: self)
         })
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
 
     func endIntro(){
         do{
@@ -59,7 +56,6 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             }
             
         )
-        
         
     }
 
@@ -261,27 +257,29 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     }
     @objc func onMoreClick(_ sender:UIButton!){
         // toggle
-        let extendsMenu:UIView! = sender.superview?.superview?.subviews[2];
         let extendsArrow:UIView! = sender.subviews[2];
         
-        if extendsMenu.isHidden == false {
-            UIView.animate(withDuration: 0.2, animations: {
-                extendsMenu.frame = extendsMenu.frame.changeY(self.view!.frame.height - 50 - Tools.safeArea() - 0.5)
-                extendsArrow.alpha = 0.0
-            }) { (bool) in
-                extendsMenu.isHidden = true
-                extendsArrow.isHidden = true
-            }
-        } else {
-            extendsMenu.isHidden = false
-            extendsArrow.isHidden = false
-            UIView.animate(withDuration: 0.2, animations: {
-                extendsMenu.frame =
-                    extendsMenu.frame.changeY(self.view!.frame.height - 120 - Tools.safeArea() - 0.5)
-                extendsArrow.alpha = 1.0
-            }) { (bool) in
+        if let extendsMenu = sender.superview?.superview?.viewWithTag(WInfo.extendThemeTag) {
+            if extendsMenu.isHidden == false {
+                UIView.animate(withDuration: 0.2, animations: {
+                    extendsMenu.frame = extendsMenu.frame.changeY(self.view!.frame.height - 50 - Tools.safeArea() - 0.5)
+                    extendsArrow.alpha = 0.0
+                }) { (bool) in
+                    extendsMenu.isHidden = true
+                    extendsArrow.isHidden = true
+                }
+            } else {
+                extendsMenu.isHidden = false
+                extendsArrow.isHidden = false
+                UIView.animate(withDuration: 0.2, animations: {
+                    extendsMenu.frame =
+                        extendsMenu.frame.changeY(self.view!.frame.height - 120 - Tools.safeArea() - 0.5)
+                    extendsArrow.alpha = 1.0
+                }) { (bool) in
+                }
             }
         }
+        
     }
     
     @objc func onExtendFunc(_ sender:UIButton!, _ key: String) {

@@ -187,6 +187,7 @@ class WInfo{
         }
         return arrayValues.joined(separator: "; ")
     }
+    
     static func clearSessionCookie() {
         if WInfo.appUrl != "" {
             if let cookies = HTTPCookieStorage.shared.cookies(for: URL(string:WInfo.appUrl)!){
@@ -396,6 +397,23 @@ class WInfo{
         }
     }
     
+    static var extendThemeTag: Int {
+        
+        get {
+            if let kTag = UserDefaults.standard.string(forKey: "kExtendThemeTag") {
+            return Int(truncating: NumberFormatter().number(from: kTag)!)
+        } else {
+            return 0
+            }
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: "kExtendThemeTag")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    
     static func customAction(theme: String, rootView: UIView!) {
         // winfo.themeinfo를 통해 커스텀 클래스 인지 확인한다
         // 커스텀 테마인 경우, 커스텀 클래스에 접근하여 userinfo 에 배열요소가 존재하면 'mypage'를, 존재하지않으면 'login'을 띄운다.
@@ -417,4 +435,5 @@ class WInfo{
             }
         }
     }
+    
 }

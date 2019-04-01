@@ -62,9 +62,10 @@ class RSHttp{
 				}
 				let semaphore = DispatchSemaphore(value: 0)
 				let urlConfig =	URLSessionConfiguration.default
-                let appId = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String
-				let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-				resource.reqHeader["User-Agent"] = "\(String(describing: appId))/\(appVersion)"
+                if let appId  = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String {
+                    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+                    resource.reqHeader["User-Agent"] = "\(String(describing: appId))/\(appVersion)"
+                }
                 
                 if(WInfo.accountId == "naingirl") {
                     urlConfig.timeoutIntervalForRequest = Double(60000) / 1000

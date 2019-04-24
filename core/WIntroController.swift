@@ -22,6 +22,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
     var viewIntroInfo = [String:Any]()
     weak var mainController:WMainController?
     var permissionController:PermissionController?
+    var existWinfo = false
     
     
 	fileprivate var saveVersion:Int{
@@ -85,6 +86,11 @@ class WIntroController: BaseController,OLImageViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if WInfo.accountId != "" {
+            self.existWinfo = true
+        }
+        
         doPlaySplash()
         self.reqCheckApiKey()
     }
@@ -116,63 +122,69 @@ class WIntroController: BaseController,OLImageViewDelegate {
 
 
     fileprivate func reqMarketingAgree(_ yn:String,next:@escaping (()->Void)){
-        RSHttp(controller:self).req(
+        RSHttp(controller:self, showingPopup:self.existWinfo).req(
             [ApiFormApp().ap("mode","set_marketing_agree").ap("pack_name",AppProp.appId).ap("marketing_agree",yn)],
             successCb: { (resource) -> Void in
                 WInfo.firstProcess = false
                 WInfo.agreeMarketing = (yn == "Y") ? true : false
                 next()
             },errorCb:{ (errorCode,resource) -> Void in
-                self.finishPopup()
-                
+                guard self.existWinfo == true else {
+                    return self.finishPopup()
+                }
+                self.dismissProcess()
             }
         )
     }
-    
  
     fileprivate func reqCheckApiKey(){
-		RSHttp(controller:self).req(
-		   ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId),
-		   successCb: { (resource) -> Void in
-		   		let siteUrl = resource.body()["site_url"] as! String
-		   		let solutionType = resource.body()["solution_type"] as! String
+        
+        RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
+           ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId),
+           successCb: { (resource) -> Void in
+                   let siteUrl = resource.body()["site_url"] as! String
+                   let solutionType = resource.body()["solution_type"] as! String
                 let account_id = resource.body()["account_id"] as! String
                 let urlParam = resource.body()["url_param"] as! String
                 self.updateUse = resource.body()["update_use"] as? String
-            
+
                 if let marketingUrl = resource.body()["marketing_url"] as? String{
                     WInfo.getMarketingPopupUrl = marketingUrl
                 }
 
-		   		WInfo.appUrl = siteUrl
-                WInfo.urlParam = urlParam;
+                   WInfo.appUrl = siteUrl
+                WInfo.urlParam = urlParam
                 WInfo.solutionType = solutionType
-            
+
                 if let tracker_id = resource.body()["tracker_id"] as? String {
                     WInfo.trackerId = tracker_id
                 }
 
-            
+
                 WInfo.accountId = account_id;
-                RSHttp().req(
+                RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
                     ApiFormApp().ap("mode","add_token")
                     .ap("pack_name",AppProp.appId)
                     .ap("token",WInfo.deviceToken)
                 )
-		   		self.reqGetIntro()
+                   self.reqGetIntro()
             },errorCb:{ (errorCode,resource) -> Void in
-                self.finishPopup()
+                guard self.existWinfo == true else {
+                    return self.finishPopup()
+                }
+                self.dismissProcess()
             }
-		)
+        )
     }
 
 
  	fileprivate func reqGetIntro(){
-		RSHttp(controller:self).req(
+        RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
 		   ApiFormApp().ap("mode","get_intro").ap("pack_name",AppProp.appId),
 		   successCb: { (resource) -> Void in
 		   		let serverVersion = resource.body()["version"] as! String
 		   		let introImg = resource.body()["intro_img"] as! NSArray
+            
 		   		if Int(serverVersion)! > self.saveVersion{
                     var introInfo = WInfo.introInfo
                     introInfo["version"] = Int(serverVersion)!
@@ -207,8 +219,12 @@ class WIntroController: BaseController,OLImageViewDelegate {
 		   		}else{
                     self.initIntro();
 		   		}
-		   }
-		)
+        },errorCb:{ (errorCode,resource) -> Void in
+            guard self.existWinfo == true else {
+                return self.finishPopup()
+            }
+            self.dismissProcess()
+        })
     }
     
     func initIntro(){
@@ -231,7 +247,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
     }
 
 	fileprivate func reqTheme(){
-		RSHttp(controller:self).req(
+		RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
 		   ApiFormApp()
             .ap("mode","get_theme")
 //            나인 커스텀 관련
@@ -244,12 +260,17 @@ class WIntroController: BaseController,OLImageViewDelegate {
 		   		}
             
 		   		self.reqUpdate()
-		   }
+            },errorCb:{ (errorCode,resource) -> Void in
+                guard self.existWinfo == true else {
+                    return self.finishPopup()
+                }
+                self.dismissProcess()
+            }
 		)
     }
 
 	fileprivate func reqUpdate(){
-        RSHttp(controller:self).req(
+        RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
             ResourceVER().ap("mode", "version_chk").ap("bundleId", AppProp.appId).ap("country", "KR"),
             successCb: { (resource) -> Void in
                 var serverVersion: String!
@@ -267,10 +288,13 @@ class WIntroController: BaseController,OLImageViewDelegate {
                 let curVersion = AppProp.appVersion
                 print("curVersion \(curVersion)")
 //                    .replace(".", withString: "")
+                
+                
                 if self.updateUse == "N" {
                     self.dismissProcess()
                     return
                 }
+                
                 if Tools.compareVersion(serverVersion, curVersion) && WInfo.ignoreUpdateVersion != serverVersion.replace(".", withString: ""){
                     let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.default, handler:{ action in
@@ -287,6 +311,11 @@ class WIntroController: BaseController,OLImageViewDelegate {
                 }
                 
                 
+        },errorCb:{ (errorCode,resource) -> Void in
+            guard self.existWinfo == true else {
+                return self.finishPopup()
+            }
+            self.dismissProcess()
         })
 //        errorCb: { (code, resource) -> (Void) in
 //            print("error : \(code) \(resource)")
@@ -409,4 +438,11 @@ class WIntroSegue : UIStoryboardSegue {
     }
 }
 
+extension String {
+    func replaceForNumber(target: String, withString: String) -> Int {
+        
+        let numOfString = self.replacingOccurrences(of: target, with: withString, options: NSString.CompareOptions.literal, range: nil)
+        return Int(numOfString) ?? 0
+    }
+}
 

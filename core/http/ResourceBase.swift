@@ -91,30 +91,29 @@ class WingLogin : HttpBaseResource{
     override func parseHeader(_ _response: URLResponse) throws{
         
         let httpResponse: HTTPURLResponse = _response as! HTTPURLResponse
+    
+        // 기존
+//        if let cookies = HTTPCookieStorage.shared.cookies {
+//            for cookie in cookies {
+//                if cookie.name == "PHPSESSID" {
+//                    print("dong cookie name \(cookie.value)")
+//                    DispatchQueue.main.sync {
+//                        WInfo.setCookie(cookie: cookie)
+//                    }
+//                }
+//            }
+//        }
         
-        if let value = httpResponse.allHeaderFields["Set-Cookie"]{
-            print("Set Cookie  \(value)")
-        }
-        
-//        let access_cookie_dic : [HTTPCookiePropertyKey:Any] = [
-//            HTTPCookiePropertyKey.domain : WInfo.appUrl.globalUrl() as AnyObject,
-//            HTTPCookiePropertyKey.path : "/" as AnyObject,
-//            HTTPCookiePropertyKey.name : "PHPSESSID",
-//            HTTPCookiePropertyKey.value : "PHPSESSID",
-//            HTTPCookiePropertyKey.expires : Date().addingTimeInterval(60*60*24*365*300),
-//            HTTPCookiePropertyKey.is
-//        ];
-        
-        if let cookies = HTTPCookieStorage.shared.cookies {
-            for cookie in cookies {
-                if cookie.name == "PHPSESSID" {
-                    DispatchQueue.main.sync {
-                        WInfo.setCookie(cookie: cookie)
-                    }
+        // 수정
+        let cookies = HTTPCookie.cookies(withResponseHeaderFields: httpResponse.allHeaderFields as! [String: String], for: _response.url!)
+        for cookie in cookies {
+            if cookie.name == "PHPSESSID" {
+                print("dong cookie name \(cookie.value)")
+                DispatchQueue.main.sync {
+                    WInfo.setCookie(cookie: cookie)
                 }
             }
         }
-        
         
     }
     

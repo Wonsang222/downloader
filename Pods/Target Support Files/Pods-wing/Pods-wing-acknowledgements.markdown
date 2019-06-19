@@ -10,6 +10,10 @@ All rights reserved.
 https://github.com/IGAWorksDev/AdBrix-iOS
 
 
+## AppsFlyerFramework
+
+Copyright 2018 AppsFlyer Ltd. All rights reserved.
+
 ## CryptoSwift
 
 Copyright (C) 2014-2017 Marcin Krzyżanowski <marcin.krzyzanowski@gmail.com>

@@ -10,8 +10,9 @@ import UIKit
 import AdSupport
 import UserNotifications
 import WebKit
+import AppsFlyerLib
 
-class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate  {
+class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, AppsFlyerTrackerDelegate  {
     
     
     var window: UIWindow?
@@ -62,9 +63,28 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")
+        
+        #if APPSFLYER
+        AppsFlyerTracker.shared().appsFlyerDevKey = AppProp.appsFlyerDevKey
+        AppsFlyerTracker.shared().appleAppID = AppProp.appsFlyerAppId
+        AppsFlyerTracker.shared().delegate = self
+        
+        if let appsflyerId = AppsFlyerTracker.shared().getAppsFlyerUID() {
+            EventAppsFlyer.appsFlyerId = appsflyerId
+            UserDefaults.standard.register(
+                defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS/WISAAPP_AF_ID(\(appsflyerId))"]
+            )
+        } else {
+            UserDefaults.standard.register(
+                defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
+            )
+        }
+        #else
         UserDefaults.standard.register(
             defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
         )
+        #endif
+        
         if launchOptions != nil {
             if let userInfo = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification] as? [String : AnyObject] {
                 self.remotePushSeq = userInfo["push_seq"] as? String
@@ -75,7 +95,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 self.commmandUrl = launchUrl.query
             }
         }
-
         
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always
         
@@ -101,8 +120,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         #endif
         
         setenv("JSC_useJIT", "false", 0)
+        
         return true
     }
+    
     func applicationWillResignActive(_ application: UIApplication) {
     }
     
@@ -115,6 +136,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     
     func applicationDidBecomeActive( _ application: UIApplication) {
         clearCache()
+        AppsFlyerTracker.shared().trackAppLaunch()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

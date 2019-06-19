@@ -54,6 +54,20 @@ class AppProp{
             return Bundle.main.infoDictionary?["WGCookieSetting"] as? String
         }
     }
+    
+    
+    static var appsFlyerDevKey:String?{
+        get{
+            return Bundle.main.infoDictionary?["WGAppsFlyerDevKey"] as? String
+        }
+    }
+    static var appsFlyerAppId:String?{
+        get{
+            return Bundle.main.infoDictionary?["WGAppsFlyerAppId"] as? String
+        }
+    }
+    
+    
 }
 
 class Tools{

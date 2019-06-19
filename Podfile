@@ -10,4 +10,6 @@ pod 'AdBrix'
 pod 'ZBarSDK'
 pod 'CryptoSwift'
 pod 'SwiftKeychainWrapper'
+pod 'AppsFlyerFramework'
+
 end

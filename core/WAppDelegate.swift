@@ -10,9 +10,9 @@ import UIKit
 import AdSupport
 import UserNotifications
 import WebKit
-//import AppsFlyerLib
+import AppsFlyerLib
 
-class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {//, AppsFlyerTrackerDelegate  {
+class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, AppsFlyerTrackerDelegate  {
     
     
     var window: UIWindow?
@@ -64,31 +64,26 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")
         
-//        #if APPSFLYER
-//        AppsFlyerTracker.shared().appsFlyerDevKey = AppProp.appsFlyerDevKey
-//        AppsFlyerTracker.shared().appleAppID = AppProp.appsFlyerAppId
-//        AppsFlyerTracker.shared().delegate = self
-//
-//        if let appsflyerId = AppsFlyerTracker.shared().getAppsFlyerUID() {
-//            EventAppsFlyer.appsFlyerId = appsflyerId
-//            UserDefaults.standard.register(
-//                defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS/WISAAPP_AF_ID(\(appsflyerId))"]
-//            )
-//        } else {
-//            UserDefaults.standard.register(
-//                defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
-//            )
-//        }
-//        #else
-//        UserDefaults.standard.register(
-//            defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
-//        )
-//        #endif
-        
+        #if APPSFLYER
+        AppsFlyerTracker.shared().appsFlyerDevKey = AppProp.appsFlyerDevKey
+        AppsFlyerTracker.shared().appleAppID = AppProp.appsFlyerAppId
+        AppsFlyerTracker.shared().delegate = self
+
+        if let appsflyerId = AppsFlyerTracker.shared().getAppsFlyerUID() {
+            EventAppsFlyer.appsFlyerId = appsflyerId
+            UserDefaults.standard.register(
+                defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS/WISAAPP_AF_ID(\(appsflyerId))"]
+            )
+        } else {
+            UserDefaults.standard.register(
+                defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
+            )
+        }
+        #else
         UserDefaults.standard.register(
             defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
         )
-        
+        #endif
         
         if launchOptions != nil {
             if let userInfo = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification] as? [String : AnyObject] {
@@ -141,7 +136,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     
     func applicationDidBecomeActive( _ application: UIApplication) {
         clearCache()
-//        AppsFlyerTracker.shared().trackAppLaunch()
+        AppsFlyerTracker.shared().trackAppLaunch()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

@@ -12,7 +12,7 @@ import UserNotifications
 import WebKit
 import AppsFlyerLib
 
-class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, AppsFlyerTrackerDelegate  {
+class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {//, AppsFlyerTrackerDelegate  {
     
     
     var window: UIWindow?

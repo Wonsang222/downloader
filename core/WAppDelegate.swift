@@ -10,7 +10,7 @@ import UIKit
 import AdSupport
 import UserNotifications
 import WebKit
-import AppsFlyerLib
+//import AppsFlyerLib
 
 class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {//, AppsFlyerTrackerDelegate  {
     

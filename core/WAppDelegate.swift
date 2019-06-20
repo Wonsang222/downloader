@@ -141,7 +141,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     
     func applicationDidBecomeActive( _ application: UIApplication) {
         clearCache()
-        AppsFlyerTracker.shared().trackAppLaunch()
+//        AppsFlyerTracker.shared().trackAppLaunch()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

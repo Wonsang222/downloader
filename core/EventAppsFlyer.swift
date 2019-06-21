@@ -23,4 +23,5 @@ class EventAppsFlyer {
             UserDefaults.standard.synchronize()
         }
     }
+    
 }

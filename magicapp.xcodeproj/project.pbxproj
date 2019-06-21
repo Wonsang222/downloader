@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4867A458847E14ACBE8CFF29 /* Pods_wing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8F876D90701912874616002 /* Pods_wing.framework */; };
+		5F19B88522BCB6410094B745 /* EventAppsFlyer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F19B88422BCB6410094B745 /* EventAppsFlyer.swift */; };
 		5FB52EAD2133936B003A3896 /* ic_a_extends_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FB52EAC2133936A003A3896 /* ic_a_extends_arrow.png */; };
 		CAAAC7CC1CB6245E00031667 /* ExtenstionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAAC7CB1CB6245E00031667 /* ExtenstionUIImage.swift */; };
 		D405296C1DFE7CD600E09FAD /* MarketingPopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D405296B1DFE7CD600E09FAD /* MarketingPopupController.swift */; };
@@ -99,6 +100,7 @@
 
 /* Begin PBXFileReference section */
 		31A9CEAD2E2D84469E764C8B /* Pods-wing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wing.release.xcconfig"; path = "Pods/Target Support Files/Pods-wing/Pods-wing.release.xcconfig"; sourceTree = "<group>"; };
+		5F19B88422BCB6410094B745 /* EventAppsFlyer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAppsFlyer.swift; sourceTree = "<group>"; };
 		5FB52EAC2133936A003A3896 /* ic_a_extends_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_a_extends_arrow.png; sourceTree = "<group>"; };
 		B8F876D90701912874616002 /* Pods_wing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B92924B3AB6793240BC14B4B /* Pods-wing.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wing.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wing/Pods-wing.debug.xcconfig"; sourceTree = "<group>"; };
@@ -392,6 +394,7 @@
 		D48808511E975D59009D3DB1 /* external */ = {
 			isa = PBXGroup;
 			children = (
+				5F19B88422BCB6410094B745 /* EventAppsFlyer.swift */,
 				D48808521E975D70009D3DB1 /* EventAdbrix.swift */,
 			);
 			name = external;
@@ -525,6 +528,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				Base,
 			);
 			mainGroup = D41622671C9C44A300A818DA;
@@ -657,6 +661,7 @@
 				F5FCD42D20E1E32600B36214 /* MGWKSubWebController.swift in Sources */,
 				D4932E831CA432710014B769 /* WMainController.swift in Sources */,
 				D405296E1DFE7CFA00E09FAD /* RPopupController.swift in Sources */,
+				5F19B88522BCB6410094B745 /* EventAppsFlyer.swift in Sources */,
 				D4CC07D22015B26F0033A011 /* OLImageView.m in Sources */,
 				D4D9FCB81FBAA0F300B088B1 /* ExtenstionCGRect.swift in Sources */,
 				D45D64771CB29370004976A2 /* ExtensionUIColor.swift in Sources */,

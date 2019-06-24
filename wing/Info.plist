@@ -115,5 +115,9 @@
 	<string></string>
 	<key>WGCookieSetting</key>
 	<string>NO</string>
+	<key>WGAppsFlyerDevKey</key>
+	<string></string>
+	<key>WGAppsFlyerAppId</key>
+	<string></string>
 </dict>
 </plist>

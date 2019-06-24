@@ -65,8 +65,8 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")
         
         #if APPSFLYER
-        AppsFlyerTracker.shared().appsFlyerDevKey = AppProp.appsFlyerDevKey
-        AppsFlyerTracker.shared().appleAppID = AppProp.appsFlyerAppId
+        AppsFlyerTracker.shared().appsFlyerDevKey = AppProp.appsFlyerDevKey as! String
+        AppsFlyerTracker.shared().appleAppID = AppProp.appsFlyerAppId as! String
         AppsFlyerTracker.shared().delegate = self
 
         if let appsflyerId = AppsFlyerTracker.shared().getAppsFlyerUID() {

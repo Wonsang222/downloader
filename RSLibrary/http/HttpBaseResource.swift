@@ -18,6 +18,11 @@ class HttpBaseResource{
         get{
             return false
         }
+    }    
+    var reqPurpose:String {
+        get {
+            return ""
+        }
     }
 	var charSet = "utf-8"
 	var isMultiPart = false

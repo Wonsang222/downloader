@@ -72,6 +72,11 @@ class WingLogin : HttpBaseResource{
             return true
         }
     }
+    override var reqPurpose:String {
+        get {
+            return "LOGIN"
+        }
+    }
 
 
     override func parse(_ _data: Data) throws{

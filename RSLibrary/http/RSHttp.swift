@@ -64,7 +64,13 @@ class RSHttp{
 				let urlConfig =	URLSessionConfiguration.default
                 if let appId  = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String {
                     let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-                    resource.reqHeader["User-Agent"] = "\(String(describing: appId))/\(appVersion)"
+                    var useragent = "\(String(describing: appId))/\(appVersion)"
+                    #if APPSFLYER
+                    if resource.reqPurpose == "LOGIN" {
+                        useragent.append("/WISAAPP_AF_ID(\(EventAppsFlyer.appsFlyerId))")
+                    }
+                    #endif
+                    resource.reqHeader["User-Agent"] = useragent
                 }
                 
                 if(WInfo.accountId == "naingirl") {

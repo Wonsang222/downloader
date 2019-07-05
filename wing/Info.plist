@@ -119,5 +119,7 @@
 	<string></string>
 	<key>WGAppsFlyerAppId</key>
 	<string></string>
+	<key>CFBundleDisplayName</key>
+	<string>$(PRODUCT_NAME)</string>
 </dict>
 </plist>

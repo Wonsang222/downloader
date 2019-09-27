@@ -12,7 +12,7 @@
         <!--Intro Controller-->
         <scene sceneID="hXE-xu-EBn">
             <objects>
-                <viewController id="oDu-yi-FcX" customClass="IntroController" customModule="wing" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="oDu-yi-FcX" customClass="IntroController" customModule="wing" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ElE-XY-vf5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

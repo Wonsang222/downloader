@@ -7,13 +7,15 @@
 //
 
 import UIKit
-import CoreLocation
 import AddressBook
 import AddressBookUI
 import ZBarSDK
 import AVKit
 import AVFoundation
 import WebKit
+#if GPSENABLED
+import CoreLocation
+#endif
 
 class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReaderDelegate{
     static let gPool:WKProcessPool = WKProcessPool()
@@ -231,10 +233,12 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReader
         }else if value["func"] == "isGpsEnabled" {
             let callback = value["callback"]!.removingPercentEncoding!
             var value:String = "N"
+            #if GPSENABLED
             if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.denied
                 && CLLocationManager.locationServicesEnabled() {
                 value = "Y"
             }
+            #endif
             self.runScript("javascript:\(callback)('\(value)')")
         }else if value["func"] == "goGPSConfig" {
             UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)

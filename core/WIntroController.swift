@@ -380,11 +380,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
             imagview.image = splash
             self.introView.addSubview(imagview)
         }
-  
-        
-        
     }
-    
     
     fileprivate func finishPopup(){
         let alert = UIAlertController(title: "알림", message: "데이터가 잘못되어 앱을종료합니다.\n다시 실행해주세요." ,preferredStyle: UIAlertControllerStyle.alert)
@@ -394,22 +390,20 @@ class WIntroController: BaseController,OLImageViewDelegate {
         self.present(alert,animated:true, completion: nil)
     }
     
-    
     func imageViewDidLoop(_ imageView: OLImageView!) {
         oncePlayOk = true
-        closeIntroProcess()
+        closeIntroProcess()        
     }
-    
     
     func closeIntroProcess(){
         if self.viewIntroInfo["fileType"] as? String == "gif" {
-            if(self.loopCount != 1){
-                self.delayDismissFunc()
-            }else{
+//            if(self.loopCount != 0) {
+//                self.delayDismissFunc()
+//            }else{
                 if oncePlayOk && webViewLoadedOk {
                     self.delayDismissFunc()
                 }
-            }
+//            }
         }else{
             self.delayDismissFunc()
         }

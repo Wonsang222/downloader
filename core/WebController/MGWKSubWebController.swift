@@ -73,7 +73,7 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         ["schema" : "lotteappcard", "url" : "https://itunes.apple.com/kr/app/losde-aebkadeu/id688047200?mt=8"], //롯데카드
         ["schema" : "lottesmartpay", "url" : ""], //롯데
         
-        ["schema" : "cloudpay", "url" : "itmss://itunes.apple.com/app/id847268987"], //외환카드 , 하나카드
+        ["schema" : "cloudpay", "url" : "itms://itunes.apple.com/app/id847268987"], //외환카드 , 하나카드
         ["schema" : "nhappcardansimclick", "url" : "http://itunes.apple.com/kr/app/nhnonghyeob-mobailkadeu-aebkadeu/id698023004?mt=8"], //NH카드
         ["schema" : "citispay", "url" : "https://itunes.apple.com/kr/app/citi-cards-mobile-ssitikadeu/id373559493?l=en&mt=8"],          //NH카드
         ["schema" : "lguthepay", "url" : "https://itunes.apple.com/kr/app/paynow/id760098906?mt=8"],          //페이나우
@@ -104,7 +104,8 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         ["schema" : "storylink", "url" : "https://itunes.apple.com/us/app/kakaostory/id486244601?mt=8"], // 카카오스토리
         ["schema" : "kakaotalk", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오톡
         ["schema" : "kakaolink", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오링크
-        ["schema" : "supertoss", "url" : "https://itunes.apple.com/kr/app/%ED%86%A0%EC%8A%A4/id839333328?mt=8"] // 토스
+        ["schema" : "kakaobizchat", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오비즈챗
+        ["schema" : "supertoss", "url" : "https://itunes.apple.com/kr/app/%ED%86%A0%EC%8A%A4/id839333328?mt=8"], // 토스
     ]
     
     func loadedView(url: URLRequest, config: WKWebViewConfiguration) -> WKWebView {
@@ -191,6 +192,8 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
                 decisionHandler(.cancel)
             } else if !self.handleSchema(urlString) {
                 decisionHandler(.cancel)
+            } else if !self.handleItunes(urlString) {
+                decisionHandler(.cancel)
             } else {
                 decisionHandler(.allow)
                 return ;
@@ -221,6 +224,42 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
             }
         }
         return true
+    }
+    
+    func handleItunes(_ url:String?)->Bool{
+        if url == nil {
+            return true
+        }
+        if url!.hasPrefix("https://itunes.apple.com/kr/app/") {
+            UIApplication.shared.openURL(URL(string:url!)!)
+            return false
+        }
+        if url!.hasPrefix("https://itunes.apple.com/us/app/") {
+            UIApplication.shared.openURL(URL(string:url!)!)
+            return false
+        }
+        if url!.hasPrefix("https://appsto.re/kr/") {
+            UIApplication.shared.openURL(URL(string:url!)!)
+            return false
+        }
+        if url!.hasPrefix("https://appsto.re/us/") {
+            UIApplication.shared.openURL(URL(string:url!)!)
+            return false
+        }
+        if url!.hasPrefix("http://itunes.apple.com/us/app/") {
+            UIApplication.shared.openURL(URL(string:url!)!)
+            return false
+        }
+        if url!.hasPrefix("http://itunes.apple.com/kr/app/") {
+            UIApplication.shared.openURL(URL(string:url!)!)
+            return false
+        }
+        if url!.hasPrefix("itms-apps://") {
+            UIApplication.shared.openURL(URL(string:url!)!)
+            return false
+        }
+        return true
+        
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {

@@ -113,6 +113,56 @@ class Tools{
                 return false
             }
     }
+    
+    static func hasJailbreak() -> Bool {
+        
+        guard let cydiaUrlScheme = NSURL(string: "cydia://package/com.example.package") else { return false }
+        if UIApplication.shared.canOpenURL(cydiaUrlScheme as URL) {
+            return true
+        }
+        #if arch(i386) || arch(x86_64)
+        return false
+        #endif
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: "/Applications/Cydia.app") ||
+            fileManager.fileExists(atPath: "/Applications/SBSetting.app") ||
+            fileManager.fileExists(atPath: "/Applications/Terminal.app") ||
+            fileManager.fileExists(atPath: "/Library/MobileSubstrate/MobileSubstrate.dylib") ||
+            fileManager.fileExists(atPath: "/bin/bash") ||
+            fileManager.fileExists(atPath: "/usr/sbin/sshd") ||
+            fileManager.fileExists(atPath: "/etc/apt") ||
+            fileManager.fileExists(atPath: "/usr/bin/ssh") ||
+            fileManager.fileExists(atPath: "/private/var/lib/apt") {
+            return true
+        }
+        
+        if self.canOpen(path: "/Applications/Cydia.app") ||
+           self.canOpen(path: "/Applications/SBSetting.app") ||
+            self.canOpen(path: "/Applications/Terminal.app") ||
+            self.canOpen(path: "/Library/MobileSubstrate/MobileSubstrate.dylib") ||
+            self.canOpen(path: "/bin/bash") ||
+            self.canOpen(path: "/usr/sbin/sshd") ||
+            self.canOpen(path: "/etc/apt") ||
+            self.canOpen(path: "/usr/bin/ssh") {
+            return true
+        }
+        
+        let path = "/private/" + NSUUID().uuidString
+        do {
+            try "anyString".write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
+            try fileManager.removeItem(atPath: path)
+            return true
+        } catch {
+            return false
+        }
+    }
+    
+    static func canOpen(path: String) -> Bool {
+        let file = fopen(path, "r")
+        guard file != nil else { return false }
+        fclose(file)
+        return true
+    }
 }
 
 class DownLoader{

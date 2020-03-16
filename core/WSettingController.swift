@@ -112,7 +112,6 @@ class WSettingController: BaseController {
             return
         }
         
-        print("dong 12", String(pattern[patternPos]))
         if String(pattern[patternPos]) == str_num {
             patternPos = patternPos + 1
         } else {

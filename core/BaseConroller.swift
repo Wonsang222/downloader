@@ -63,6 +63,12 @@ class BaseController: UIViewController {
         return alert
     }
     
+    func createWarningAlert(_ confirm:@escaping ((UIAlertAction) -> Void)) -> UIAlertController {
+        let alert = UIAlertController(title: "알림", message: "탈옥기기로 이 앱을 사용할 수 없습니다.\n앱을 종료합니다." ,preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.default, handler:confirm))
+        return alert
+    }
+    
     func createMarketingAlertV2(resp:@escaping ((String) -> Void)) -> RPopupController {
         let popupView = self.storyboard!.instantiateViewController(withIdentifier: "popup") as! SimplePopupController
         let popup = SimpleRPopupController(controlller: popupView)

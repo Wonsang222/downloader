@@ -90,11 +90,11 @@ class WIntroController: BaseController,OLImageViewDelegate {
         if WInfo.accountId != "" {
             self.existWinfo = true
         }
-        
+
         doPlaySplash()
         self.reqCheckApiKey()
+        
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -103,7 +103,6 @@ class WIntroController: BaseController,OLImageViewDelegate {
     
     fileprivate func showMarketingPopup(_ next:@escaping (()-> Void)){
         if WInfo.firstProcess {
-            
             if WInfo.getMarketingPopupUrl == "" {
                 let dialog = createMarketingAlertV2(resp: { (value) in
                     self.reqMarketingAgree("Y", next: next)
@@ -118,6 +117,13 @@ class WIntroController: BaseController,OLImageViewDelegate {
         }else{
             next()
         }
+    }
+    
+    fileprivate func showWarningPopup(){
+        let dialog = createWarningAlert { (action) in
+            exit(0)
+        }
+        self.present(dialog, animated: false, completion: nil)
     }
 
 
@@ -228,13 +234,15 @@ class WIntroController: BaseController,OLImageViewDelegate {
     }
     
     func initIntro(){
-        if(WInfo.confirmPermission){
+        if Tools.hasJailbreak() {
+            self.showWarningPopup();
+        } else if(WInfo.confirmPermission) {
             (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
                 self.showMarketingPopup({
                     self.reqTheme()
                 })
             })
-        }else{
+        } else {
             self.permissionController = self.storyboard?.instantiateViewController(withIdentifier: "permission") as? PermissionController
             self.permissionController?.show(parent: self, callback: {
                 (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in

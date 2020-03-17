@@ -16,6 +16,7 @@ class BaseController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.modalPresentationStyle = .fullScreen
     }
     
     override func viewWillAppear(_ animated: Bool) {

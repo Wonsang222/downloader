@@ -132,7 +132,6 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
 
 
     func loadPage(_ url:String){
-        print("dong2 loadPage")
         let ui_data = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
         let objTopFix = ui_data["isTopFix"] as? Bool
         let topFix = objTopFix == nil ? true : objTopFix!
@@ -424,7 +423,6 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
         }
     }
     func webLoadedCommit(_ urlString: String?) {
-        print("dong3 run commit code ")
         if self.presentedViewController != nil {
             self.introContrller?.webViewLoadedOk = true
             self.introContrller?.closeIntroProcess()

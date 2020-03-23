@@ -120,7 +120,6 @@ class WSettingController: BaseController {
         
         if patternPos == 6 {
             patternPos = 0
-            print("dong rorro")
             let alert = UIAlertController(title: AppProp.appName, message: "테스트 푸시를 발송하시겠습니까?" ,preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.default) { (action) in
                 RSHttp(controller: self).req(

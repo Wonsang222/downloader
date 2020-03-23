@@ -22,19 +22,14 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         super.loadEngine()
         let config = WKWebViewConfiguration()
         config.processPool = WebEngine.gPool
-        //        let jsctrl = WKUserContentController()
         config.preferences.javaScriptCanOpenWindowsAutomatically = true
         
-//        _webView.scrollView.cont
-        print("dong2 statusbar frame :", UIApplication.shared.statusBarFrame.height)
         _webView = WKWebView(frame: CGRect(x: self.controller.webViewContainer.bounds.origin.x,
                                            y: UIApplication.shared.statusBarFrame.height,
                                            width: self.controller.webViewContainer.bounds.size.width,
                                            height: self.controller.webViewContainer.bounds.size.height - Tools.safeArea() - UIApplication.shared.statusBarFrame.height - CGFloat(truncating: WInfo.naviHeight)),
                              configuration: config)
-        if #available(iOS 9.0, *) {
-            //            webView.allowsLinkPreview = true
-        }
+
         _webView.uiDelegate = self
         _webView.navigationDelegate = self
         _webView.scrollView.delegate = self
@@ -129,25 +124,6 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         }
         self.webDelegate?.webLoadedFinish(webView.url?.absoluteString)
         
-//        if #available(iOS 11.0, *) {
-//            WKWebsiteDataStore.default().httpCookieStore.getAllCookies { (cookies) in
-//                print("START")
-//                for cookie in cookies {
-//                    print("%@/%@",cookie.name,cookie.value,cookie.expiresDate,cookie.domain)
-//                }
-//                print("END")
-//            }
-//            if let cookies = HTTPCookieStorage.shared.cookies {
-//                print("HSTART")
-//                for cookie in cookies {
-//                    print("%@/%@",cookie.name,cookie.value,cookie.expiresDate,cookie.domain)
-//                }
-//                print("HEND")
-//            }
-//
-//        } else {
-//            // Fallback on earlier versions
-//        }
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -179,11 +155,6 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
             }else if !self.handleSchema(urlString) {
                 decisionHandler(.cancel)
             }else{
-//                var cookies = HTTPCookie.requestHeaderFields(with: HTTPCookieStorage.shared.cookies(for: navigationAction.request.url!)!)
-//                if let value = cookies["Cookie"] {
-//                    navigationAction.request.addValue("Cookie", forHTTPHeaderField: cookies)
-//                    navigationAction.request.httpShouldHandleCookies
-//                }
                 decisionHandler(.allow)
                 return ;
             }
@@ -197,13 +168,6 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
 
-//        if let req_host = navigationAction.request.url?.host {
-//            if WInfo.appUrl.range(of: req_host) != nil {
-//                webView.load(navigationAction.request)
-//                return nil
-//            }
-//        }
-        // test
         let controller = MGWKSubWebController()
         let re_webView = controller.loadedView(url: (navigationAction.request), config: configuration)
         
@@ -252,10 +216,6 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     override func clearHistory() {
         
     }
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        print("dong scroll gogo", WMainController.)
-//    }
 
 }
 

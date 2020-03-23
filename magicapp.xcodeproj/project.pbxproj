@@ -64,7 +64,6 @@
 		D4ABD0FA1E6562BD00EC0649 /* ThemeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ABD0F71E6562BD00EC0649 /* ThemeFactory.swift */; };
 		D4ABD0FC1E6562D100EC0649 /* ThemeV2T1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ABD0FB1E6562D100EC0649 /* ThemeV2T1.swift */; };
 		D4ABD0FE1E6562DC00EC0649 /* ThemeV2T2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ABD0FD1E6562DC00EC0649 /* ThemeV2T2.swift */; };
-		D4BBE1842002F5A000CD7717 /* EngineUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE1832002F5A000CD7717 /* EngineUI.swift */; };
 		D4BBE1882003085800CD7717 /* EngineWK.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE1872003085800CD7717 /* EngineWK.swift */; };
 		D4C64EEC1CAC06A200BF545E /* ResourceBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EE91CAC06A200BF545E /* ResourceBase.swift */; };
 		D4C64EED1CAC06A200BF545E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C64EEA1CAC06A200BF545E /* Tools.swift */; };
@@ -165,7 +164,6 @@
 		D4ABD0F71E6562BD00EC0649 /* ThemeFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeFactory.swift; sourceTree = "<group>"; };
 		D4ABD0FB1E6562D100EC0649 /* ThemeV2T1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeV2T1.swift; sourceTree = "<group>"; };
 		D4ABD0FD1E6562DC00EC0649 /* ThemeV2T2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeV2T2.swift; sourceTree = "<group>"; };
-		D4BBE1832002F5A000CD7717 /* EngineUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineUI.swift; sourceTree = "<group>"; };
 		D4BBE1872003085800CD7717 /* EngineWK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineWK.swift; sourceTree = "<group>"; };
 		D4C64EE91CAC06A200BF545E /* ResourceBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceBase.swift; sourceTree = "<group>"; };
 		D4C64EEA1CAC06A200BF545E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
@@ -344,7 +342,6 @@
 			isa = PBXGroup;
 			children = (
 				D428DDF92002F47800E799F6 /* WebEngine.swift */,
-				D4BBE1832002F5A000CD7717 /* EngineUI.swift */,
 				D4BBE1872003085800CD7717 /* EngineWK.swift */,
 				F5FCD42C20E1E32500B36214 /* MGWKSubWebController.swift */,
 			);
@@ -489,7 +486,6 @@
 				D416226D1C9C44A300A818DA /* Frameworks */,
 				D416226E1C9C44A300A818DA /* Resources */,
 				86769EFECC6FB5BF78B26FFB /* [CP] Embed Pods Frameworks */,
-				1DE39E7966B86DBA92FC1E19 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -590,21 +586,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1DE39E7966B86DBA92FC1E19 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wing/Pods-wing-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		86769EFECC6FB5BF78B26FFB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -615,14 +596,12 @@
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework",
-				"${BUILT_PRODUCTS_DIR}/ZBarSDK/ZBarSDK.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftKeychainWrapper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZBarSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -671,7 +650,6 @@
 				D408A9CE1CA2B50400E0DCB5 /* ExtenstionNSMutableData.swift in Sources */,
 				D4932E931CA433E10014B769 /* Controllers.swift in Sources */,
 				D408A9CD1CA2B50400E0DCB5 /* ExtensionString.swift in Sources */,
-				D4BBE1842002F5A000CD7717 /* EngineUI.swift in Sources */,
 				D4CC07D32015B26F0033A011 /* OLImage.m in Sources */,
 				F51C74D020E3715C00FE5CE9 /* ThemeV2T4.swift in Sources */,
 				D4ABD0FE1E6562DC00EC0649 /* ThemeV2T2.swift in Sources */,

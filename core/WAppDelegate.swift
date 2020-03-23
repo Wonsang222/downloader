@@ -14,8 +14,9 @@ import AppsFlyerLib
 
 class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, AppsFlyerTrackerDelegate  {
     
-    
     var window: UIWindow?
+    var scriptWebview: WKWebView!
+    
     var tracker: GAITracker?{
         get{
             if WInfo.trackerId.isEmpty {
@@ -62,7 +63,16 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")
+        scriptWebview = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
+        var userAgent: String!
+        var finished = false
+        scriptWebview.evaluateJavaScript("navigator.userAgent") { (result, error) in
+            userAgent = result as? String
+            finished = true
+        }
+        while !finished {
+            RunLoop.current.run(mode: .defaultRunLoopMode, before: Date.distantFuture)
+        }
         
         #if APPSFLYER
         AppsFlyerTracker.shared().appsFlyerDevKey = AppProp.appsFlyerDevKey as! String

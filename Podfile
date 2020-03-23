@@ -5,9 +5,9 @@ use_frameworks!
 
 target 'wing' do
 pod 'Google/Analytics'
-pod 'IgaworksCore'
+pod 'IgaworksCore', '= 2.4.3'
 pod 'AdBrix'
-pod 'ZBarSDK'
+# pod 'ZBarSDK' [iOS uiwebview 대응으로 주석, 추후 개발]
 pod 'CryptoSwift'
 pod 'SwiftKeychainWrapper'
 pod 'AppsFlyerFramework'

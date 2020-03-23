@@ -402,10 +402,6 @@ protocol WebControlDelegate {
 
 class WebEngineFactory{
     static func create(_ controller:BaseWebController) -> WebEngine {
-        if #available(iOS 11.0, *){
-            return EngineWK(controller)
-        }else{
-            return EngineUI(controller)
-        }
+        return EngineWK(controller)
     }
 }

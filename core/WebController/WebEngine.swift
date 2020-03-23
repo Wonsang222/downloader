@@ -9,7 +9,7 @@
 import UIKit
 import AddressBook
 import AddressBookUI
-import ZBarSDK
+//import ZBarSDK
 import AVKit
 import AVFoundation
 import WebKit
@@ -17,7 +17,7 @@ import WebKit
 import CoreLocation
 #endif
 
-class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReaderDelegate{
+class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
     static let gPool:WKProcessPool = WKProcessPool()
     let CONTACT_CALLBACK = 40
     let SCANNER_CALLBACK = 50
@@ -263,14 +263,16 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReader
                 let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
                 self.controller.present(activity, animated: true, completion: nil)
             }
-        }else if value["func"] == "scanner" {
-            let callback = value["callback"]!.removingPercentEncoding!
-            controllerCallback[SCANNER_CALLBACK] = callback
-            let scanner = WMScanner()
-            scanner.readerDelegate = self
-            self.controller.present(scanner, animated: true, completion: {
-            });
-        }else if value["func"] == "goSetting" {
+        }
+//        else if value["func"] == "scanner" {
+//            let callback = value["callback"]!.removingPercentEncoding!
+//            controllerCallback[SCANNER_CALLBACK] = callback
+//            let scanner = WMScanner()
+//            scanner.readerDelegate = self
+//            self.controller.present(scanner, animated: true, completion: {
+//            });
+//        }
+        else if value["func"] == "goSetting" {
             self.controller.performSegue(withIdentifier: "setting" ,  sender : self)
         }else if value["func"] == "goNotice" {
             self.controller.performSegue(withIdentifier: "noti" ,  sender : nil)
@@ -335,21 +337,22 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate,ZBarReader
     }
     
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let scanResults = info[ZBarReaderControllerResults] as? ZBarSymbolSet {
-            for symbol in scanResults {
-                if let symbolFound = symbol as? ZBarSymbol {
-                    let returnObj = [ "text" : symbolFound.data , "format" : symbolFound.typeName ] as [String : Any]
-                    self.callbackZBar(returnObj)
-                    self.controller.dismiss(animated: true, completion: nil)
-                    break
-                    
-                }
-                
-                
-            }
-        }
-    }
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+//        if let scanResults = info[ZBarReaderControllerResults] as? ZBarSymbolSet {
+//            for symbol in scanResults {
+//                if let symbolFound = symbol as? ZBarSymbol {
+//                    let returnObj = [ "text" : symbolFound.data , "format" : symbolFound.typeName ] as [String : Any]
+//                    self.callbackZBar(returnObj)
+//                    self.controller.dismiss(animated: true, completion: nil)
+//                    break
+//                    
+//                }
+//                
+//                
+//            }
+//        }
+//    }
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.controller.dismiss(animated: true, completion: nil)
     }

@@ -105,13 +105,14 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         ["schema" : "kakaotalk", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오톡
         ["schema" : "kakaolink", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오링크
         ["schema" : "kakaobizchat", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오비즈챗
+        ["schema" : "kakaoplus", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오플러스
         ["schema" : "supertoss", "url" : "https://itunes.apple.com/kr/app/%ED%86%A0%EC%8A%A4/id839333328?mt=8"], // 토스
     ]
     
     func loadedView(url: URLRequest, config: WKWebViewConfiguration) -> WKWebView {
         
         Bundle.main.loadNibNamed("InAppNavi", owner: self, options: nil)
-
+        
         webViewSubContainer = UIView()
         topNavigationView = UIView()
         webTitle = UILabel()
@@ -184,6 +185,11 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         webViewSubContainer?.addSubview(bottomNavigationView!)
         return webView
     }
+    
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+           webView.load(navigationAction.request);
+           return nil
+       }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let urlString = navigationAction.request.url?.absoluteString {

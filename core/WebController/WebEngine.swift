@@ -81,6 +81,7 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
         ["schema" : "kakaotalk", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오톡
         ["schema" : "kakaolink", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오링크
         ["schema" : "kakaobizchat", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오비즈챗
+        ["schema" : "kakaoplus", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오플러스
         ["schema" : "supertoss", "url" : "https://itunes.apple.com/kr/app/%ED%86%A0%EC%8A%A4/id839333328?mt=8"],  // 토스
     ]
     

@@ -35,6 +35,7 @@
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>kakaoplus</string>
 		<string>kakaobizchat</string>
 		<string>supertoss</string>
 		<string>kakaolink</string>

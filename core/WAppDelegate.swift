@@ -15,6 +15,7 @@ import AppsFlyerLib
 class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, AppsFlyerTrackerDelegate  {
     
     var window: UIWindow?
+    var rootVc: UIViewController?
     var scriptWebview: WKWebView!
     
     var tracker: GAITracker?{
@@ -34,6 +35,16 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     var commmandUrl:String?
     private var apnsCallback:((_ error:Bool)->Void)?
     
+    
+    @available(iOS 13.0, *)
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
+        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        guard let _ = (scene as? UIWindowScene) else { return }
+
+        rootVc = self.window?.rootViewController
+    }
     
     func regApns(callback:@escaping (_ error:Bool)->Void){
         
@@ -292,10 +303,19 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func goNotificationLink(_ link:String, _ type:String){
-        if let rootViewController = self.window!.rootViewController as? UINavigationController {
-            rootViewController.popToRootViewController(animated: true)
-            if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
+        if #available(iOS 13.0, *) {
+            if let rootViewController = self.rootVc as? UINavigationController {
+                rootViewController.popToRootViewController(animated: true)
+                if let mainController = rootViewController.viewControllers[0] as? WMainController{
+                    mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
+                }
+            }
+        } else {
+            if let rootViewController = self.window!.rootViewController as? UINavigationController {
+                rootViewController.popToRootViewController(animated: true)
+                if let mainController = rootViewController.viewControllers[0] as? WMainController{
+                    mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
+                }
             }
         }
     }

@@ -105,7 +105,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
         if WInfo.firstProcess {
             if WInfo.getMarketingPopupUrl == "" {
                 let dialog = createMarketingAlertV2(resp: { (value) in
-                    self.reqMarketingAgree("Y", next: next)
+                    self.reqMarketingAgree(value, next: next)
                 })
                 self.present(dialog, animated: false, completion: nil)
             }else{

@@ -278,7 +278,7 @@ class WIntroController: BaseController,OLImageViewDelegate {
     }
 
 	fileprivate func reqUpdate(){
-        RSHttp(controller:self, showingPopup: false).req(
+        RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
             ResourceVER().ap("mode", "version_chk").ap("bundleId", AppProp.appId).ap("country", "KR"),
             successCb: { (resource) -> Void in
                 var serverVersion: String!

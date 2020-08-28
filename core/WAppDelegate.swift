@@ -34,7 +34,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     var commmandUrl:String?
     private var apnsCallback:((_ error:Bool)->Void)?
     
-    
     func regApns(callback:@escaping (_ error:Bool)->Void){
         
         if #available(iOS 10.0, *) {
@@ -292,17 +291,13 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func goNotificationLink(_ link:String, _ type:String){
-        if let rootViewController = self.window!.rootViewController as? UINavigationController {
-            rootViewController.popToRootViewController(animated: true)
-            if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
+            if let rootViewController = self.window!.rootViewController as? UINavigationController {
+                rootViewController.popToRootViewController(animated: true)
+                if let mainController = rootViewController.viewControllers[0] as? WMainController{
+                    mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
+                }
             }
-        }
     }
-    
-    
-//    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
-//    }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         self.proc_open_url(url: url)

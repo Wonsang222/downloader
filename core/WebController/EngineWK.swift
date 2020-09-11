@@ -24,6 +24,13 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         config.processPool = WebEngine.gPool
         config.preferences.javaScriptCanOpenWindowsAutomatically = true
         
+        config.allowsInlineMediaPlayback = true
+            if #available(iOS 10.0, *) {
+                config.mediaTypesRequiringUserActionForPlayback = .audio
+            } else {
+                // Fallback on earlier versions
+            }
+        
         _webView = WKWebView(frame: CGRect(x: self.controller.webViewContainer.bounds.origin.x,
                                            y: UIApplication.shared.statusBarFrame.height,
                                            width: self.controller.webViewContainer.bounds.size.width,
@@ -139,7 +146,6 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-
         if let urlString = navigationAction.request.url?.absoluteString {
             if urlString.hasPrefix("tel:") || urlString.hasPrefix("mailto:") {
                 UIApplication.shared.openURL(navigationAction.request.url!)
@@ -166,11 +172,10 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     }
     
     
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) ->
+        WKWebView? {
         let controller = MGWKSubWebController()
         let re_webView = controller.loadedView(url: (navigationAction.request), config: configuration)
-        
         self.controller.present(controller, animated: true, completion: nil)
         return re_webView
     }

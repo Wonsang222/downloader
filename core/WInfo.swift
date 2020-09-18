@@ -272,17 +272,34 @@ class WInfo{
         }
     }
     
-   
-    
-    
     static func setCookie(cookie:HTTPCookie){
         if #available(iOS 11.0, *) {
-            WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie, completionHandler: nil)
-            HTTPCookieStorage.shared.setCookie(cookie)
+            let cookie_dic : [HTTPCookiePropertyKey:Any] = [
+                HTTPCookiePropertyKey.domain : cookie.domain as AnyObject,
+                HTTPCookiePropertyKey.path : "/" as AnyObject,
+                HTTPCookiePropertyKey.name : cookie.name,
+                HTTPCookiePropertyKey.value : cookie.value,
+                HTTPCookiePropertyKey.expires : Date().addingTimeInterval(60*60*24*365*300)
+            ];
+            let inCookie:HTTPCookie = HTTPCookie(properties: cookie_dic)!
+            
+            WKWebsiteDataStore.default().httpCookieStore.setCookie(inCookie) {
+                //print("[Be] dong setCookie: \(inCookie.value)")
+            }
         }else{
-            HTTPCookieStorage.shared.setCookie(cookie)
+            let cookie_dic : [HTTPCookiePropertyKey:Any] = [
+                HTTPCookiePropertyKey.domain : cookie.domain as AnyObject,
+                HTTPCookiePropertyKey.path : "/" as AnyObject,
+                HTTPCookiePropertyKey.name : cookie.name,
+                HTTPCookiePropertyKey.value : cookie.value,
+                HTTPCookiePropertyKey.expires : Date().addingTimeInterval(60*60*24*365*300)
+            ];
+            let inCookie:HTTPCookie = HTTPCookie(properties: cookie_dic)!
+            HTTPCookieStorage.shared.setCookie(inCookie)
+            //print("[Be] dong setCookie confirm 2")
         }
     }
+
     static func removeCookie(cookie:HTTPCookie){
         if #available(iOS 11.0, *) {
             WKWebsiteDataStore.default().httpCookieStore.delete(cookie, completionHandler: nil)

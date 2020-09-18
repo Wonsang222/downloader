@@ -92,28 +92,16 @@ class WingLogin : HttpBaseResource{
             }
         }
     }
-
-    override func parseHeader(_ _response: URLResponse) throws{
-        
-        let httpResponse: HTTPURLResponse = _response as! HTTPURLResponse
     
-        // 기존
-//        if let cookies = HTTPCookieStorage.shared.cookies {
-//            for cookie in cookies {
-//                if cookie.name == "PHPSESSID" {
-//                    print("dong cookie name \(cookie.value)")
-//                    DispatchQueue.main.sync {
-//                        WInfo.setCookie(cookie: cookie)
-//                    }
-//                }
-//            }
-//        }
-        
-        // 수정
+    override func parseHeader(_ _response: URLResponse) throws{
+        let httpResponse: HTTPURLResponse = _response as! HTTPURLResponse
         let cookies = HTTPCookie.cookies(withResponseHeaderFields: httpResponse.allHeaderFields as! [String: String], for: _response.url!)
         for cookie in cookies {
-            if cookie.name == "PHPSESSID" {
-                print("dong cookie name \(cookie.value)")
+            if cookie.name == "smartwing_session" {
+                DispatchQueue.main.sync {
+                    WInfo.setCookie(cookie: cookie)
+                }
+            } else if cookie.name == "PHPSESSID" {
                 DispatchQueue.main.sync {
                     WInfo.setCookie(cookie: cookie)
                 }

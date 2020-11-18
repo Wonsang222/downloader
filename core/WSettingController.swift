@@ -10,30 +10,30 @@ import UIKit
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 
 class WSettingController: BaseController {
-
+    
     let pattern: String = "111000"
     var patternPos: Int = 0
     
@@ -43,34 +43,26 @@ class WSettingController: BaseController {
     @IBOutlet weak var eventSwitch: UISwitch!
     
     var appUpdateUrl:String?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         ThemeFactory.createTheme(self, themeInfo: WInfo.themeInfo)?.applyNavi()
         curVersion.text = AppProp.appVersion
         newVersion.text = WInfo.cacheVersion
-        RSHttp(controller:self).req(
-                ApiFormApp().ap("mode","get_agree").ap("pack_name", AppProp.appId),
-            successCb: { (resource) -> Void in
-                let mode = resource.params["mode"]!
-                if mode == "get_agree" {
-                    let json = resource.body()["result"] as! [String:AnyObject]
-                    let order_push_agree = json["order_push_agree"] as! String
-                    let notice_push_agree = json["notice_push_agree"] as! String
-                    
-                    self.orderSwitch.setOn(order_push_agree == "Y" ? true : false, animated: false)
-                    self.eventSwitch.setOn(notice_push_agree == "Y" ? true : false, animated: false)
-                }
-            }
-        )
         
+        RSHttp(controller:self).req(
+            ApiFormApp().ap("mode","get_push_agree_tot").ap("pack_name", AppProp.appId),
+            successCb: { (resource) -> Void in
+                let json = resource.body()["result"] as! String
+                self.eventSwitch.setOn(json == "Y" ? true : false, animated: false)
+        }
+        )
         
         RSHttp(controller: self, showingPopup: false).req(
             ResourceVER().ap("mode", "version_chk").ap("bundleId", AppProp.appId).ap("country", "KR")
             , successCb: { (resource) -> (Void) in
                 let mode = resource.params["mode"]!
                 var new_version_str: String = ""
-
+                
                 if mode == "version_chk" {
                     if let app_info = resource.body()["results"] as? [[String: AnyObject]] {
                         if app_info.count > 0 {
@@ -82,13 +74,11 @@ class WSettingController: BaseController {
                             self.appUpdateUrl = ""
                         }
                     }
-
+                    
                     self.newVersion.text = new_version_str
                     WInfo.cacheVersion = new_version_str
                 }
         })
-        
-        self.orderSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , for: UIControlEvents.touchUpInside)
         self.eventSwitch.addTarget(self, action:#selector(WSettingController.switchChange(_:)) , for: UIControlEvents.touchUpInside)
         
         let one_gesture = UITapGestureRecognizer(target: self, action: #selector(self.push_test))
@@ -128,7 +118,7 @@ class WSettingController: BaseController {
                         .ap("ios_token" , WInfo.deviceToken)
                         .ap("ios_pack_name", AppProp.appId)
                     , successCb: { (resource) -> (Void) in
-                    }
+                }
                 )
             })
             alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.cancel, handler:nil))
@@ -136,78 +126,11 @@ class WSettingController: BaseController {
             self.present(alert,animated:true, completion: nil)
         }
     }
-
+    
     
     @objc func switchChange(_ sender:UISwitch){
         let event = eventSwitch.isOn ? "Y" : "N"
-        let order = orderSwitch.isOn ? "Y" : "N"
-
-        RSHttp(controller:self).req(
-            ApiFormApp().ap("mode","set_agree")
-                .ap("pack_name", AppProp.appId)
-                .ap("notice_push_agree", event)
-                .ap("order_push_agree", order)
-            ,
-            successCb: { (resource) -> Void in
-            }
-            
-        )
-        
-//        if eventSwitch.on && !WInfo.agreeMarketing {
-//            let dialog = createMarketingDialog({ (UIAlertAction) in
-//                RSHttp(controller:self).req(
-//                    [ApiFormApp().ap("mode","set_marketing_agree").ap("pack_name",AppProp.appId).ap("marketing_agree","Y")],
-//                    successCb: { (resource) -> Void in
-//                        WInfo.firstProcess = true
-//                        WInfo.agreeMarketing = true
-//                        self.eventSwitch.on = true
-//                        
-//                        RSHttp(controller:self).req(
-//                            ApiFormApp().ap("mode","set_agree")
-//                                .ap("pack_name", AppProp.appId)
-//                                .ap("notice_push_agree", "Y")
-//                                .ap("order_push_agree", order)
-//                            ,
-//                            successCb: { (resource) -> Void in
-//                            }
-//                        )
-//                        
-//                    },errorCb:{ (errorCode,resource) -> Void in
-//                        self.eventSwitch.on = false
-//                    }
-//                )
-//                
-//            }) { (UIAlertAction) in
-//                self.eventSwitch.on = false
-//                RSHttp(controller:self).req(
-//                    ApiFormApp().ap("mode","set_agree")
-//                        .ap("pack_name", AppProp.appId)
-//                        .ap("notice_push_agree", "N")
-//                        .ap("order_push_agree", order)
-//                    ,
-//                    successCb: { (resource) -> Void in
-//                    }
-//                )
-//                
-//            }
-//            self.presentViewController(dialog, animated: true, completion: nil)
-//        }else{
-//           
-//        }
-    }
-
-    
-    func reqSetAgree(_ yn:String,orderyn:String){
-        RSHttp(controller:self).req(
-            ApiFormApp().ap("mode","set_agree")
-                .ap("pack_name", AppProp.appId)
-                .ap("notice_push_agree", yn)
-                .ap("order_push_agree", orderyn)
-            ,
-            successCb: { (resource) -> Void in
-            }
-        )
-        
+        self.setMarketingAgree(yn:event,{})
     }
     
     override func didReceiveMemoryWarning() {

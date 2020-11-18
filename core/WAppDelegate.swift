@@ -15,6 +15,7 @@ import AppsFlyerLib
 class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, AppsFlyerTrackerDelegate  {
     
     var window: UIWindow?
+    var rootVc: UIViewController?
     var scriptWebview: WKWebView!
     
     var tracker: GAITracker?{
@@ -34,8 +35,17 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     var commmandUrl:String?
     private var apnsCallback:((_ error:Bool)->Void)?
     
-    func regApns(callback:@escaping (_ error:Bool)->Void){
+    @available(iOS 13.0, *)
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
+        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        guard let _ = (scene as? UIWindowScene) else { return }
         
+        rootVc = self.window?.rootViewController
+    }
+    
+    func regApns(callback:@escaping (_ error:Bool)->Void){
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge,.sound,.alert], completionHandler: { (granted, error) in
@@ -50,7 +60,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                     }
                 }
             })
-
+            
         }else{
             let notificationTypes: UIUserNotificationType = [UIUserNotificationType.alert, UIUserNotificationType.badge, UIUserNotificationType.sound]
             let pushNotificationSettings = UIUserNotificationSettings(types: notificationTypes, categories: nil)
@@ -77,7 +87,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         AppsFlyerTracker.shared().appsFlyerDevKey = AppProp.appsFlyerDevKey as! String
         AppsFlyerTracker.shared().appleAppID = AppProp.appsFlyerAppId as! String
         AppsFlyerTracker.shared().delegate = self
-
+        
         if let appsflyerId = AppsFlyerTracker.shared().getAppsFlyerUID() {
             EventAppsFlyer.appsFlyerId = appsflyerId
             UserDefaults.standard.register(
@@ -125,7 +135,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             IgaworksCore.setAppleAdvertisingIdentifier(ifa.uuidString, isAppleAdvertisingTrackingEnabled: isAppleAdvertisingTrackingEnabled)
         }
         IgaworksCore.igaworksCore(withAppKey: AppProp.adbrixAppKey, andHashKey: AppProp.adbrixHashKey)
-            //            IgaworksCore.setLogLevel(IgaworksCoreLogTrace)
+        //            IgaworksCore.setLogLevel(IgaworksCoreLogTrace)
         #endif
         
         setenv("JSC_useJIT", "false", 0)
@@ -176,21 +186,17 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-//        let tokenString = deviceToken.description.replacingOccurrences(of: "[ <>]", with: "", options: .regularExpression, range: nil)
         var tokenString = ""
         for i in 0..<deviceToken.count {
             tokenString = tokenString + String(format:"%02.2hhx" , arguments: [deviceToken[i]])
         }
-        #if DEBUG
-        print(tokenString)
-        #endif
         if !WInfo.deviceToken.elementsEqual(tokenString) {
             WInfo.deviceToken = tokenString
             
             let api = ApiFormApp().ap("mode","add_token")
                 .ap("pack_name",AppProp.appId)
                 .ap("token",WInfo.deviceToken)
-
+            
             RSHttp().req(api, successCb: { (resource) -> (Void) in
                 self.apnsCallback?(true)
                 self.apnsCallback = nil
@@ -203,7 +209,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             self.apnsCallback = nil
         }
     }
-
+    
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if let userInfo = notification.request.content.userInfo as? [String : AnyObject] {
@@ -291,13 +297,27 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func goNotificationLink(_ link:String, _ type:String){
+        //            if let rootViewController = self.window!.rootViewController as? UINavigationController {
+        //                rootViewController.popToRootViewController(animated: true)
+        //                if let mainController = rootViewController.viewControllers[0] as? WMainController{
+        //                    mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
+        if #available(iOS 13.0, *) {
+            if let rootViewController = self.rootVc as? UINavigationController {
+                rootViewController.popToRootViewController(animated: true)
+                if let mainController = rootViewController.viewControllers[0] as? WMainController{
+                    mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
+                }
+            }
+        } else {
             if let rootViewController = self.window!.rootViewController as? UINavigationController {
                 rootViewController.popToRootViewController(animated: true)
                 if let mainController = rootViewController.viewControllers[0] as? WMainController{
                     mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
                 }
             }
+        }
     }
+    
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         self.proc_open_url(url: url)
@@ -319,10 +339,10 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             }
         }
         #if ADBRIX
-            IgaworksCore.passOpen(url)
+        IgaworksCore.passOpen(url)
         #endif
         
     }
-
+    
 }
 

@@ -9,10 +9,8 @@
 import UIKit
 
 class BaseController: UIViewController {
-
-	@IBOutlet weak var topView: UIView?
+    @IBOutlet weak var topView: UIView?
     @IBOutlet var topTitle:UILabel?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +33,7 @@ class BaseController: UIViewController {
                 WisaTracker().page(self.title!)
             }
         }
-        
-        
     }
-    
     
     @IBAction func doBack(_ sender:AnyObject){
         if self.navigationController != nil {
@@ -46,9 +41,7 @@ class BaseController: UIViewController {
         }
     }
     
-    
     func createMarketingDialog(_ url:String ,resp:@escaping ((String) -> Void)) -> RPopupController {
-        
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "push_agree_popup") as! MarketingPopupController
         controller.url = url
         let bizPoup = RPopupController(controlller: controller,height: 0)
@@ -56,6 +49,7 @@ class BaseController: UIViewController {
         bizPoup.resp = resp
         return bizPoup
     }
+    
     
     func createMarketingAlert(_ agree:@escaping ((UIAlertAction) -> Void),disagree:@escaping ((UIAlertAction) -> Void)) -> UIAlertController {
         let alert = UIAlertController(title: "알림", message: "해당기기로 이벤트, 상품할인 등의 정보를\n전송하려고 합니다." ,preferredStyle: UIAlertControllerStyle.alert)
@@ -70,11 +64,15 @@ class BaseController: UIViewController {
         return alert
     }
     
-    func createMarketingAlertV2(resp:@escaping ((String) -> Void)) -> RPopupController {
+    func createMarketingAlertV2(msg:[String:AnyObject], resp:@escaping ((String) -> Void)) -> RPopupController {
         let popupView = self.storyboard!.instantiateViewController(withIdentifier: "popup") as! SimplePopupController
         let popup = SimpleRPopupController(controlller: popupView)
-        popupView.pTitle.text = "알림"
-        popupView.pMessage.text = "해당기기로 이벤트, 상품할인 등의 정보를\n전송하려고 합니다."
+        
+        let title = msg["marketing_title"] as? String
+        let content = msg["marketing_msg"] as? String
+        
+        popupView.pTitle.text = (title != nil) ? title : msg["title"] as? String
+        popupView.pMessage.text = (content != nil) ? content : msg["content"] as? String
         popupView.confirmBtn.setTitle("동의", for: .normal)
         popupView.cancelBtn.setTitle("미동의", for: .normal)
         popupView.callback = resp
@@ -83,10 +81,54 @@ class BaseController: UIViewController {
         return popup
     }
     
+    func getMarketingAlert(val: String, _ confirm:@escaping ((UIAlertAction) -> Void)) -> UIAlertController {
+        let agree = val == "Y" ? "허용":"해제"
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.string(from: now)
+        
+        let alert = UIAlertController(title:"안내", message:"마케팅 푸시알림이 \(agree) 처리되었습니다.\n \(WInfo.appName) (\(dateFormatter.string(from: now)))" ,preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "확인" , style: UIAlertActionStyle.default, handler:confirm))
+        present(alert,animated: false, completion: nil)
+        
+        return alert
+    }
+    
+    
+    func setMarketingAgree(yn:String,_ next:@escaping () -> Void){
+        RSHttp(controller:self, showingPopup:false).req(
+            [ApiFormApp().ap("mode","set_push_agree_tot").ap("pack_name",AppProp.appId).ap("marketing_agree",yn)],
+            successCb: { (resource) -> Void in
+                WInfo.firstProcess = false
+                self.getMarketingAlert(val: yn,{(action) in
+                    next()
+                })
+        },errorCb:{ (errorCode,resource) -> Void in
+        }
+        )
+    }
+    
+    // [2]
+    func createMarketingAlertRe(msg:[String:AnyObject], resp:@escaping ((String) -> Void)) -> RPopupController { // [1]
+        let popupView = self.storyboard!.instantiateViewController(withIdentifier: "popup") as! SimplePopupController
+        let popup = SimpleRPopupController(controlller: popupView)
+        popupView.pTitle.text = msg["marketing_title_re"] as? String
+        popupView.pMessage.text = msg["marketing_msg_re"] as? String
+        popupView.confirmBtn.setTitle("동의", for: .normal)
+        popupView.cancelBtn.setTitle("미동의", for: .normal)
+        popupView.callback = resp
+        popup.cancelable = false
+        popup.delegate = self
+        return popup
+    }
 }
 
-class BaseWebController: BaseController {
 
+
+class BaseWebController: BaseController {
+    
     @IBOutlet weak var webViewContainer: UIView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var statusOverlay: UIView!

@@ -11,8 +11,8 @@ import ImageIO
 
 
 class WIntroController: BaseController,OLImageViewDelegate {
-
-	@IBOutlet weak var introView: UIView!
+    
+    @IBOutlet weak var introView: UIView!
     var loopCount:UInt = 1
     var isLoaded = false
     var oncePlayOk = false
@@ -25,24 +25,24 @@ class WIntroController: BaseController,OLImageViewDelegate {
     var existWinfo = false
     
     
-	fileprivate var saveVersion:Int{
-		get{
-			if let returnValue = WInfo.introInfo["version"]{
+    fileprivate var saveVersion:Int{
+        get{
+            if let returnValue = WInfo.introInfo["version"]{
                 let introFiles = WInfo.introInfo["part"] as! [[String:Any]]
-				let manager = FileManager.default
+                let manager = FileManager.default
                 for item in introFiles{
                     if !manager.fileExists(atPath: (item["file"] as! String)) {
                         return 0
                     }
                 }
                 return returnValue as! Int
-			}
-			return 0
-		}
-	}
-
-	fileprivate var saveIntro:UIImage?{
-		get{
+            }
+            return 0
+        }
+    }
+    
+    fileprivate var saveIntro:UIImage?{
+        get{
             if self.introDrawable != nil { return self.introDrawable }
             let introInfo = WInfo.introInfo
             if introInfo["part"] == nil { return nil }
@@ -62,55 +62,80 @@ class WIntroController: BaseController,OLImageViewDelegate {
                         self.viewIntroInfo = tIntro
                         return OLImage(data: data)
                     } catch  {
-                       return nil
+                        return nil
                     }
                 }else{
                     self.viewIntroInfo = tIntro
                     return UIImage(contentsOfFile: filePath)
                 }
-			}else{
-				return nil
-			}
-		}
-	}
-
-	fileprivate var saveThemeVersion:Int{
-		get{
-			if let returnValue = WInfo.themeInfo["version"]{
-				return Int(returnValue as! String)!
-			}
-			return 0
-		}
-	}
-
-
+            }else{
+                return nil
+            }
+        }
+    }
+    
+    fileprivate var saveThemeVersion:Int{
+        get{
+            if let returnValue = WInfo.themeInfo["version"]{
+                return Int(returnValue as! String)!
+            }
+            return 0
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if WInfo.accountId != "" {
             self.existWinfo = true
         }
-
+        
         doPlaySplash()
         self.reqCheckApiKey()
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    fileprivate func showMarketingPopup(_ next:@escaping (()-> Void)){
-        if WInfo.firstProcess {
+    // [0]
+    fileprivate func reqMarketingMsg(){
+        RSHttp(controller:self, showingPopup:self.existWinfo).req(
+            ApiFormApp().ap("mode","get_marketing_msg").ap("pack_name",AppProp.appId),
+            successCb: { (resource) -> Void in
+                let json = resource.body()["marketing"] as? [String:AnyObject]
+                (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
+                    self.showMarketingPopup({self.reqTheme()},json: json!)
+                })
+        },errorCb:{ (errorCode,resource) -> Void in
+            guard self.existWinfo == true else {
+                return self.finishPopup()
+            }
+            self.dismissProcess()
+        })
+    }
+    
+    // [1] 팝업 메시지 나오는 부분
+    fileprivate func showMarketingPopup(_ next:@escaping (()-> Void), json:[String:AnyObject]){
+        if WInfo.firstProcess{
             if WInfo.getMarketingPopupUrl == "" {
-                let dialog = createMarketingAlertV2(resp: { (value) in
-                    self.reqMarketingAgree(value, next: next)
+                let dialog = createMarketingAlertV2(msg: json, resp: { (value) in
+                    if(json["marketing_re_yn"] as? String == "Y" && value == "N"){
+                        let dialog2 = self.createMarketingAlertRe(msg: json, resp: { (value) in
+                            self.setMarketingAgree(yn:value,{next()})
+                        })
+                        self.present(dialog2, animated: false, completion: nil)
+                    }else{
+                        self.setMarketingAgree(yn:value,{next()})
+                    }
                 })
                 self.present(dialog, animated: false, completion: nil)
             }else{
                 let dialog = createMarketingDialog(WInfo.getMarketingPopupUrl, resp: { (value) in
-                    self.reqMarketingAgree(value, next: next)
+                    self.setMarketingAgree(yn:value,{next()})
                 })
                 self.present(dialog, animated: false, completion: nil)
             }
@@ -125,73 +150,55 @@ class WIntroController: BaseController,OLImageViewDelegate {
         }
         self.present(dialog, animated: false, completion: nil)
     }
-
-
-    fileprivate func reqMarketingAgree(_ yn:String,next:@escaping (()->Void)){
-        RSHttp(controller:self, showingPopup:self.existWinfo).req(
-            [ApiFormApp().ap("mode","set_marketing_agree").ap("pack_name",AppProp.appId).ap("marketing_agree",yn)],
-            successCb: { (resource) -> Void in
-                WInfo.firstProcess = false
-                WInfo.agreeMarketing = (yn == "Y") ? true : false
-                next()
-            },errorCb:{ (errorCode,resource) -> Void in
-                guard self.existWinfo == true else {
-                    return self.finishPopup()
-                }
-                self.dismissProcess()
-            }
-        )
-    }
- 
+    
     fileprivate func reqCheckApiKey(){
-        
         RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
-           ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId),
-           successCb: { (resource) -> Void in
-                   let siteUrl = resource.body()["site_url"] as! String
-                   let solutionType = resource.body()["solution_type"] as! String
+            ApiFormApp().ap("mode","check_apikey").ap("pack_name",AppProp.appId),
+            successCb: { (resource) -> Void in
+                let siteUrl = resource.body()["site_url"] as! String
+                let solutionType = resource.body()["solution_type"] as! String
                 let account_id = resource.body()["account_id"] as! String
                 let urlParam = resource.body()["url_param"] as! String
+                let appName = resource.body()["app_name"] as! String // [1]
                 self.updateUse = resource.body()["update_use"] as? String
-
+                
                 if let marketingUrl = resource.body()["marketing_url"] as? String{
                     WInfo.getMarketingPopupUrl = marketingUrl
                 }
-
-                   WInfo.appUrl = siteUrl
+                
+                WInfo.appUrl = siteUrl
                 WInfo.urlParam = urlParam
                 WInfo.solutionType = solutionType
-
+                WInfo.appName = appName // [1]
+                
                 if let tracker_id = resource.body()["tracker_id"] as? String {
                     WInfo.trackerId = tracker_id
                 }
-
-
                 WInfo.accountId = account_id;
                 RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
                     ApiFormApp().ap("mode","add_token")
-                    .ap("pack_name",AppProp.appId)
-                    .ap("token",WInfo.deviceToken)
+                        .ap("pack_name",AppProp.appId)
+                        .ap("token",WInfo.deviceToken)
                 )
-                   self.reqGetIntro()
-            },errorCb:{ (errorCode,resource) -> Void in
-                guard self.existWinfo == true else {
-                    return self.finishPopup()
-                }
-                self.dismissProcess()
+                self.reqGetIntro()
+        },errorCb:{ (errorCode,resource) -> Void in
+            guard self.existWinfo == true else {
+                return self.finishPopup()
             }
+            self.dismissProcess()
+        }
         )
     }
-
-
- 	fileprivate func reqGetIntro(){
+    
+    
+    fileprivate func reqGetIntro(){
         RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
-		   ApiFormApp().ap("mode","get_intro").ap("pack_name",AppProp.appId),
-		   successCb: { (resource) -> Void in
-		   		let serverVersion = resource.body()["version"] as! String
-		   		let introImg = resource.body()["intro_img"] as! NSArray
-            
-		   		if Int(serverVersion)! > self.saveVersion{
+            ApiFormApp().ap("mode","get_intro").ap("pack_name",AppProp.appId),
+            successCb: { (resource) -> Void in
+                let serverVersion = resource.body()["version"] as! String
+                let introImg = resource.body()["intro_img"] as! NSArray
+                
+                if Int(serverVersion)! > self.saveVersion{
                     var introInfo = WInfo.introInfo
                     introInfo["version"] = Int(serverVersion)!
                     var termJsonPart = [[String:Any]]()
@@ -221,10 +228,10 @@ class WIntroController: BaseController,OLImageViewDelegate {
                         })
                         
                     }
-                  
-		   		}else{
+                    
+                }else{
                     self.initIntro();
-		   		}
+                }
         },errorCb:{ (errorCode,resource) -> Void in
             guard self.existWinfo == true else {
                 return self.finishPopup()
@@ -237,47 +244,43 @@ class WIntroController: BaseController,OLImageViewDelegate {
         if Tools.hasJailbreak() {
             self.showWarningPopup();
         } else if(WInfo.confirmPermission) {
-            (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
-                self.showMarketingPopup({
-                    self.reqTheme()
-                })
-            })
+            reqMarketingMsg()
         } else {
             self.permissionController = self.storyboard?.instantiateViewController(withIdentifier: "permission") as? PermissionController
             self.permissionController?.show(parent: self, callback: {
-                (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
-                    self.showMarketingPopup({
-                        self.reqTheme()
-                    })
-                })
+                self.reqMarketingMsg()
             })
         }
     }
-
-	fileprivate func reqTheme(){
-		RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
-		   ApiFormApp()
-            .ap("mode","get_theme")
-//            나인 커스텀 관련
-            .ap("able_theme", WInfo.getAbleTheme.joined(separator: ","))
-            .ap("pack_name",AppProp.appId),
-		   successCb: { (resource) -> Void in
-		   		let serverVersion = resource.body()["version"] as! String
-		   		if Int(serverVersion)! > self.saveThemeVersion{
-					WInfo.themeInfo = resource.body()
-		   		}
-            
-		   		self.reqUpdate()
-            },errorCb:{ (errorCode,resource) -> Void in
-                guard self.existWinfo == true else {
-                    return self.finishPopup()
+    
+    fileprivate func reqTheme(){
+        RSHttp(controller:self, showingPopup: self.existWinfo == true ? false : true).req(
+            ApiFormApp()
+                .ap("mode","get_theme")
+                // 나인 커스텀 관련
+                .ap("able_theme", WInfo.getAbleTheme.joined(separator: ","))
+                .ap("pack_name",AppProp.appId),
+            successCb: { (resource) -> Void in
+                let serverVersion = resource.body()["version"] as! String
+                if Int(serverVersion)! > self.saveThemeVersion{
+                    WInfo.themeInfo = resource.body()
                 }
-                self.dismissProcess()
+                self.reqUpdate()
+        },errorCb:{ (errorCode,resource) -> Void in
+            guard self.existWinfo == true else {
+                return self.finishPopup()
             }
-		)
+            self.dismissProcess()
+        }
+        )
     }
-
-	fileprivate func reqUpdate(){
+    
+    fileprivate func reqUpdate(){
+        if self.updateUse == "N" {
+            self.dismissProcess()
+            return
+        }
+        
         RSHttp(controller:self, showingPopup: false).req(
             ResourceVER().ap("mode", "version_chk").ap("bundleId", AppProp.appId).ap("country", "KR"),
             successCb: { (resource) -> Void in
@@ -294,14 +297,6 @@ class WIntroController: BaseController,OLImageViewDelegate {
                     }
                 }
                 let curVersion = AppProp.appVersion
-                print("curVersion \(curVersion)")
-//                    .replace(".", withString: "")
-                
-                
-                if self.updateUse == "N" {
-                    self.dismissProcess()
-                    return
-                }
                 
                 if Tools.compareVersion(serverVersion, curVersion) && WInfo.ignoreUpdateVersion != serverVersion.replace(".", withString: ""){
                     let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.alert)
@@ -317,47 +312,14 @@ class WIntroController: BaseController,OLImageViewDelegate {
                 }else{
                     self.dismissProcess()
                 }
-                
-                
         },errorCb:{ (errorCode,resource) -> Void in
             guard self.existWinfo == true else {
                 return self.finishPopup()
             }
             self.dismissProcess()
         })
-//        errorCb: { (code, resource) -> (Void) in
-//            print("error : \(code) \(resource)")
-//        }
-
-//        RSHttp(controller:self).req(
-//           ApiFormApp().ap("mode","version_chk").ap("pack_name",AppProp.appId),
-//           successCb: { (resource) -> Void in
-//                   let serverVersion = (resource.body()["version"] as! String).replace(".", withString: "")
-//                let appUrl = resource.body()["app_url"] as! String
-//                let curVersion = AppProp.appVersion.replace(".", withString: "")
-//                let update_use = resource.body()["update_use"] as! String
-//                if update_use == "N" {
-//                    self.dismissProcess()
-//                    return
-//                }
-//                   if Int(serverVersion)! > Int(curVersion)! && WInfo.ignoreUpdateVersion != serverVersion {
-//                    let alert = UIAlertController(title: "알림", message: "새로운 버전이 존재합니다." ,preferredStyle: UIAlertControllerStyle.alert)
-//                    alert.addAction(UIAlertAction(title: "업데이트" , style: UIAlertActionStyle.default, handler:{ action in
-//                        UIApplication.shared.openURL(URL(string:appUrl)!)
-//                        exit(0)
-//                    }))
-//                    alert.addAction(UIAlertAction(title: "취소" , style: UIAlertActionStyle.default, handler:{ action in
-//                        WInfo.ignoreUpdateVersion = serverVersion
-//                        self.dismissProcess()
-//                    }))
-//                    self.present(alert,animated:true, completion: nil)
-//                   }else{
-//                       self.dismissProcess()
-//                   }
-//           }
-//        )
     }
-
+    
     fileprivate func dismissProcess() {
         mainController?.endIntro()
     }
@@ -400,18 +362,18 @@ class WIntroController: BaseController,OLImageViewDelegate {
     
     func imageViewDidLoop(_ imageView: OLImageView!) {
         oncePlayOk = true
-        closeIntroProcess()        
+        closeIntroProcess()
     }
     
     func closeIntroProcess(){
         if self.viewIntroInfo["fileType"] as? String == "gif" {
-//            if(self.loopCount != 0) {
-//                self.delayDismissFunc()
-//            }else{
-                if oncePlayOk && webViewLoadedOk {
-                    self.delayDismissFunc()
-                }
-//            }
+            //            if(self.loopCount != 0) {
+            //                self.delayDismissFunc()
+            //            }else{
+            if oncePlayOk && webViewLoadedOk {
+                self.delayDismissFunc()
+            }
+            //            }
         }else{
             self.delayDismissFunc()
         }
@@ -433,10 +395,10 @@ class WIntroSegue : UIStoryboardSegue {
         let destination = self.destination
         
         UIView.transition(from: source.view,
-                                  to: destination.view,
-                                  duration: 1.0,
-                                  options: UIViewAnimationOptions.transitionCrossDissolve,
-                                  completion: nil)
+                          to: destination.view,
+                          duration: 1.0,
+                          options: UIViewAnimationOptions.transitionCrossDissolve,
+                          completion: nil)
     }
 }
 

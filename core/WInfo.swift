@@ -12,13 +12,13 @@ import WebKit
 
 class WInfo{
     
-//    static let coreVersion:String = "wmgkcore_v2"
-//    static let coreVersion:String = "wmgkcore_v2.1.1" //공유하기 API 추가
-//    static let coreVersion:String = "wmgkcore_v2.1.2" //GIF Splash 추가
-//    static let coreVersion:String = "wmgkcore_v3.0.0" //바코드 인식기
-//    static let coreVersion:String = "wmgkcore_v3.0.1" //IPhone X 대응
-//    static let coreVersion:String = "wmgkcore_v3.0.3" //Out of Memory 대응
-    static let coreVersion:String = "wmgkcore_v3.1.4"  // WKWebView Brwoser 적용
+    //    static let coreVersion:String = "wmgkcore_v2"
+    //    static let coreVersion:String = "wmgkcore_v2.1.1" //공유하기 API 추가
+    //    static let coreVersion:String = "wmgkcore_v2.1.2" //GIF Splash 추가
+    //    static let coreVersion:String = "wmgkcore_v3.0.0" //바코드 인식기
+    //    static let coreVersion:String = "wmgkcore_v3.0.1" //IPhone X 대응
+    //    static let coreVersion:String = "wmgkcore_v3.0.3" //Out of Memory 대응
+    static let coreVersion:String = "wmgkcore_v3.1.5"  // WKWebView Brwoser 적용
     static var deviceId:String {
         get {
             var deviceId = KeychainWrapper.standard.string(forKey: "magicappDeviceId")
@@ -30,94 +30,94 @@ class WInfo{
         }
     }
     
-
-	static var appUrl:String{
-		get{
-			if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{
-//              return "http://118.129.243.73/sendbege.html"
-//                return "http:/nain.co.kr"
-//              나인 테스트
-//                return "http:/m.naintest.wisa.co.kr"
-//                return "http://rankingdak.com/m"
-              return returnValue
-			}else{
-				return ""
-			}
-		}
-		set{
-			UserDefaults.standard.set(newValue, forKey: "kAppUrl")	
-			UserDefaults.standard.synchronize()
+    
+    static var appUrl:String{
+        get{
+            if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{
+                //              return "http://118.129.243.73/sendbege.html"
+                //                return "http:/nain.co.kr"
+                //              나인 테스트
+                //                return "http:/m.naintest.wisa.co.kr"
+                //                return "http://rankingdak.com/m"
+                return returnValue
+            }else{
+                return ""
+            }
+        }
+        set{
+            UserDefaults.standard.set(newValue, forKey: "kAppUrl")
+            UserDefaults.standard.synchronize()
             
-		}
-	}
-
-	static var deviceToken:String{
-		get{
-			if let returnValue = UserDefaults.standard.object(forKey: "kDeviceToken") as? String{
-				return returnValue;
-			}else{
-				return "";		
-			}
-		}
-		set{
-			UserDefaults.standard.set(newValue, forKey: "kDeviceToken")	
-			UserDefaults.standard.synchronize()
-		}
-	}
+        }
+    }
+    
+    static var deviceToken:String{
+        get{
+            if let returnValue = UserDefaults.standard.object(forKey: "kDeviceToken") as? String{
+                return returnValue;
+            }else{
+                return "";
+            }
+        }
+        set{
+            UserDefaults.standard.set(newValue, forKey: "kDeviceToken")
+            UserDefaults.standard.synchronize()
+        }
+    }
     
     static var countryCode:String{
         get{
             
             if let value = (Locale.current as NSLocale).object(forKey: NSLocale.Key.countryCode) {
-               return value as! String
+                return value as! String
             }else{
                 return ""
             }
         }
     }
-
-	static var solutionType:String{
-		get{
-			if let returnValue = UserDefaults.standard.object(forKey: "kSolutionType") as? String{
-				return returnValue;
-			}else{
-				return "";		
-			}
-		}
-		set{
-			UserDefaults.standard.set(newValue, forKey: "kSolutionType")	
-			UserDefaults.standard.synchronize()
-		}
-	}
-
-	static var introInfo:[String:Any]{
-		get{
-			if let returnValue = UserDefaults.standard.dictionary(forKey: "kIntroInfoR"){
-				return returnValue as [String : Any];
-			}else{
-				return [String:Any]() 		
-			}
-		}
-		set{
-			UserDefaults.standard.set(newValue, forKey: "kIntroInfoR")	
-			UserDefaults.standard.synchronize()
-		}
-	}
-
-	static var themeInfo:[String:AnyObject]{
-		get{
+    
+    static var solutionType:String{
+        get{
+            if let returnValue = UserDefaults.standard.object(forKey: "kSolutionType") as? String{
+                return returnValue;
+            }else{
+                return "";
+            }
+        }
+        set{
+            UserDefaults.standard.set(newValue, forKey: "kSolutionType")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    static var introInfo:[String:Any]{
+        get{
+            if let returnValue = UserDefaults.standard.dictionary(forKey: "kIntroInfoR"){
+                return returnValue as [String : Any];
+            }else{
+                return [String:Any]()
+            }
+        }
+        set{
+            UserDefaults.standard.set(newValue, forKey: "kIntroInfoR")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    static var themeInfo:[String:AnyObject]{
+        get{
             
-			if let returnValue = UserDefaults.standard.dictionary(forKey: "kThemeInfo"){
+            if let returnValue = UserDefaults.standard.dictionary(forKey: "kThemeInfo"){
                 return returnValue as [String : AnyObject];
             }else{
-				return [String:AnyObject]()
-			}
-		}
-		set{
+                return [String:AnyObject]()
+            }
+        }
+        set{
             UserDefaults.standard.set(newValue, forKey: "kThemeInfo")
-			UserDefaults.standard.synchronize()
-		}
-	}
+            UserDefaults.standard.synchronize()
+        }
+    }
     
     static var trackerId:String{
         get{
@@ -132,7 +132,7 @@ class WInfo{
             UserDefaults.standard.synchronize()
         }
     }
-
+    
     static var accountId:String{
         get{
             if let returnValue = UserDefaults.standard.string(forKey: "kAccountID"){
@@ -160,20 +160,20 @@ class WInfo{
         }
     }
     
-
-	static var userInfo:[String:AnyObject]{
-		get{
-			if let returnValue = UserDefaults.standard.dictionary(forKey: "kUserInfo"){
-				return returnValue as [String : AnyObject];
-			}else{
-				return [String:AnyObject]()
-			}
-		}
-		set{
-			UserDefaults.standard.set(newValue, forKey: "kUserInfo")	
-			UserDefaults.standard.synchronize()
-		}
-	}
+    
+    static var userInfo:[String:AnyObject]{
+        get{
+            if let returnValue = UserDefaults.standard.dictionary(forKey: "kUserInfo"){
+                return returnValue as [String : AnyObject];
+            }else{
+                return [String:AnyObject]()
+            }
+        }
+        set{
+            UserDefaults.standard.set(newValue, forKey: "kUserInfo")
+            UserDefaults.standard.synchronize()
+        }
+    }
     
     static func defaultCookie() -> String{
         var arrayValues: [String] = []
@@ -200,21 +200,21 @@ class WInfo{
         }
         
     }
-  
+    
     static var firstProcess:Bool{
         get{
-            if let returnValue = UserDefaults.standard.string(forKey: "kFirstProcess"){
+            if let returnValue = UserDefaults.standard.string(forKey: "kFirstProcessV2"){
                 return returnValue == "NO" ? false : true
             }else{
                 return true
             }
         }
         set{
-            UserDefaults.standard.set(newValue ? "YES" : "NO", forKey: "kFirstProcess")
+            UserDefaults.standard.set(newValue ? "YES" : "NO", forKey: "kFirstProcessV2")
             UserDefaults.standard.synchronize()
         }
     }
-
+    
     static var agreeMarketing:Bool{
         get{
             if let returnValue = UserDefaults.standard.string(forKey: "kAgreeMarketing"){
@@ -257,7 +257,7 @@ class WInfo{
             UserDefaults.standard.synchronize()
         }
     }
-
+    
     static var confirmPermission:Bool{
         get{
             if let returnValue = UserDefaults.standard.string(forKey: "kConfirmPermission"){
@@ -284,7 +284,6 @@ class WInfo{
             let inCookie:HTTPCookie = HTTPCookie(properties: cookie_dic)!
             
             WKWebsiteDataStore.default().httpCookieStore.setCookie(inCookie) {
-                //print("[Be] dong setCookie: \(inCookie.value)")
             }
         }else{
             let cookie_dic : [HTTPCookiePropertyKey:Any] = [
@@ -296,10 +295,9 @@ class WInfo{
             ];
             let inCookie:HTTPCookie = HTTPCookie(properties: cookie_dic)!
             HTTPCookieStorage.shared.setCookie(inCookie)
-            //print("[Be] dong setCookie confirm 2")
         }
     }
-
+    
     static func removeCookie(cookie:HTTPCookie){
         if #available(iOS 11.0, *) {
             WKWebsiteDataStore.default().httpCookieStore.delete(cookie, completionHandler: nil)
@@ -309,29 +307,17 @@ class WInfo{
         }
     }
     static func getCookieValue(key:String,block:@escaping (_ value:String?)->Void){
-//        if #available(iOS 11.0, *) {
-//            WKWebsiteDataStore.default().httpCookieStore.getAllCookies({ (cookies) in
-//                var returnVal:String?
-//                for cookie in cookies{
-//                    if cookie.name == key {
-//                        returnVal = cookie.value
-//                    }
-//                }
-//                block(returnVal)
-//            })
-//        }else{
-            if let cookies = HTTPCookieStorage.shared.cookies {
-                var returnVal:String?
-                for cookie in cookies{
-                    if cookie.name == key {
-                        returnVal = cookie.value
-                    }
+        if let cookies = HTTPCookieStorage.shared.cookies {
+            var returnVal:String?
+            for cookie in cookies{
+                if cookie.name == key {
+                    returnVal = cookie.value
                 }
-                block(returnVal)
-            }else{
-                block("")
             }
-//        }
+            block(returnVal)
+        }else{
+            block("")
+        }
     }
     
     
@@ -363,7 +349,7 @@ class WInfo{
                 return AppProp.appVersion
             }
         }
-    
+        
         set {
             UserDefaults.standard.set(newValue, forKey: "kCacheVersion")
             UserDefaults.standard.synchronize()
@@ -389,8 +375,8 @@ class WInfo{
     static var getAbleTheme: [String] {
         get {
             return ["T1","T2","T3","T4",
-//                나인
-//                ,"CNAIN"
+                    //                나인
+                //                ,"CNAIN"
             ]
         }
     }
@@ -418,9 +404,9 @@ class WInfo{
         
         get {
             if let kTag = UserDefaults.standard.string(forKey: "kExtendThemeTag") {
-            return Int(truncating: NumberFormatter().number(from: kTag)!)
-        } else {
-            return 0
+                return Int(truncating: NumberFormatter().number(from: kTag)!)
+            } else {
+                return 0
             }
         }
         
@@ -430,6 +416,19 @@ class WInfo{
         }
     }
     
+    static var appName: String {
+        get {
+            if let returnValue = UserDefaults.standard.string(forKey: "kAppName") {
+                return returnValue
+            } else {
+                return "";
+            }
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "kAppName")
+            UserDefaults.standard.synchronize()
+        }
+    }
     
     static func customAction(theme: String, rootView: UIView!) {
         // winfo.themeinfo를 통해 커스텀 클래스 인지 확인한다

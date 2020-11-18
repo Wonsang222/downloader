@@ -17,7 +17,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     override func loadRequest(_ request: URLRequest) {
         _webView.load(request)
     }
-
+    
     override func loadEngine() {
         super.loadEngine()
         let config = WKWebViewConfiguration()
@@ -25,18 +25,19 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         config.preferences.javaScriptCanOpenWindowsAutomatically = true
         
         config.allowsInlineMediaPlayback = true
-            if #available(iOS 10.0, *) {
-                config.mediaTypesRequiringUserActionForPlayback = .audio
-            } else {
-                // Fallback on earlier versions
-            }
+        if #available(iOS 10.0, *) {
+            config.mediaTypesRequiringUserActionForPlayback = .audio
+        } else {
+            // Fallback on earlier versions
+        }
+        
         
         _webView = WKWebView(frame: CGRect(x: self.controller.webViewContainer.bounds.origin.x,
                                            y: UIApplication.shared.statusBarFrame.height,
                                            width: self.controller.webViewContainer.bounds.size.width,
                                            height: self.controller.webViewContainer.bounds.size.height - Tools.safeArea() - UIApplication.shared.statusBarFrame.height - CGFloat(truncating: WInfo.naviHeight)),
                              configuration: config)
-
+        
         _webView.uiDelegate = self
         _webView.navigationDelegate = self
         _webView.scrollView.delegate = self
@@ -44,7 +45,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     }
     
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
-
+        
         let alert = UIAlertController(title: "알림", message: message ,preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
             completionHandler()
@@ -55,7 +56,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(500)) {
             self.controller.present(alert,animated:true, completion: nil)
         }
-    
+        
     }
     
     func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
@@ -69,14 +70,13 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         }))
         self.controller.present(alert,animated:true, completion: nil)
     }
-
+    
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
-
+        
         let alert = UIAlertController(title: "알림", message: nil,
                                       preferredStyle: .alert);
         alert.addTextField { (textField) in
             textField.placeholder = "내용을 입력해주십시오."
-            print("\(String(describing: textField.text))")
         }
         
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
@@ -99,7 +99,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         if !(self.controller is NotiController) {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
         }
-
+        
         self.createAccessCookie()
         
         WInfo.customAction(theme: WInfo.themeInfo["theme"] as! String, rootView: self.controller.view )
@@ -134,18 +134,19 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-
+        
         UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseIn, animations: { self.controller.progressView.alpha = 0 }, completion: { (bool: Bool) in
             self.controller.progressView.setProgress(0.0, animated: false)
         })
     }
-
+    
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         decisionHandler(.allow)
         
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        
         if let urlString = navigationAction.request.url?.absoluteString {
             if urlString.hasPrefix("tel:") || urlString.hasPrefix("mailto:") {
                 UIApplication.shared.openURL(navigationAction.request.url!)
@@ -172,10 +173,11 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     }
     
     
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) ->
-        WKWebView? {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        
         let controller = MGWKSubWebController()
         let re_webView = controller.loadedView(url: (navigationAction.request), config: configuration)
+        
         self.controller.present(controller, animated: true, completion: nil)
         return re_webView
     }
@@ -187,8 +189,8 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         webView.reload()
     }
-
-   
+    
+    
     override func runScript(_ script: String) {
         _webView.evaluateJavaScript(script, completionHandler: nil)
     }
@@ -221,7 +223,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     override func clearHistory() {
         
     }
-
+    
 }
 
 

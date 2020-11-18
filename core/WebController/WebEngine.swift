@@ -30,13 +30,12 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
         super.init()
     }
     
-    
     var currentURL:URL? {
         get {
             return nil
         }
     }
-
+    
     let paySchema = [
         ["schema" : "smartxpay-transfer", "url" : "https://itunes.apple.com/kr/app/seumateu-egseupei-gyejwaiche/id393794374?mt=8"],  //SmartXPay
         ["schema" : "hdcardappcardansimclick", "url" : "http://itunes.apple.com/kr/app/id702653088?mt=8"],  //현대카드
@@ -77,7 +76,7 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
         ["schema" : "shinsegaeeasypayment", "url" : ""], // 삼성카드
         ["schema" : "paypin", "url" : ""], // 페이핀
         ["schema" : "storylink", "url" : "https://itunes.apple.com/us/app/kakaostory/id486244601?mt=8"], // 카카오스토리
-//        ["schema" : "kakaostory", "url" : "https://itunes.apple.com/us/app/kakaostory/id486244601?mt=8"], // 카카오스토리2 test
+        //        ["schema" : "kakaostory", "url" : "https://itunes.apple.com/us/app/kakaostory/id486244601?mt=8"], // 카카오스토리2 test
         ["schema" : "kakaotalk", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오톡
         ["schema" : "kakaolink", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오링크
         ["schema" : "kakaobizchat", "url" : "https://itunes.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947?mt=8"], // 카카오비즈챗
@@ -115,24 +114,16 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
             let playerController = AVPlayerViewController()
             
             playerController.player =  AVPlayer(url: URL(string: url!)!)
-
+            
             self.controller.present(playerController, animated: true, completion: {
-                    playerController.player?.play();
+                playerController.player?.play();
             })
             return false
         }
         
         if url!.hasPrefix("https://kauth.kakao.com/oauth/authorize?") {
-            print("kakao oauth pass")
-            
         }
         
-//        if url!.hasSuffix("/member/login.php") {
-//            let deadlineTime = DispatchTime.now() + .milliseconds(500)
-//            DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: {
-//
-//            })
-//        }
         return true
     }
     func handleItunes(_ url:String?)->Bool{
@@ -265,14 +256,14 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
                 self.controller.present(activity, animated: true, completion: nil)
             }
         }
-//        else if value["func"] == "scanner" {
-//            let callback = value["callback"]!.removingPercentEncoding!
-//            controllerCallback[SCANNER_CALLBACK] = callback
-//            let scanner = WMScanner()
-//            scanner.readerDelegate = self
-//            self.controller.present(scanner, animated: true, completion: {
-//            });
-//        }
+            //        else if value["func"] == "scanner" {
+            //            let callback = value["callback"]!.removingPercentEncoding!
+            //            controllerCallback[SCANNER_CALLBACK] = callback
+            //            let scanner = WMScanner()
+            //            scanner.readerDelegate = self
+            //            self.controller.present(scanner, animated: true, completion: {
+            //            });
+            //        }
         else if value["func"] == "goSetting" {
             self.controller.performSegue(withIdentifier: "setting" ,  sender : self)
         }else if value["func"] == "goNotice" {
@@ -281,7 +272,33 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
             if let url = URL(string:value["params"]!.removingPercentEncoding! ) {
                 UIApplication.shared.openURL(url)
             }
+        }else if value["func"] == "marketingAgree" {
+            RSHttp(controller:self.controller, showingPopup:false).req(
+                ApiFormApp().ap("mode","get_push_agree_tot").ap("pack_name",AppProp.appId),
+                successCb: { (resource) -> Void in
+                    if let _callback = value["callback"] {
+                        let callback = _callback.removingPercentEncoding!
+                        let value = resource.body()["result"] as! String
+                        self.runScript("javascript:\(callback)('\(value)')")
+                    }
+            },errorCb:{ (errorCode,resource) -> Void in}
+            )
+        }else if value["func"] == "marketingPopup" {
+            if value["params"] == nil {
+                self.controller.view.makeToast("파라미터가 없습니다.")
+                return
+            }
+            if let json = value["params"]?.jsonObject() {
+                if json["title"] == nil || json["content"] == nil {
+                    return
+                }
+                let dialog = self.controller.createMarketingAlertV2(msg: json) { (yn) in
+                    self.controller.setMarketingAgree(yn:yn,{})
+                }
+                self.controller.present(dialog, animated: false, completion: nil)
+            }
         }else if value["func"] == "adbrixFirstTimeExperience" {
+            
             if let json = value["params"]?.jsonObject() {
                 EventAdbrix.firstTimeExperience(json)
             }
@@ -338,21 +355,21 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
     }
     
     
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-//        if let scanResults = info[ZBarReaderControllerResults] as? ZBarSymbolSet {
-//            for symbol in scanResults {
-//                if let symbolFound = symbol as? ZBarSymbol {
-//                    let returnObj = [ "text" : symbolFound.data , "format" : symbolFound.typeName ] as [String : Any]
-//                    self.callbackZBar(returnObj)
-//                    self.controller.dismiss(animated: true, completion: nil)
-//                    break
-//                    
-//                }
-//                
-//                
-//            }
-//        }
-//    }
+    //    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    //        if let scanResults = info[ZBarReaderControllerResults] as? ZBarSymbolSet {
+    //            for symbol in scanResults {
+    //                if let symbolFound = symbol as? ZBarSymbol {
+    //                    let returnObj = [ "text" : symbolFound.data , "format" : symbolFound.typeName ] as [String : Any]
+    //                    self.callbackZBar(returnObj)
+    //                    self.controller.dismiss(animated: true, completion: nil)
+    //                    break
+    //
+    //                }
+    //
+    //
+    //            }
+    //        }
+    //    }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.controller.dismiss(animated: true, completion: nil)
@@ -362,7 +379,7 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
     
     func callbackZBar(_ returnObj:[String:Any]){
         self.runScript("javascript:\(self.controllerCallback[self.SCANNER_CALLBACK]!)('\(toJSONString(returnObj))')")
-
+        
     }
     func callbackContact(_ returnObj:[String:Any]){
         self.runScript("javascript:\(self.controllerCallback[self.CONTACT_CALLBACK]!)('\(toJSONString(returnObj))')")
@@ -376,7 +393,7 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
         }
     }
     
-   
+    
     var canGoForward:Bool{
         get{ return false }
     }

@@ -297,6 +297,12 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func goNotificationLink(_ link:String, _ type:String){
+        if let rootViewController = self.window!.rootViewController as? UINavigationController {
+            rootViewController.popToRootViewController(animated: true)
+            if let mainController = rootViewController.viewControllers[0] as? WMainController{
+                mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
+            }
+        }
 //        if #available(iOS 13.0, *) {
 //            if let rootViewController = self.rootVc as? UINavigationController {
 //                rootViewController.popToRootViewController(animated: true)
@@ -312,13 +318,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
 //                }
 //            }
 //        }
-        
-        if let rootViewController = self.window!.rootViewController as? UINavigationController {
-            rootViewController.popToRootViewController(animated: true)
-            if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
-            }
-        }
     }
     
     

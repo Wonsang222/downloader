@@ -181,9 +181,20 @@ break
         return;
     }
     
-    self.loopCountdown = self.animatedImage.loopCount ?: NSUIntegerMax;
-    
-    self.displayLink.paused = ! [self delegateShouldStartAnimating];
+    // NOTE : gif 이미지 1번 반복일때, iOS13 이하와 iOS14 이상일때의 loopCount 값이 다르다
+    if(@available(iOS 14, *)){
+        if(self.animatedImage.loopCount == 1) {
+            self.loopCountdown = 0;
+        } else {
+            self.loopCountdown = self.animatedImage.loopCount ?: NSUIntegerMax;
+        }
+        self.displayLink.paused = ! [self delegateShouldStartAnimating];
+    }else{
+        self.loopCountdown = self.animatedImage.loopCount ?: NSUIntegerMax;
+        self.displayLink.paused = ! [self delegateShouldStartAnimating];
+    }
+    // self.loopCountdown = self.animatedImage.loopCount ?: NSUIntegerMax;
+    // self.displayLink.paused = ! [self delegateShouldStartAnimating];
 }
 
 - (void)changeKeyframe:(CADisplayLink *)displayLink

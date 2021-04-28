@@ -1,8 +1,6 @@
+////  CryptoSwift
 //
-//  BlockModeWorker.swift
-//  CryptoSwift
-//
-//  Copyright (C) 2014-2017 Marcin Krzyżanowski <marcin@krzyzanowskim.com>
+//  Copyright (C) 2014-2018 Marcin Krzyżanowski <marcin@krzyzanowskim.com>
 //  This software is provided 'as-is', without any express or implied warranty.
 //
 //  In no event will the authors be held liable for any damages arising from the use of this software.
@@ -14,8 +12,13 @@
 //  - This notice may not be removed or altered from any source or binary distribution.
 //
 
-protocol BlockModeWorker {
-    var cipherOperation: CipherOperationOnBlock { get }
-    mutating func encrypt(_ plaintext: ArraySlice<UInt8>) -> Array<UInt8>
-    mutating func decrypt(_ ciphertext: ArraySlice<UInt8>) -> Array<UInt8>
-}
+#if swift(>=4.1)
+// TODO: remove this file when Xcode 9.2 is no longer used
+#else
+  extension Sequence {
+    @inlinable
+    public func compactMap<ElementOfResult>(_ transform: (Element) throws -> ElementOfResult?) rethrows -> [ElementOfResult] {
+      try flatMap(transform)
+    }
+  }
+#endif

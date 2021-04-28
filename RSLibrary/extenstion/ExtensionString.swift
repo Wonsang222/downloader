@@ -56,7 +56,7 @@ extension String {
     func encryptAES256() -> String{
         let KEY = "WISA12345678ABCD".bytes
         let IV_BTYE:Array<UInt8> = [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00]
-        return try! self.encryptToBase64(cipher: AES(key: KEY, blockMode: .CBC(iv: IV_BTYE), padding: .pkcs5))!
+        return try! self.encryptToBase64(cipher: AES(key: KEY, blockMode: CBC(iv: IV_BTYE), padding: .pkcs5))!
     }
     
     subscript (index: Int) -> Character {

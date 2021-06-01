@@ -8,6 +8,7 @@
 
 import UIKit
 import ImageIO
+import AppTrackingTransparency
 
 
 class WIntroController: BaseController,OLImageViewDelegate {
@@ -108,7 +109,18 @@ class WIntroController: BaseController,OLImageViewDelegate {
             successCb: { (resource) -> Void in
                 let json = resource.body()["marketing"] as? [String:AnyObject]
                 (UIApplication.shared.delegate as! AppDelegate).regApns(callback: { (res) in
-                    self.showMarketingPopup({self.reqTheme()},json: json!)
+                    #if FACEBOOK
+                    self.showMarketingPopup({
+                        self.showTrackingAuth {
+                            self.reqTheme()
+                        }
+                    },json: json!)
+                    #else
+                    self.showMarketingPopup({
+                        self.reqTheme()
+                    },json: json!)
+                    #endif
+                        
                 })
         },errorCb:{ (errorCode,resource) -> Void in
             guard self.existWinfo == true else {
@@ -149,6 +161,33 @@ class WIntroController: BaseController,OLImageViewDelegate {
             exit(0)
         }
         self.present(dialog, animated: false, completion: nil)
+    }
+    
+    fileprivate func showTrackingAuth(_ next:@escaping (()-> Void)) {
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { (status) in
+                switch status {
+                    case .authorized:
+                        print("dong 1")
+                        next()
+                        break
+                    case .denied:
+                        print("dong 2")
+                        next()
+                        break
+                    case .notDetermined:
+                        print("dong 3")
+                        next()
+                        break
+                    case .restricted:
+                        print("dong 4")
+                        next()
+                        break
+                }
+            }
+        } else {
+            next()
+        }
     }
     
     fileprivate func reqCheckApiKey(){

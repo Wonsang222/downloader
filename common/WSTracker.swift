@@ -7,8 +7,8 @@
 
 import Foundation
 import UIKit
-//import fa
-open class WSTracker {
+
+class WSTracker {
     
 
     static let _tracker = WSTracker()

@@ -70,6 +70,7 @@ GEM
     nanaimo (0.3.0)
     nap (1.1.0)
     netrc (0.11.0)
+    plist (3.6.0)
     public_suffix (4.0.6)
     ruby-macho (1.4.0)
     thread_safe (0.3.6)
@@ -90,6 +91,7 @@ PLATFORMS
 DEPENDENCIES
   cocoapods
   java-properties
+  plist
 
 BUNDLED WITH
    1.17.2

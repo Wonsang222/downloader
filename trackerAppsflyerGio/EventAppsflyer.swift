@@ -5,10 +5,11 @@
 //  Created by WISA on 2021/05/28.
 //
 
+#if APPSFLYER
 import UIKit
 import AppsFlyerLib
 
-open class EventAppsflyer: TrackerInstance, AppsFlyerTrackerDelegate {
+class EventAppsflyer: TrackerInstance, AppsFlyerTrackerDelegate {
     
     static var appsFlyerId:String {
         get{
@@ -26,14 +27,13 @@ open class EventAppsflyer: TrackerInstance, AppsFlyerTrackerDelegate {
     
     public required init(appDelegate: UIApplicationDelegate) {
         super.init(appDelegate: appDelegate)
-        print("dong test 3dd 333 init")
         
         AppsFlyerTracker.shared().appsFlyerDevKey = AppProp.appsFlyerDevKey as! String
         AppsFlyerTracker.shared().appleAppID = AppProp.appsFlyerAppId as! String
         AppsFlyerTracker.shared().delegate = self
     }
     
-    open override func overrideUserAgent() -> String {
+    public override func overrideUserAgent() -> String {
         if let appsflyerId = AppsFlyerTracker.shared().getAppsFlyerUID() {
             EventAppsflyer.appsFlyerId = appsflyerId
             return "/WISAAPP_AF_ID(\(appsflyerId))"
@@ -43,28 +43,16 @@ open class EventAppsflyer: TrackerInstance, AppsFlyerTrackerDelegate {
     }
     
     
-    open override func trackAppFinishLaunching(application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey : Any]?) {
+    public override func trackAppFinishLaunching(application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey : Any]?) {
         
     }
     
-    open override func trackAppOpenUrl(url: URL) {}
+    public override func trackAppOpenUrl(url: URL) {}
     
-    open override func trackAppLaunch() {
+    public override func trackAppLaunch() {
 
     }
     
-    open override func loginTest(viewCtrl: UIViewController) {}
-    
-//
-//    public override func trackAppLaunch() {
-//
-//    }
-//
-//    public override func trackAppLaunch(application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-//        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-//    }
-//
-//    open override func trackAppOpenUrl() {
-//
-//    }
+    public override func loginTest(viewCtrl: UIViewController) {}
 }
+#endif

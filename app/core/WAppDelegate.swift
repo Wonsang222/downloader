@@ -10,9 +10,8 @@ import UIKit
 import AdSupport
 import UserNotifications
 import WebKit
-import AppsFlyerLib
 
-class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, AppsFlyerTrackerDelegate  {
+class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, UIWindowSceneDelegate {
     
     var window: UIWindow?
     var rootVc: UIViewController?
@@ -44,6 +43,15 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         
         rootVc = self.window?.rootViewController
     }
+    
+    @available(iOS 13.0, *)
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url else {
+                return
+        }
+        WSTracker.getInstance().trackAppOpenUrl(url: url)
+    }
+    
     
     func regApns(callback:@escaping (_ error:Bool)->Void){
         if #available(iOS 10.0, *) {
@@ -83,26 +91,13 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             RunLoop.current.run(mode: .defaultRunLoopMode, before: Date.distantFuture)
         }
         
-        #if APPSFLYER
-        AppsFlyerTracker.shared().appsFlyerDevKey = AppProp.appsFlyerDevKey as! String
-        AppsFlyerTracker.shared().appleAppID = AppProp.appsFlyerAppId as! String
-        AppsFlyerTracker.shared().delegate = self
-        
-        if let appsflyerId = AppsFlyerTracker.shared().getAppsFlyerUID() {
-            EventAppsFlyer.appsFlyerId = appsflyerId
-            UserDefaults.standard.register(
-                defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS/WISAAPP_AF_ID(\(appsflyerId))"]
-            )
-        } else {
-            UserDefaults.standard.register(
-                defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
-            )
-        }
-        #else
+        WSTracker.getInstance().load(appDelegate: self)
+        WSTracker.getInstance().trackAppFinishLaunching(application: application, launchOptions: launchOptions)
+        userAgent = "\(String(describing: userAgent)) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"
+        let overrideAgent = WSTracker.getInstance().overrideUserAgent(userAgent: userAgent)
         UserDefaults.standard.register(
-            defaults: ["UserAgent": "\(userAgent!) WISAAPP/\(AppProp.appId)/\(WInfo.coreVersion)/IOS"]
+            defaults: ["UserAgent": overrideAgent]
         )
-        #endif
         
         if launchOptions != nil {
             if let userInfo = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification] as? [String : AnyObject] {
@@ -128,17 +123,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             WInfo.clearSessionCookie()
         }
         
-        #if ADBRIX
-        if NSClassFromString("ASIdentifierManager") != nil {
-            let ifa = ASIdentifierManager.shared().advertisingIdentifier
-            let isAppleAdvertisingTrackingEnabled = ASIdentifierManager.shared().isAdvertisingTrackingEnabled
-            IgaworksCore.setAppleAdvertisingIdentifier(ifa.uuidString, isAppleAdvertisingTrackingEnabled: isAppleAdvertisingTrackingEnabled)
-        }
-        IgaworksCore.igaworksCore(withAppKey: AppProp.adbrixAppKey, andHashKey: AppProp.adbrixHashKey)
-        //            IgaworksCore.setLogLevel(IgaworksCoreLogTrace)
-        #endif
-        
         setenv("JSC_useJIT", "false", 0)
+        
+        WSTracker.getInstance().trackAppFinishLaunching(application: application, launchOptions: launchOptions)
         
         return true
     }
@@ -155,7 +142,8 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     
     func applicationDidBecomeActive( _ application: UIApplication) {
         clearCache()
-        AppsFlyerTracker.shared().trackAppLaunch()
+//        AppsFlyerTracker.shared().trackAppLaunch()
+//        WSTracker.getInstance().trackAppLaunch
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -340,10 +328,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 }
             }
         }
-        #if ADBRIX
-        IgaworksCore.passOpen(url)
-        #endif
-        
     }
     
 }

@@ -6,24 +6,27 @@
 //
 
 import UIKit
+import AppTrackingTransparency
 
-open class TrackerInstance: NSObject {
+public class TrackerInstance: NSObject {
+    
+    var enableShowTracking:Bool = false
     
     required public init(appDelegate: UIApplicationDelegate) {
         print("dong dd test")
     }
     
-    open func overrideUserAgent() -> String {
+    public func overrideUserAgent() -> String {
         return ""
     }
     
-    open func trackAppLaunch() {}
+    public func trackAppLaunch() {}
     
-    open func trackAppFinishLaunching(application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey : Any]?) {}
+    public func trackAppFinishLaunching(application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey : Any]?) {}
     
-    open func trackAppOpenUrl(url: URL) {}
+    public func trackAppOpenUrl(url: URL) {}
     
-    open func loginTest(viewCtrl: UIViewController) {
+    public func loginTest(viewCtrl: UIViewController) {
         
     }
 }

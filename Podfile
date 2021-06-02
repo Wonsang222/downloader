@@ -5,7 +5,8 @@ require 'plist'
 properties = JavaProperties.load("app.properties")
 
 facebookTracker = properties[:'app.tracker.facebook.class']
-appsflayerTracker = properties[:'app.tracker.appsflyer.class']
+facebookSchema = properties[:'app.tracker.facebook.scheme']
+appsflayerGioTracker = properties[:'app.tracker.appsflyer_gio.class']
 
 plist = Plist.parse_xml("app/wing/Info.plist")
 plist['AppTrackerClass'].clear()
@@ -26,10 +27,11 @@ target "wing" do
     pod 'FBSDKLoginKit', '=9.3.0'
     pod 'FBSDKShareKit', '=9.3.0'
     plist['AppTrackerClass'].push("wing.EventFacebook")
+    plist['LSApplicationQueriesSchemes'].push(facebookSchema)
   end
   
 
-  if !(appsflayerTracker == nil || appsflayerTracker.empty?)
+  if !(appsflayerGioTracker == nil || appsflayerGioTracker.empty?)
     pod 'AppsFlyerFramework', '=4.8.11'
     plist['AppTrackerClass'].push("wing.EventAppsflyer")
   end

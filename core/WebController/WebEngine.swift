@@ -47,6 +47,10 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
         ["schema" : "lotteappcard", "url" : "https://itunes.apple.com/kr/app/losde-aebkadeu/id688047200?mt=8"], //롯데카드
         ["schema" : "lottesmartpay", "url" : ""], //롯데
         
+        ["schema" : "lmslpay", "url" : "https://apps.apple.com/kr/app/losdemembeoseu/id473250588"], //[bb] 롯데 엘포인트(신)
+        ["schema" : "hanamopmoasign", "url" : ""], // [bb] 하나카드 모아사인 공인인증
+        ["schema" : "com.wooricard.wcard", "url" : "http://itunes.apple.com/kr/app/id1499598869?mt=8"], // [bb] 우리WON카드
+        
         ["schema" : "cloudpay", "url" : "itmss://itunes.apple.com/app/id847268987"], //외환카드 , 하나카드
         ["schema" : "nhappcardansimclick", "url" : "http://itunes.apple.com/kr/app/nhnonghyeob-mobailkadeu-aebkadeu/id698023004?mt=8"], //NH카드
         ["schema" : "citispay", "url" : "https://itunes.apple.com/kr/app/citi-cards-mobile-ssitikadeu/id373559493?l=en&mt=8"],          //NH카드

@@ -1,6 +1,4 @@
 PODS:
-  - AdBrix (2.2.8)
-  - AppsFlyerFramework (4.8.11)
   - CryptoSwift (1.4.0)
   - FirebaseAnalytics (3.9.0):
     - FirebaseCore (~> 3.6)
@@ -23,8 +21,6 @@ PODS:
   - SwiftKeychainWrapper (3.0.1)
 
 DEPENDENCIES:
-  - AdBrix (= 2.2.8)
-  - AppsFlyerFramework (= 4.8.11)
   - CryptoSwift (= 1.4.0)
   - Google/Analytics
   - IgaworksCore (= 2.4.3)
@@ -32,8 +28,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AdBrix
-    - AppsFlyerFramework
     - CryptoSwift
     - FirebaseAnalytics
     - FirebaseCore
@@ -45,8 +39,6 @@ SPEC REPOS:
     - SwiftKeychainWrapper
 
 SPEC CHECKSUMS:
-  AdBrix: 40888c9132f9ae24972a63e8567043cfc5b68187
-  AppsFlyerFramework: 7da8740f23e8d32f02f3afbfee6a9085885fd8bf
   CryptoSwift: 7cc902df1784de3b389a387756c7d710f197730c
   FirebaseAnalytics: e5fe8486efc01bec33f6bf82e2fa9fce4b124052
   FirebaseCore: 9691ee2ade70c098d7cf92440f4303f16d83ca75
@@ -57,6 +49,6 @@ SPEC CHECKSUMS:
   IgaworksCore: 1657882ccf3f18fe61ae9b924900fd4f29cc3037
   SwiftKeychainWrapper: 38952a3636320ae61bad3513cadd870929de7a4a
 
-PODFILE CHECKSUM: cd4e56176df70e837fdcf50dc556a21b1bc0ec20
+PODFILE CHECKSUM: f7600352eb4b94a843cb1c380fb960458de2afb8
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

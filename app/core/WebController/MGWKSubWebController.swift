@@ -82,6 +82,10 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         ["schema" : "nonghyupcardansimclick", "url" : ""],
         ["schema" : "nhallonepayansimclick" , "url" : ""],  // 농협앱카드 추가 관련
         
+        ["schema" : "lmslpay", "url" : "https://apps.apple.com/kr/app/losdemembeoseu/id473250588"], //[bb] 롯데 엘포인트(신)
+        ["schema" : "hanamopmoasign", "url" : ""], // [bb] 하나카드 모아사인 공인인증
+        ["schema" : "com.wooricard.wcard", "url" : "http://itunes.apple.com/kr/app/id1499598869?mt=8"], // [bb] 우리WON카드
+        
         ["schema" : "lguthepay-xpay", "url" : ""],
         ["schema" : "payco", "url" : ""],
         ["schema" : "smshinhanansimclick", "url" : ""],

@@ -28,12 +28,14 @@ target "wing" do
     pod 'FBSDKShareKit', '=9.3.0'
     plist['AppTrackerClass'].push("wing.EventFacebook")
     plist['LSApplicationQueriesSchemes'].push(facebookSchema)
+    plist['NSUserTrackingUsageDescription'] = "개인에게 최적화된 광고를 제공하기 위해 사용자의 광고 활동 정보를 수집합니다."
   end
   
 
   if !(appsflayerGioTracker == nil || appsflayerGioTracker.empty?)
     pod 'AppsFlyerFramework', '=4.8.11'
     plist['AppTrackerClass'].push("wing.EventAppsflyer")
+    plist['NSUserTrackingUsageDescription'] = "개인에게 최적화된 광고를 제공하기 위해 사용자의 광고 활동 정보를 수집합니다."
   end
   
   plist.save_plist('app/wing/Info.plist')

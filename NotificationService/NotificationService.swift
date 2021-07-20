@@ -26,8 +26,7 @@ class NotificationService: UNNotificationServiceExtension {
                 if let imagePath = self.image(imageURLString) {
                     let imageURL = URL(fileURLWithPath: imagePath)
                     do {
-                        //let attach = try UNNotificationAttachment(identifier: "imate-test", url: imageURL, options: nil)
-                        let attach = try UNNotificationAttachment(identifier: "imate-test", url: imageURL, options: nil)
+                        let attach = try UNNotificationAttachment(identifier: "img_url", url: imageURL, options: nil)
                         bestAttemptContent.attachments = [attach]
                     } catch {
                         print(error)

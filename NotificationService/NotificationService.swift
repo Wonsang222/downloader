@@ -19,7 +19,7 @@ class NotificationService: UNNotificationServiceExtension {
         
         // 푸시를 변경하는 부분
         if let bestAttemptContent = bestAttemptContent{
-            bestAttemptContent.title = "\(bestAttemptContent.title)[변경하자]"
+            bestAttemptContent.title = "\(bestAttemptContent.title)"
             
             // if let imageURLString = bestAttemptContent.userInfo["image"]as? String {
             if let imageURLString = bestAttemptContent.userInfo["img_url"]as? String {

@@ -41,8 +41,8 @@ class NotificationService: UNNotificationServiceExtension {
         if let contentHandler = contentHandler,
            let bestAttemptContent = bestAttemptContent {
             // Mark the message as still encrypted.
-            bestAttemptContent.title = "\(bestAttemptContent.title)(ERR)"
-            bestAttemptContent.subtitle = "(ERR)"
+            bestAttemptContent.title = "\(bestAttemptContent.title)"
+            bestAttemptContent.subtitle = ""
             bestAttemptContent.body = "serviceExtensionTimeWillExpire"
             contentHandler(bestAttemptContent)
         }

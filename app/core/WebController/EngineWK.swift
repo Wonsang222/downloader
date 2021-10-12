@@ -41,6 +41,7 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         _webView.uiDelegate = self
         _webView.navigationDelegate = self
         _webView.scrollView.delegate = self
+        _webView.allowsBackForwardNavigationGestures = true
         self.controller.webViewContainer.addSubview(_webView)
     }
     

@@ -148,6 +148,32 @@ class WInfo{
             UserDefaults.standard.synchronize()
         }
     }
+        
+    static var osVersion:String{
+        get {
+            var osVersion = KeychainWrapper.standard.string(forKey: "kOsVersion")
+            if osVersion == nil {
+                osVersion = UIDevice.current.systemVersion
+                KeychainWrapper.standard.set(osVersion!, forKey: "kOsVersion")
+            }
+            return osVersion!
+        }
+    }
+    // push 클릭수 수집용도 (푸시 idx 값)
+    static var notifiSeq:String{
+        get {
+            if let returnValue = UserDefaults.standard.string(forKey: "kNotifiSeq"){
+                return returnValue;
+            }else{
+                return ""
+            }
+        }
+        set{
+            UserDefaults.standard.set(newValue,forKey: "kNotifiSeq")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     static var getMarketingPopupUrl:String{
         get{
             if let returnValue = UserDefaults.standard.string(forKey: "kGetMarketingPopupUrl"){

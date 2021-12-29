@@ -26,15 +26,12 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         self.engine.webView.alpha = 0
         type = type != nil ? type : "all"
         let url = URL (string: HttpMap.PUSH_PAGE + "?account_id=" + WInfo.accountId + "&view=" + type!)
-//        if link != nil {
-//            url = URL (string: link!);
-//        }
-        
         var requestObj = URLRequest(url: url!);
         if let userId = WInfo.userInfo["userId"] as? String{
             requestObj.addValue(userId.encryptAES256(), forHTTPHeaderField: "MAGIC_USER_ID")
         }
         requestObj.addValue(WInfo.deviceId.encryptAES256(), forHTTPHeaderField: "MAGIC_DEVICE_ID")
+        requestObj.addValue(WInfo.notifiSeq, forHTTPHeaderField: "MAGIC_NOTIFI_SEQ") // push 클릭수 수집용도 (푸시 idx 값)
         let contentView = self.view.subviews[0]
         let topView = self.view.subviews[1]
         contentView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: UIScreen.main.bounds.size.height)
@@ -50,6 +47,7 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         self.engine.scrollView.delegate = self
         UIApplication.shared.applicationIconBadgeNumber = 0
         self.engine.loadRequest(requestObj)
+        print("Be WNotiController > viewDidLoad")
     }
     
     
@@ -85,22 +83,23 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
     
     /* WebControl Delegate */
     func webLoadedFinish(_ urlString:String?){
+        print("Be WNotiController > webLoadedFinish")
+        WInfo.notifiSeq = "";
         if(self.engine.webView.alpha == 0){
             UIView.animate(withDuration: 0.6, animations: {
                 self.engine.webView.alpha = 1
             })
         }
-
     }
     func webLoadedCommit(_ urlString:String?){
         
     }
     func hybridEvent(_ value: [String:AnyObject]){
         if value["func"] as! String == "movePage"{
-            
             let moveUrl = value["param1"] as! String
             let mainController = self.navigationController?.viewControllers[0] as! WMainController
             mainController.movePage(moveUrl)
+            print("Be WNotiController > hybridEvent moveUrl: \(moveUrl)")
             if self.navigationController != nil {
                 self.navigationController!.popViewController(animated: true)
             }

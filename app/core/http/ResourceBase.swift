@@ -13,9 +13,8 @@ class ApiFormApp : HttpBaseResource{
             _ = ap("account_id",WInfo.accountId)
         }
         _ = ap("app_version" ,AppProp.appVersion)
-
+        _ = ap("os_version" ,WInfo.osVersion)
         reqHeader["core_version"] = WInfo.coreVersion
-
     }
 
     override var reqUrl:String{

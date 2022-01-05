@@ -81,6 +81,7 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
     
     /* WebControl Delegate */
     func webLoadedFinish(_ urlString:String?){
+        WInfo.notifiSeq = "";
         if(self.engine.webView.alpha == 0){
             UIView.animate(withDuration: 0.6, animations: {
                 self.engine.webView.alpha = 1

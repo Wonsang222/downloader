@@ -215,7 +215,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
         if let userInfo = response.notification.request.content.userInfo as? [String : AnyObject] {
             if let push_seq = userInfo["push_seq"] as? String {
-                WInfo.notifiSeq = pushSeq // push 클릭수 수집용도 (푸시 idx 값)
+                WInfo.notifiSeq = push_seq // push 클릭수 수집용도 (푸시 idx 값)
                 self.handlePush(push_seq,isBackground: true)
             }
         }

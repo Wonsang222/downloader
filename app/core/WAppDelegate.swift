@@ -215,6 +215,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
         if let userInfo = response.notification.request.content.userInfo as? [String : AnyObject] {
             if let push_seq = userInfo["push_seq"] as? String {
+                WInfo.notifiSeq = pushSeq // push 클릭수 수집용도 (푸시 idx 값)
                 self.handlePush(push_seq,isBackground: true)
             }
         }
@@ -228,11 +229,11 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         application.applicationIconBadgeNumber = application.applicationIconBadgeNumber + 1
         let pushSeq = userInfo["push_seq"] as! String
+        WInfo.notifiSeq = pushSeq // push 클릭수 수집용도 (푸시 idx 값)
         self.handlePush(pushSeq,isBackground: UIApplication.shared.applicationState != .active )
     }
     
     func handlePush(_ pushSeq:String,isBackground:Bool){
-        WInfo.notifiSeq = pushSeq // push 클릭수 수집용도 (푸시 idx 값)
         RSHttp().req(
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in

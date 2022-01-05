@@ -47,7 +47,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     @available(iOS 13.0, *)
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let url = URLContexts.first?.url else {
-                return
+            return
         }
         WSTracker.getInstance().trackAppOpenUrl(url: url)
     }
@@ -142,8 +142,8 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     
     func applicationDidBecomeActive( _ application: UIApplication) {
         clearCache()
-//        AppsFlyerTracker.shared().trackAppLaunch()
-//        WSTracker.getInstance().trackAppLaunch
+        //        AppsFlyerTracker.shared().trackAppLaunch()
+        //        WSTracker.getInstance().trackAppLaunch
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -201,7 +201,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if let userInfo = notification.request.content.userInfo as? [String : AnyObject] {
             if let push_seq = userInfo["push_seq"] as? String {
-                WInfo.notifiSeq = push_seq // push 클릭수 수집용도 (푸시 idx 값)
                 self.handlePush(push_seq,isBackground: false)
             }
         }
@@ -212,7 +211,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
         if let userInfo = response.notification.request.content.userInfo as? [String : AnyObject] {
             if let push_seq = userInfo["push_seq"] as? String {
-                WInfo.notifiSeq = push_seq // push 클릭수 수집용도 (푸시 idx 값)
                 self.handlePush(push_seq,isBackground: true)
             }
         }
@@ -225,7 +223,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         application.applicationIconBadgeNumber = application.applicationIconBadgeNumber + 1
         let pushSeq = userInfo["push_seq"] as! String
-        WInfo.notifiSeq = pushSeq // push 클릭수 수집용도 (푸시 idx 값)
         self.handlePush(pushSeq,isBackground: UIApplication.shared.applicationState != .active )
     }
     func handlePush(_ pushSeq:String,isBackground:Bool){
@@ -277,7 +274,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                     let type = objectInfo["type"] as? String == "notice" ? "event" : "all";
                     self.goNotificationLink(link!, type)
                 }
-        }
+            }
         )
     }
     

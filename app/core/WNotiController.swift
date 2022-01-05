@@ -10,8 +10,8 @@ import UIKit
 import WebKit
 
 class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate{
-
-	var link:String?
+    
+    var link:String?
     var type:String?
     var scrollBefore:CGFloat = 0.0
     var scrollDistance:CGFloat = 0.0
@@ -54,9 +54,9 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
     
- 
+    
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let moveY = scrollView.contentOffset.y < -self.topView!.frame.height ? -self.topView!.frame.height : scrollView.contentOffset.y
         let dy = moveY - self.scrollBefore
@@ -100,6 +100,6 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
             }
         }
     }
-
+    
 }
 

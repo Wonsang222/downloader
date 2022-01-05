@@ -198,21 +198,20 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         }
     }
     
+    // 포그라운드 상태
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if let userInfo = notification.request.content.userInfo as? [String : AnyObject] {
-            print("Be [0] userInfo: \(userInfo)");
             if let push_seq = userInfo["push_seq"] as? String {
-                print("Be [1] push_seq: \(push_seq)");
                 self.handlePush(push_seq,isBackground: false)
             }
         }
         completionHandler(.badge)
     }
     
+    // 백그라운드 상태
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("Be");
         UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
         if let userInfo = response.notification.request.content.userInfo as? [String : AnyObject] {
             if let push_seq = userInfo["push_seq"] as? String {
@@ -237,6 +236,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),
             successCb : { (resource) -> Void in
                 let objectInfo = resource.body()["data"] as! [String:AnyObject]
+                WInfo.notifiSeq = pushSeq // push 클릭수 수집용도 (푸시 idx 값)
                 if( UIApplication.shared.applicationState == .active && !isBackground){
                     let link = objectInfo["link"] as? String
                     let subtitle = objectInfo["subtitle"] as? String
@@ -246,7 +246,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                     var msg = objectInfo["msg"] as? String
                     msg = msg?.replace("<br />", withString: "\r\n")
                     msg = msg?.replace("<br/>", withString: "\r\n")
-                    WInfo.notifiSeq = pushSeq // push 클릭수 수집용도 (푸시 idx 값)
                     if img_url != nil {
                         let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
@@ -293,21 +292,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
             }
         }
-//        if #available(iOS 13.0, *) {
-//            if let rootViewController = self.rootVc as? UINavigationController {
-//                rootViewController.popToRootViewController(animated: true)
-//                if let mainController = rootViewController.viewControllers[0] as? WMainController{
-//                    mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
-//                }
-//            }
-//        } else {
-//            if let rootViewController = self.window!.rootViewController as? UINavigationController {
-//                rootViewController.popToRootViewController(animated: true)
-//                if let mainController = rootViewController.viewControllers[0] as? WMainController{
-//                    mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
-//                }
-//            }
-//        }
     }
     
     

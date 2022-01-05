@@ -47,7 +47,6 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         self.engine.scrollView.delegate = self
         UIApplication.shared.applicationIconBadgeNumber = 0
         self.engine.loadRequest(requestObj)
-        print("Be WNotiController > viewDidLoad")
     }
     
     
@@ -75,7 +74,6 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
             self.controlToggle = true
             self.scrollDistance = 0
         }
-        
         if controlToggle && dy>0 || (!controlToggle && dy<0){
             self.scrollDistance += dy
         }
@@ -83,8 +81,6 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
     
     /* WebControl Delegate */
     func webLoadedFinish(_ urlString:String?){
-        print("Be WNotiController > webLoadedFinish")
-        WInfo.notifiSeq = "";
         if(self.engine.webView.alpha == 0){
             UIView.animate(withDuration: 0.6, animations: {
                 self.engine.webView.alpha = 1
@@ -92,14 +88,12 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         }
     }
     func webLoadedCommit(_ urlString:String?){
-        
     }
     func hybridEvent(_ value: [String:AnyObject]){
         if value["func"] as! String == "movePage"{
             let moveUrl = value["param1"] as! String
             let mainController = self.navigationController?.viewControllers[0] as! WMainController
             mainController.movePage(moveUrl)
-            print("Be WNotiController > hybridEvent moveUrl: \(moveUrl)")
             if self.navigationController != nil {
                 self.navigationController!.popViewController(animated: true)
             }

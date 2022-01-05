@@ -101,7 +101,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         
         if launchOptions != nil {
             if let userInfo = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification] as? [String : AnyObject] {
-                self.remotePushSeq = userInfo["push_seq"] as? String
+                self.remotePushSeq = userInfo["push_seq"] as? String                
             }
         }
         if let launchUrl = launchOptions?[.url] as? URL {

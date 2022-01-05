@@ -170,7 +170,7 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
                     let objectInfo = resource.body()["data"] as! [String:AnyObject]
                     let link = objectInfo["link"] as? String
                     let type = objectInfo["type"] as? String == "notice" ? "event" : "all"
-                    WInfo.notifiSeq = String(appDelegate.remotePushSeq!)
+                    WInfo.notifiSeq = (objectInfo["push_seq"] as? String)!
                     appDelegate.goNotificationLink(link!, type)
                 })
                 appDelegate.remotePushSeq = nil

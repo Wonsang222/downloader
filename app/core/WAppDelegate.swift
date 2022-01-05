@@ -197,19 +197,16 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             self.apnsCallback = nil
         }
     }
-    
-    // 포그라운드 상태
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if let userInfo = notification.request.content.userInfo as? [String : AnyObject] {
             if let push_seq = userInfo["push_seq"] as? String {
+                WInfo.notifiSeq = push_seq // push 클릭수 수집용도 (푸시 idx 값)
                 self.handlePush(push_seq,isBackground: false)
             }
         }
         completionHandler(.badge)
     }
-    
-    // 백그라운드 상태
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
@@ -221,7 +218,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         }
         completionHandler()
     }
-    
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error){
         self.apnsCallback?(false)
         self.apnsCallback = nil
@@ -232,7 +228,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         WInfo.notifiSeq = pushSeq // push 클릭수 수집용도 (푸시 idx 값)
         self.handlePush(pushSeq,isBackground: UIApplication.shared.applicationState != .active )
     }
-    
     func handlePush(_ pushSeq:String,isBackground:Bool){
         RSHttp().req(
             ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(pushSeq)),

@@ -98,11 +98,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         UserDefaults.standard.register(
             defaults: ["UserAgent": overrideAgent]
         )
-        
         if launchOptions != nil {
             if let userInfo = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification] as? [String : AnyObject] {
-                WInfo.notifiSeq = userInfo["push_seq"] as! String
-                self.remotePushSeq = userInfo["push_seq"] as? String                
+                self.remotePushSeq = userInfo["push_seq"] as? String
             }
         }
         if let launchUrl = launchOptions?[.url] as? URL {
@@ -243,52 +241,47 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                     if img_url != nil {
                         let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
-                            self.goNotificationLink(link!, type)
+                            self.goNotificationLink(link!, type, pushSeq)
                         }))
                         alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.cancel,handler: { action in
-                            
                         }))
                         self.window?.rootViewController!.present(alertController,animated:true, completion: nil)
                     }else if msg != nil {
                         let alertController = UIAlertController(title: subtitle!, message: msg!,preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
-                            self.goNotificationLink(link!, type)
+                            self.goNotificationLink(link!, type, pushSeq)
                         }))
                         alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.cancel,handler: { action in
-                            
                         }))
                         self.window?.rootViewController!.present(alertController,animated:true, completion: nil)
-                        
                     }else{
                         let alertController = UIAlertController(title: title!, message: subtitle!,preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "이동", style: UIAlertActionStyle.default,handler: { action in
-                            self.goNotificationLink(link!, type)
+                            self.goNotificationLink(link!, type, pushSeq)
                         }))
                         alertController.addAction(UIAlertAction(title: "취소", style: UIAlertActionStyle.cancel,handler: { action in
-                            
                         }))
                         self.window?.rootViewController!.present(alertController,animated:true, completion: nil)
                     }
-                    
                 }else{
                     let link = objectInfo["link"] as? String
                     let type = objectInfo["type"] as? String == "notice" ? "event" : "all";
-                    self.goNotificationLink(link!, type)
+                    self.goNotificationLink(link!, type, pushSeq)
                 }
             }
         )
     }
-    
-    func goNotificationLink(_ link:String, _ type:String){
+    // navigation view controller 에서 Pop 하는 방법, popToRootViewController : 지정된 뷰 컨트롤러가 탐색 스택의 맨 위에 있을 때까지 뷰 컨트롤러를 팝한다.
+    // 알림함을 맨위의 뷰로 올리는 부분
+    func goNotificationLink(_ link:String, _ type:String,_ seq:String){
         if let rootViewController = self.window!.rootViewController as? UINavigationController {
             rootViewController.popToRootViewController(animated: true)
             if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type])
+                os_log("[WAPPDEL] WAPPDEL > WMAINCON // [link,type,seq] // [%{public}@, %{public}@, %{public}@]", log: .beLog, link, type, seq)
+                mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type, seq])
             }
         }
     }
-    
-    
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         self.proc_open_url(url: url)
         return true

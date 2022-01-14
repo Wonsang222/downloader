@@ -13,6 +13,7 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
     
     var link:String?
     var type:String?
+    var seq:String!
     var scrollBefore:CGFloat = 0.0
     var scrollDistance:CGFloat = 0.0
     var controlToggle = true
@@ -31,7 +32,9 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
             requestObj.addValue(userId.encryptAES256(), forHTTPHeaderField: "MAGIC_USER_ID")
         }
         requestObj.addValue(WInfo.deviceId.encryptAES256(), forHTTPHeaderField: "MAGIC_DEVICE_ID")
-        requestObj.addValue(WInfo.notifiSeq, forHTTPHeaderField: "MAGIC_NOTIFI_SEQ") // push 클릭수 수집용도 (푸시 idx 값)
+        if seq != nil {
+            requestObj.addValue(seq, forHTTPHeaderField: "MAGIC_NOTIFI_SEQ") // push 클릭수 수집용도 (푸시 idx 값)
+        }        
         let contentView = self.view.subviews[0]
         let topView = self.view.subviews[1]
         contentView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: UIScreen.main.bounds.size.height)
@@ -49,13 +52,9 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
         self.engine.loadRequest(requestObj)
     }
     
-    
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let moveY = scrollView.contentOffset.y < -self.topView!.frame.height ? -self.topView!.frame.height : scrollView.contentOffset.y
@@ -81,7 +80,7 @@ class WNotiController: BaseWebController,UIScrollViewDelegate,WebControlDelegate
     
     /* WebControl Delegate */
     func webLoadedFinish(_ urlString:String?){
-        WInfo.notifiSeq = "";
+        seq = ""
         if(self.engine.webView.alpha == 0){
             UIView.animate(withDuration: 0.6, animations: {
                 self.engine.webView.alpha = 1

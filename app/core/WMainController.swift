@@ -24,11 +24,11 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             self.performSegue(withIdentifier: "intro", sender: self)
         })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
+    
     func endIntro(){
         do{
             try self.applyTheme()
@@ -37,9 +37,8 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             exit(0)
         }
     }
-
+    
     func reqMatchingForLogin(_ movePage:String){
-
         // Matching
         RSHttp(controller:self,showingPopup:false).req(
             [ApiFormApp().ap("mode","matching")
@@ -58,7 +57,7 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
         )
         
     }
-
+    
     func reqSetLoginStat(_ yn:String){
         let userInfo = WInfo.userInfo
         if let member_id = userInfo["userId"] as? String{
@@ -68,7 +67,7 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             }
         }
     }
-
+    
     func reqLogin(_ movePage:String) {
         let userInfo = WInfo.userInfo
         var id_save = "N"
@@ -86,16 +85,16 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
                     successCb: { (resource) -> Void in
                         self.loadPage(movePage)
                         self.reqSetLoginStat("Y")
-                },
+                    },
                     errorCb : { (errorCode,resource) -> Void in
                         WInfo.userInfo = [String:AnyObject]()
                         self.loadPage(movePage)
                         self.reqSetLoginStat("N")
-                }
+                    }
                 )
             }
         }
-   
+        
     }
     
     
@@ -116,9 +115,9 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     
     // Abstract
     func applyTheme() throws{
-
+        
     }
-
+    
     func applyThemeFinish(){
     }
     
@@ -129,8 +128,8 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             loadPage(WInfo.appUrl)
         }
     }
-
-
+    
+    
     func loadPage(_ url:String){
         let ui_data = WInfo.themeInfo["ui_data"] as! [String:AnyObject]
         let objTopFix = ui_data["isTopFix"] as? Bool
@@ -140,7 +139,7 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
                 self.engine.scrollView.contentInset.top = 0
             }
             self.statusOverlay!.frame = CGRect(x:0 ,y:0,width:self.webViewContainer.frame.width ,height:
-                UIApplication.shared.statusBarFrame.height)
+                                                UIApplication.shared.statusBarFrame.height)
         }
         else{
             self.statusOverlay?.isHidden = true
@@ -156,21 +155,18 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
                 url_obj = URL (string: new_url);
             }
         }
-
-        
         let requestObj = NSMutableURLRequest(url: url_obj!);
         requestObj.httpShouldHandleCookies = true
         view.isHidden = false
-        
         self.engine.loadRequest(requestObj as URLRequest)
-        
         if let appDelegate = UIApplication.shared.delegate as? WAppDelegate {
             if appDelegate.remotePushSeq != nil {
+                let seq = String(appDelegate.remotePushSeq!)
                 RSHttp().req( ApiFormApp().ap("mode","get_push_data").ap("pack_name",AppProp.appId).ap("push_seq",String(appDelegate.remotePushSeq!)),successCb : { (resource) -> Void in
                     let objectInfo = resource.body()["data"] as! [String:AnyObject]
                     let link = objectInfo["link"] as? String
-                    let type = objectInfo["type"] as? String == "notice" ? "event" : "all"                    
-                    appDelegate.goNotificationLink(link!, type)
+                    let type = objectInfo["type"] as? String == "notice" ? "event" : "all"
+                    appDelegate.goNotificationLink(link!, type, seq)
                 })
                 appDelegate.remotePushSeq = nil
             }
@@ -183,7 +179,7 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
                 }
             }
         }
-    } 
+    }
     
     
     func movePage(_ page:String){
@@ -193,11 +189,11 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             url_obj = URL (string: new_url);
         }
         let requestObj = NSMutableURLRequest(url: url_obj!);
-//        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
+        //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
         engine.loadRequest(requestObj as URLRequest)
     }
     
-
+    
     func applyAction(_ button:UIButton,key:String){
         if key == "prev"{
             button.addTarget(self , action: #selector(WMainController.onPrevClick(_:)) , for: UIControlEvents.touchUpInside)
@@ -216,22 +212,22 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
             button.addTarget(self , action: #selector(WMainController.onSettingClick(_:)) , for: UIControlEvents.touchUpInside)
             
         }
-    }    
-
-
+    }
+    
+    
     @objc func onPrevClick(_ sender:UIButton!){
         if self.engine.canGoBack {
             self.engine.goBack()
         }else{
-           self.view.makeToast("이동할 페이지가 없습니다.", duration: 3.0, position: .bottom) 
+            self.view.makeToast("이동할 페이지가 없습니다.", duration: 3.0, position: .bottom)
         }
     }
     @objc func onNextClick(_ sender:UIButton!){
         if self.engine.canGoForward {
             self.engine.goForward()
         }else{
-           self.view.makeToast("이동할 페이지가 없습니다.", duration: 3.0, position: .bottom) 
-       }
+            self.view.makeToast("이동할 페이지가 없습니다.", duration: 3.0, position: .bottom)
+        }
     }
     @objc func onReloadClick(_ sender:UIButton!){
         self.engine.reload()
@@ -239,7 +235,7 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     @objc func onHomeClick(_ sender:UIButton!){
         let url = URL (string: WInfo.appUrl);
         let requestObj = NSMutableURLRequest(url: url!);
-//        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
+        //        requestObj.addValue(WInfo.defaultCookie(),forHTTPHeaderField:"Cookie")
         self.engine.loadRequest(requestObj as URLRequest)
     }
     @objc func onShareClick(_ sender:UIButton!){
@@ -269,7 +265,7 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
                 extendsArrow.isHidden = false
                 UIView.animate(withDuration: 0.2, animations: {
                     extendsMenu.frame =
-                        extendsMenu.frame.changeY(self.view!.frame.height - 120 - Tools.safeArea() - 0.5)
+                    extendsMenu.frame.changeY(self.view!.frame.height - 120 - Tools.safeArea() - 0.5)
                     extendsArrow.alpha = 1.0
                 }) { (bool) in
                 }
@@ -310,14 +306,12 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
         let layout1 =  sender.superview! as UIView
         let root = layout1.superview! as UIView
         openedButton = root.subviews[2].subviews[5] as? UIButton
-
         root.subviews[2].transform = CGAffineTransform(translationX: layout1.rsX, y: 100)
         sender.isHidden = true
         layout1.subviews[8].isHidden = false
         root.subviews[2].isHidden = false
         
         UIView.animate(withDuration: 0.3, delay: 0.1, options: [.allowUserInteraction, .curveEaseInOut], animations: {
-            
             root.subviews[2].transform = CGAffineTransform(translationX: layout1.rsX, y: 0)
         }) { (finish) in
             
@@ -327,7 +321,6 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     @objc func closeLayout(_ sender: UIButton) {
         let extendsMenu:UIView! = sender.superview?.superview?.subviews[2];
         let extendsArrow:UIView! = sender.subviews[2];
-        
         if extendsMenu.isHidden == false {
             UIView.animate(withDuration: 0.2, animations: {
                 extendsMenu.frame = extendsMenu.frame.changeY(self.view!.frame.height - 50 - Tools.safeArea() - 0.5)
@@ -340,7 +333,6 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
     }
     
     // url 뒤에부분은 서버에서 json으로 내리기
-    
     @objc func onLoginClick(_ sender: UIButton) {
         let url = URL (string: "\(WInfo.appUrl)/member/login.php");
         let requestObj = NSMutableURLRequest(url: url!);
@@ -376,39 +368,26 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
         let requestObj = NSMutableURLRequest(url: url!);
         self.engine.loadRequest(requestObj as URLRequest)
     }
-    
-//}else if key == "latest_prd"{
-//    button.addTarget(self.viewController , action: #selector(WMainController.onLatestPrdClick(_:)) , for: UIControlEvents.touchUpInside)
-//}else if key == "wish"{
-//    button.addTarget(self.viewController , action: #selector(WMainController.onWishClick(_:)) , for: UIControlEvents.touchUpInside)
-//}else if key == "cart"{
-//    button.addTarget(self.viewController , action: #selector(WMainController.onCartClick(_:)) , for: UIControlEvents.touchUpInside)
-//}else if key == "deliver"{
-//    button.addTarget(self.viewController , action: #selector(WMainController.onDeliverClick(_:)) , for: UIControlEvents.touchUpInside)
-//}else if key == "location"{
-//    button.addTarget(self.viewController , action: #selector(WMainController.onLocationClick(_:)) , for: UIControlEvents.touchUpInside)
-//}else if key == "setting"{
-    
+    // prepare: 뷰 컨트롤러 전환 전에 데이터를 처리할 수 있는 메서드
+    // UI가 처리되기 전에 데이터를 미리 처리 
     override func prepare(for segue:UIStoryboardSegue, sender: Any?){
         if segue.identifier == "noti" {
             let notiController = segue.destination as! WNotiController
             if let data = sender as? Array<String> {
-                if data.count == 2 {
+                if data.count == 3 {
                     notiController.link = data[0]
                     notiController.type = data[1]
+                    notiController.seq = data[2]
                 }
             } else {
                 notiController.link = sender as? String
             }
-            
         } else if segue.identifier == "intro"{
             self.introContrller = segue.destination as? WIntroController
             self.introContrller!.mainController = self
         } else if segue.identifier == "permission"{
         }
     }
-    
-    
     
     /* WebControl Delegate */
     func hybridEvent(_ value: [String : AnyObject]) {

@@ -32,7 +32,6 @@ class WInfo{
         }
     }
     
-    
     static var appUrl:String{
         get{
             if let returnValue = UserDefaults.standard.object(forKey: "kAppUrl") as? String{
@@ -108,7 +107,6 @@ class WInfo{
     
     static var themeInfo:[String:AnyObject]{
         get{
-            
             if let returnValue = UserDefaults.standard.dictionary(forKey: "kThemeInfo"){
                 return returnValue as [String : AnyObject];
             }else{
@@ -157,20 +155,6 @@ class WInfo{
                 KeychainWrapper.standard.set(osVersion!, forKey: "kOsVersion")
             }
             return osVersion!
-        }
-    }
-    // push 클릭수 수집용도 (푸시 idx 값)
-    static var notifiSeq:String{
-        get {
-            if let returnValue = UserDefaults.standard.string(forKey: "kNotifiSeq"){
-                return returnValue;
-            }else{
-                return ""
-            }
-        }
-        set{
-            UserDefaults.standard.set(newValue,forKey: "kNotifiSeq")
-            UserDefaults.standard.synchronize()
         }
     }
     
@@ -479,5 +463,4 @@ class WInfo{
             }
         }
     }
-    
 }

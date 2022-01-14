@@ -277,7 +277,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         if let rootViewController = self.window!.rootViewController as? UINavigationController {
             rootViewController.popToRootViewController(animated: true)
             if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                os_log("[WAPPDEL] WAPPDEL > WMAINCON // [link,type,seq] // [%{public}@, %{public}@, %{public}@]", log: .beLog, link, type, seq)
                 mainController.performSegue(withIdentifier: "noti" ,  sender : [link, type, seq])
             }
         }

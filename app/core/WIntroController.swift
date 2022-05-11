@@ -25,7 +25,6 @@ class WIntroController: BaseController,OLImageViewDelegate {
     var permissionController:PermissionController?
     var existWinfo = false
     
-    
     fileprivate var saveVersion:Int{
         get{
             if let returnValue = WInfo.introInfo["version"]{

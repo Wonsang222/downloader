@@ -40,13 +40,15 @@
 	<key>FacebookAdvertiserIDCollectionEnabled</key>
 	<true/>
 	<key>FacebookAppID</key>
-	<string/>
+	<string></string>
 	<key>FacebookAutoLogAppEventsEnabled</key>
 	<true/>
 	<key>FacebookDisplayName</key>
-	<string/>
+	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>naversearchapp</string>
+		<string>naversearchthirdlogin</string>
 		<string>kakaoplus</string>
 		<string>kakaobizchat</string>
 		<string>supertoss</string>

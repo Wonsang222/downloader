@@ -46,6 +46,7 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
         
         ["schema" : "lotteappcard", "url" : "https://itunes.apple.com/kr/app/losde-aebkadeu/id688047200?mt=8"], //롯데카드
         ["schema" : "lottesmartpay", "url" : ""], //롯데
+        ["schema" : "naversearchthirdlogin", "url" : ""], //네이버
         
         ["schema" : "cloudpay", "url" : "itmss://itunes.apple.com/app/id847268987"], //외환카드 , 하나카드
         ["schema" : "nhappcardansimclick", "url" : "http://itunes.apple.com/kr/app/nhnonghyeob-mobailkadeu-aebkadeu/id698023004?mt=8"], //NH카드

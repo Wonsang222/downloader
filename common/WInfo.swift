@@ -20,7 +20,8 @@ class WInfo{
     //    static let coreVersion:String = "wmgkcore_v3.0.3" //Out of Memory 대응
     //    static let coreVersion:String = "wmgkcore_v3.1.5"  // WKWebView Brwoser 적용
     //    static let coreVersion:String = "wmgkcore_v3.1.6"  // ???
-    static let coreVersion:String = "wmgkcore_v3.1.7"  // [20211130] Facebook SDK, PG 수정 등
+    //    static let coreVersion:String = "wmgkcore_v3.1.7"  // [20211130] Facebook SDK, PG 수정 등
+    static let coreVersion:String = "wmgkcore_v3.1.8"  // [20220519] richPush 모니터링 용
     static var deviceId:String {
         get {
             var deviceId = KeychainWrapper.standard.string(forKey: "magicappDeviceId")

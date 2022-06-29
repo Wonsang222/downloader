@@ -27,7 +27,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>#APP_SCHEMA#</string>
+				<string>APP_SCHEMA</string>
 			</array>
 		</dict>
 		<dict>

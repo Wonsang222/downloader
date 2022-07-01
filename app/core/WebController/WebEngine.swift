@@ -369,11 +369,12 @@ class WebEngine : NSObject,ABPeoplePickerNavigationControllerDelegate {
         if let currentUrl = self.currentURL {
             let objectToShare = [currentUrl]
             let activity = UIActivityViewController(activityItems: objectToShare, applicationActivities: nil)
+            activity.popoverPresentationController?.sourceView = self.webView
+            activity.popoverPresentationController?.sourceRect = CGRect(x: self.webView.bounds.midX, y: self.webView.bounds.midY, width: 0, height: 0)
+            activity.popoverPresentationController?.permittedArrowDirections = []
             self.controller.present(activity, animated: true, completion: nil)
         }
     }
-    
-    
     var canGoForward:Bool{
         get{ return false }
     }

@@ -148,7 +148,28 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
     @available(iOS 13.0, *)
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
             preferences.preferredContentMode = .mobile
-            decisionHandler(.allow, preferences)
+            if let urlString = navigationAction.request.url?.absoluteString {
+                if urlString.hasPrefix("tel:") || urlString.hasPrefix("mailto:") {
+                    UIApplication.shared.openURL(navigationAction.request.url!)
+                    decisionHandler(.cancel, preferences)
+                }else if !self.handleWing(urlString) {
+                    decisionHandler(.cancel, preferences)
+                }else if !self.handleEvent(urlString) {
+                    decisionHandler(.cancel, preferences)
+                }else if !self.handleApiEvent(urlString) {
+                    decisionHandler(.cancel, preferences)
+                }else if !self.handleItunes(urlString) {
+                    decisionHandler(.cancel, preferences)
+                }else if !self.handleSchema(urlString) {
+                    decisionHandler(.cancel, preferences)
+                }else{
+                    decisionHandler(.allow, preferences)
+                    return ;
+                }
+            }else{
+                decisionHandler(.allow, preferences)
+                return ;
+            }
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {

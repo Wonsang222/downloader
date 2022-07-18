@@ -96,6 +96,8 @@ class MGWKSubWebController: BaseController, WKUIDelegate,WKNavigationDelegate, U
         ["schema" : "samsungpay", "url" : ""], // 삼성카드
         ["schema" : "scardcertiapp", "url" : ""], // 삼성카드
         
+        ["schema" : "newliiv", "url" : ""], // 리브 Next
+        ["schema" : "kbbank", "url" : ""], // KB스타뱅킹        
         ["schema" : "ispmobile", "url" : "https://itunes.apple.com/kr/app/mobail-anjeongyeolje-isp/id369125087?mt=8"],  // ISP
         
         ["schema" : "citispay", "url" : ""], // 삼성카드

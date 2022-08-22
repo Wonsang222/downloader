@@ -285,7 +285,12 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         self.proc_open_url(url: url)
         return true
     }
+    
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        self.proc_open_url(url: url)
+        return true
+    }
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool{
         self.proc_open_url(url: url)
         return true
     }

@@ -104,9 +104,22 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             }
         }
         if let launchUrl = launchOptions?[.url] as? URL {
-            if launchUrl.host == "page" {
-                self.commmandUrl = launchUrl.query
+            let components = URLComponents(string: url.absoluteString)
+            let parameters = components?.query ?? ""
+            var page = ""
+            if parameters.count > 0, parameters != "" {
+                let items = components?.queryItems ?? []
+                for item in items {
+                    if item.name == "page" {
+                        page = item.value ?? ""
+                    }
+                }
+                self.commmandUrl = page
             }
+            
+//            if launchUrl.host == "page" {
+//                self.commmandUrl = launchUrl.query
+//            }
         }
         
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always
@@ -314,16 +327,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                     }
                 }
             }
-            
-            //        if url.host == "page" {
-            //            if let rootViewController = self.window!.rootViewController as? UINavigationController {
-            //                if let mainController = rootViewController.viewControllers[0] as? WMainController{
-            //                    if commmandUrl == nil {
-            //                        mainController.loadPage("\(WInfo.appUrl)/" + url.query!)
-            //                    }
-            //                }
-            //            }
-            //        }
         }
     }
     

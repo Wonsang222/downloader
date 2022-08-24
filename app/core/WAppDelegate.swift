@@ -108,19 +108,18 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             let components = URLComponents(string: launchUrl.absoluteString)
             let parameters = components?.query ?? ""
             var page = ""
-            if parameters.count > 0, parameters != "" {
-                let items = components?.queryItems ?? []
-                for item in items {
-                    if item.name == "page" {
-                        page = item.value ?? ""
-                    }
-                }
-                self.commmandUrl = page
-            }
             
-//            if launchUrl.host == "page" {
-//                self.commmandUrl = launchUrl.query
-//            }
+            let items = components?.queryItems ?? []
+            for item in items {
+                if item.name == "page" {
+                    page = item.value ?? ""
+                }
+            }
+            self.commmandUrl = page
+            
+            //            if launchUrl.host == "page" {
+            //                self.commmandUrl = launchUrl.query
+            //            }
         }
         
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always

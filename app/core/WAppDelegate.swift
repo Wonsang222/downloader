@@ -103,8 +103,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 self.remotePushSeq = userInfo["push_seq"] as? String
             }
         }
+        
         if let launchUrl = launchOptions?[.url] as? URL {
-            let components = URLComponents(string: url.absoluteString)
+            let components = URLComponents(string: launchUrl.absoluteString)
             let parameters = components?.query ?? ""
             var page = ""
             if parameters.count > 0, parameters != "" {

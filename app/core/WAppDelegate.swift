@@ -10,6 +10,7 @@ import UIKit
 import AdSupport
 import UserNotifications
 import WebKit
+import OSLog
 
 class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, UIWindowSceneDelegate {
     
@@ -80,6 +81,13 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        if #available(iOS 14.0, *) {
+            os_log(.default,log:.default,"[Be] didFinishLaunchingWithOptions")
+        } else {
+            // Fallback on earlier versions
+        }
+        
         scriptWebview = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
         var userAgent: String!
         var finished = false
@@ -105,18 +113,23 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         }
         
         if let launchUrl = launchOptions?[.url] as? URL {
-            let components = URLComponents(string: launchUrl.absoluteString)
-            let parameters = components?.query ?? ""
-            var page = ""
-            
-            let items = components?.queryItems ?? []
-            for item in items {
-                if item.name == "page" {
-                    page = item.value ?? ""
-                }
+            if #available(iOS 14.0, *) {
+                os_log(.default,log:.default,"[Be] 최초 딥링크 앱실행 감지 \(launchUrl)")
+            } else {
+                // Fallback on earlier versions
             }
-            self.commmandUrl = page
-            
+            let components = URLComponents(string: launchUrl.absoluteString)
+            let parameters = launchUrl.query ?? ""
+            var page = ""
+            if parameters.count > 0, parameters != "" {
+                let items = components?.queryItems ?? []
+                for item in items {
+                    if item.name == "page" {
+                        page = item.value ?? ""
+                    }
+                }
+                self.commmandUrl = page;
+            }
             //            if launchUrl.host == "page" {
             //                self.commmandUrl = launchUrl.query
             //            }
@@ -295,15 +308,42 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         }
     }
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
+        if #available(iOS 10.0, *) {
+            if #available(iOS 12.0, *) {
+                os_log(.default,log:.default,"[Be] handleOpen")
+            } else {
+                // Fallback on earlier versions
+            }
+        } else {
+            // Fallback on earlier versions
+        }
         self.proc_open_url(url: url)
         return true
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        if #available(iOS 10.0, *) {
+            if #available(iOS 12.0, *) {
+                os_log(.default,log:.default,"[Be] sourceApplication")
+            } else {
+                // Fallback on earlier versions
+            }
+        } else {
+            // Fallback on earlier versions
+        }
         self.proc_open_url(url: url)
         return true
     }
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool{
+        if #available(iOS 10.0, *) {
+            if #available(iOS 12.0, *) {
+                os_log(.default,log:.default,"[Be] OpenURLOptionsKey")
+            } else {
+                // Fallback on earlier versions
+            }
+        } else {
+            // Fallback on earlier versions
+        }
         self.proc_open_url(url: url)
         return true
     }
@@ -322,6 +362,11 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             if let rootViewController = self.window!.rootViewController as? UINavigationController {
                 if let mainController = rootViewController.viewControllers[0] as? WMainController{
                     if commmandUrl == nil {
+                        if #available(iOS 14.0, *) {
+                            os_log(.default,log:.default,"[Be] proc_open_url \(page)")
+                        } else {
+                            // Fallback on earlier versions
+                        }
                         //  mainController.loadPage("\(WInfo.appUrl)/" + url.query!)
                         mainController.loadPage("\(WInfo.appUrl)/" + page)
                     }

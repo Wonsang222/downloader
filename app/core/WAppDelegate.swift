@@ -326,8 +326,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             if let rootViewController = self.window!.rootViewController as? UINavigationController {
                 if let mainController = rootViewController.viewControllers[0] as? WMainController{
                     if commmandUrl == nil {
-                        //  mainController.loadPage("\(WInfo.appUrl)/" + url.query!)
                         mainController.loadPage("\(WInfo.appUrl)/" + page)
+                    }else{
+                        mainController.loadPage("\(WInfo.appUrl)/" + commmandUrl!)
                     }
                 }
             }

@@ -105,10 +105,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         }
         
         if let launchUrl = launchOptions?[.url] as? URL {
-            if #available(iOS 14.0, *) {
-            } else {
-                // Fallback on earlier versions
-            }
             let components = URLComponents(string: launchUrl.absoluteString)
             let parameters = launchUrl.query ?? ""
             var page = ""
@@ -121,9 +117,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 }
                 self.commmandUrl = page;
             }
-            //            if launchUrl.host == "page" {
-            //                self.commmandUrl = launchUrl.query
-            //            }
         }
         
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always
@@ -329,6 +322,7 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                         mainController.loadPage("\(WInfo.appUrl)/" + page)
                     }else{
                         mainController.loadPage("\(WInfo.appUrl)/" + commmandUrl!)
+                        self.commmandUrl = nil
                     }
                 }
             }

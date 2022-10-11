@@ -10,6 +10,7 @@ import UIKit
 import AdSupport
 import UserNotifications
 import WebKit
+import OSLog
 
 class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, UIWindowSceneDelegate {
     
@@ -295,7 +296,6 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         self.proc_open_url(url: url)
         return true
     }
-    
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         self.proc_open_url(url: url)
         return true
@@ -304,30 +304,22 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         self.proc_open_url(url: url)
         return true
     }
-    
     func proc_open_url(url:URL){
         let components = URLComponents(string: url.absoluteString)
         let parameters = components?.query ?? ""
-        var page = ""
         if parameters.count > 0, parameters != "" {
             let items = components?.queryItems ?? []
             for item in items {
                 if item.name == "page" {
-                    page = item.value ?? ""
+                    commmandUrl = item.value ?? ""
                 }
             }
             if let rootViewController = self.window!.rootViewController as? UINavigationController {
                 if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                    if commmandUrl == nil {
-                        mainController.loadPage("\(WInfo.appUrl)/" + page)
-                    }else{
-                        mainController.loadPage("\(WInfo.appUrl)/" + commmandUrl!)
-                        self.commmandUrl = nil
-                    }
+                    mainController.loadPage("\(WInfo.appUrl)/" + commmandUrl!)
                 }
             }
         }
     }
-    
 }
 

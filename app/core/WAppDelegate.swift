@@ -315,6 +315,9 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
             }
             if let rootViewController = self.window!.rootViewController as? UINavigationController {
                 if let mainController = rootViewController.viewControllers[0] as? WMainController{
+                    if(rootViewController.viewControllers.count > 1){
+                        rootViewController.popViewController(animated: false)
+                    }
                     mainController.loadPage("\(WInfo.appUrl)/" + commmandUrl!)
                 }
             }

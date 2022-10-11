@@ -10,7 +10,6 @@ import UIKit
 import AdSupport
 import UserNotifications
 import WebKit
-import OSLog
 
 class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, UIWindowSceneDelegate {
     

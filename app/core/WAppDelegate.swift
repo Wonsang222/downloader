@@ -306,16 +306,18 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     func proc_open_url(url:URL){
         let components = URLComponents(string: url.absoluteString)
         let parameters = components?.query ?? ""
+        var page = ""
         if parameters.count > 0, parameters != "" {
             let items = components?.queryItems ?? []
             for item in items {
                 if item.name == "page" {
-                    commmandUrl = item.value ?? ""
+                    page = item.value ?? ""
                 }
             }
+            self.commmandUrl = page;
             if let rootViewController = self.window!.rootViewController as? UINavigationController {
                 if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                    if(rootViewController.viewControllers.count > 1){
+                    if rootViewController.viewControllers.count > 1{
                         rootViewController.popViewController(animated: false)
                     }
                     mainController.loadPage("\(WInfo.appUrl)/" + commmandUrl!)

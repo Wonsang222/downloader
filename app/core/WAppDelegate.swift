@@ -306,15 +306,17 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
     func proc_open_url(url:URL){
         let components = URLComponents(string: url.absoluteString)
         let parameters = components?.query ?? ""
-        var page = ""
         if parameters.count > 0, parameters != "" {
             let items = components?.queryItems ?? []
             for item in items {
                 if item.name == "page" {
-                    page = item.value ?? ""
+                    commmandUrl = item.value ?? ""
                 }
             }
-            self.commmandUrl = page;
+            // 첫 실행 프로세스에서 mainController.loadPage 호출부분이 문제가 발생함
+            if WInfo.firstProcess {
+                return ;
+            }
             if let rootViewController = self.window!.rootViewController as? UINavigationController {
                 if let mainController = rootViewController.viewControllers[0] as? WMainController{
                     if rootViewController.viewControllers.count > 1{

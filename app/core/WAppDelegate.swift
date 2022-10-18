@@ -103,9 +103,19 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
                 self.remotePushSeq = userInfo["push_seq"] as? String
             }
         }
+        
         if let launchUrl = launchOptions?[.url] as? URL {
-            if launchUrl.host == "page" {
-                self.commmandUrl = launchUrl.query
+            let components = URLComponents(string: launchUrl.absoluteString)
+            let parameters = launchUrl.query ?? ""
+            var page = ""
+            if parameters.count > 0, parameters != "" {
+                let items = components?.queryItems ?? []
+                for item in items {
+                    if item.name == "page" {
+                        page = item.value ?? ""
+                    }
+                }
+                self.commmandUrl = page;
             }
         }
         
@@ -285,22 +295,33 @@ class WAppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenter
         self.proc_open_url(url: url)
         return true
     }
-    
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         self.proc_open_url(url: url)
         return true
     }
     func proc_open_url(url:URL){
-        if url.host == "page" {
+        let components = URLComponents(string: url.absoluteString)
+        let parameters = components?.query ?? ""
+        if parameters.count > 0, parameters != "" {
+            let items = components?.queryItems ?? []
+            for item in items {
+                if item.name == "page" {
+                    commmandUrl = item.value ?? ""
+                }
+            }
+            // 첫 실행 프로세스에서 mainController.loadPage 호출부분이 문제가 발생함
+            if WInfo.firstProcess {
+                return ;
+            }
             if let rootViewController = self.window!.rootViewController as? UINavigationController {
                 if let mainController = rootViewController.viewControllers[0] as? WMainController{
-                    if commmandUrl == nil {
-                        mainController.loadPage("\(WInfo.appUrl)/" + url.query!)
+                    if rootViewController.viewControllers.count > 1{
+                        rootViewController.popViewController(animated: false)
                     }
+                    mainController.loadPage("\(WInfo.appUrl)/" + commmandUrl!)
                 }
             }
         }
     }
-
 }
 

@@ -59,7 +59,6 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         }
         
     }
-    
     func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
         let alert = UIAlertController(title: "알림", message: message,
                                       preferredStyle: .alert);
@@ -68,6 +67,17 @@ class EngineWK: WebEngine,WKUIDelegate,WKNavigationDelegate, UIScrollViewDelegat
         }))
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: { (action) in
             completionHandler(false)
+        }))
+        self.controller.present(alert,animated:true, completion: nil)
+    }
+    func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+        let alert = UIAlertController(title: "알림", message: message,
+                                      preferredStyle: .alert);
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
+            completionHandler()
+        }))
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: { (action) in
+            completionHandler()
         }))
         self.controller.present(alert,animated:true, completion: nil)
     }

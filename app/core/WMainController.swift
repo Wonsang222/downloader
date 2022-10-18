@@ -176,6 +176,10 @@ class WMainController: BaseWebController,WebControlDelegate, UIScrollViewDelegat
                     let requestObj = NSMutableURLRequest(url: URL(string: appDelegate.commmandUrl!)!);
                     requestObj.httpShouldHandleCookies = true
                     self.engine.loadRequest(requestObj as URLRequest)
+                }else{
+                    let requestObj = NSMutableURLRequest(url: URL(string: "\(WInfo.appUrl)/" + appDelegate.commmandUrl!)!);
+                    requestObj.httpShouldHandleCookies = true
+                    self.engine.loadRequest(requestObj as URLRequest)
                 }
             }
         }

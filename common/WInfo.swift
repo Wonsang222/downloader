@@ -21,7 +21,8 @@ class WInfo{
     //    static let coreVersion:String = "wmgkcore_v3.1.5"  // WKWebView Brwoser 적용
     //    static let coreVersion:String = "wmgkcore_v3.1.6"  // ???
     //    static let coreVersion:String = "wmgkcore_v3.1.7"  // [20211130] Facebook SDK, PG 수정 등
-    static let coreVersion:String = "wmgkcore_v3.1.8"  // [20220519] richPush 모니터링 용
+    //    static let coreVersion:String = "wmgkcore_v3.1.8"  // [20220519] richPush 모니터링 용
+    static let coreVersion:String = "wmgkcore_v4.0.0"  // [20221025] Deeplink 반영, 솔루션내에서 해당 버전 분기하여 딥링크 페이지 처리
     static var deviceId:String {
         get {
             var deviceId = KeychainWrapper.standard.string(forKey: "magicappDeviceId")
